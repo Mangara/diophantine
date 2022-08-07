@@ -15,11 +15,35 @@
  */
 package com.github.mangara.diophantine;
 
+import java.util.Iterator;
+
 /**
- *
+ * Solves linear Diophantine equations.
+ * <p>
+ * This class allows you to solve Diophantine equations of the form
+ * 
+ * \[d x + e y + f = 0\]
+ * 
+ * where both d and e are non-zero.
+ * 
+ * The method is based on https://www.alpertron.com.ar/METHODS.HTM#Linear
  */
 public class LinearSolver {
-    public static void hello() {
-        System.out.println("Hello!");
+
+    /**
+     * Solves the linear Diophantine equation d x + e y + f = 0. Both d and e
+     * must be non-zero.
+     * @param d
+     * @param e
+     * @param f
+     * @return an iterator over all integer solutions (x, y)
+     * @throws IllegalArgumentException if d or e are zero.
+     */
+    public static Iterator<XYPair> solve(int d, int e, int f) {
+        if (d == 0 || e == 0) {
+            throw new IllegalArgumentException("d and e should be non-zero.");
+        }
+        
+        return null;
     }
 }
