@@ -40,6 +40,18 @@ public class Utils {
 
         return Math.abs(a);
     }
+    
+    /**
+     * Computes the GCD (greatest common divisor) of a and b, using the
+     * Euclidean algorithm.
+     *
+     * @param a
+     * @param b
+     * @return the greatest common divisor of a and b
+     */
+    public static int gcd(int a, int b) {
+        return (int) gcd((long) a, (long) b);
+    }
 
     /**
      * Computes the GCD (greatest common divisor) of the given numbers, using
