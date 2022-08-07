@@ -27,21 +27,29 @@ public class UtilsTest {
     public void testGcd() {
         System.out.println("gcd");
         assertEquals(23, Utils.gcd(1235675, 180859534));
+        assertEquals(23, Utils.gcd(1235675L, 180859534L));
     }
     
     @Test
     public void testGcdSign() {
         System.out.println("gcd is always positive");
+        
         assertEquals(5, Utils.gcd(15, 25));
         assertEquals(5, Utils.gcd(-15, 25));
         assertEquals(5, Utils.gcd(15, -25));
         assertEquals(5, Utils.gcd(-15, -25));
+        
+        assertEquals(5, Utils.gcd(15L, 25L));
+        assertEquals(5, Utils.gcd(-15L, 25L));
+        assertEquals(5, Utils.gcd(15L, -25L));
+        assertEquals(5, Utils.gcd(-15L, -25L));
     }
 
     @Test
     public void testMultiGcd() {
         System.out.println("multi-gcd");
         assertEquals(2, Utils.gcd(57219486, 38139166, 18777898, 80761648));
+        assertEquals(2, Utils.gcd(57219486L, 38139166L, 18777898L, 80761648L));
     }
     
 }
