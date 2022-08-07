@@ -19,18 +19,17 @@ import java.math.BigInteger;
 import java.util.Objects;
 
 /**
- * A pair of integers (x, y).
- * 
- * @author Sander Verdonschot <sander.verdonschot at gmail.com>
+ * A pair of integers (x, y). This class is immutable.
  */
 public class XYPair {
+
     public final BigInteger x, y;
 
     public XYPair(final BigInteger x, final BigInteger y) {
         if (x == null || y == null) {
             throw new IllegalArgumentException("x and y may not be null.");
         }
-        
+
         this.x = x;
         this.y = y;
     }
@@ -45,7 +44,7 @@ public class XYPair {
 
     @Override
     public int hashCode() {
-        int hash = 5; 
+        int hash = 5;
         hash = 23 * hash + Objects.hashCode(this.x);
         hash = 23 * hash + Objects.hashCode(this.y);
         return hash;

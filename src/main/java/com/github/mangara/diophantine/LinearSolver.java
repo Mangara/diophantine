@@ -17,7 +17,6 @@ package com.github.mangara.diophantine;
 
 /**
  *
- * @author Sander Verdonschot <sander.verdonschot at gmail.com>
  */
 public class LinearSolver {
     public static void hello() {
