@@ -18,7 +18,9 @@ package com.github.mangara.diophantine;
 import java.math.BigInteger;
 import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.function.Executable;
 
 public class TestUtils {
 
@@ -76,6 +78,46 @@ public class TestUtils {
         if (numSeen < expectedSolutions.length) {
             fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
         }
+    }
+    
+    public static void assertAllSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions, Iterator<XYPair> solutions) {
+        boolean[] seen = new boolean[expectedSolutions.length];
+        int numSeen = 0;
+
+        for (int n = 0; n < 1000 && solutions.hasNext() && numSeen < expectedSolutions.length; n++) {
+            XYPair sol = solutions.next();
+            assertIsSolution(a, b, c, d, e, f, sol);
+
+            boolean found = false;
+            
+            try {
+                long x = sol.x.longValueExact();
+                long y = sol.y.longValueExact();
+
+                for (int i = 0; i < expectedSolutions.length; i++) {
+                    if (!seen[i] && x == expectedSolutions[i][0] && y == expectedSolutions[i][1]) {
+                        seen[i] = true;
+                        numSeen++;
+                        found = true;
+                        break;
+                    }
+                }
+            } catch (ArithmeticException ex) {
+                // BigInteger out of long range - incorrect
+            }
+            
+            if (!found) {
+                fail("Unexpected solution returned: " + sol);
+            }
+        }
+        
+        if (numSeen < expectedSolutions.length) {
+            fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
+        }
+    }
+    
+    public static void assertNotSupportedYet(Executable code) {
+        assertThrows(UnsupportedOperationException.class, code);
     }
 
     private static String seenString(long[][] expectedSolutions, boolean[] seen, boolean found) {
