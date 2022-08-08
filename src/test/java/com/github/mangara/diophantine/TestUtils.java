@@ -18,6 +18,7 @@ package com.github.mangara.diophantine;
 import java.math.BigInteger;
 import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestUtils {
 
@@ -72,7 +73,9 @@ public class TestUtils {
             }
         }
         
-        assertEquals(expectedSolutions.length, numSeen, "Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
+        if (numSeen < expectedSolutions.length) {
+            fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
+        }
     }
 
     private static String seenString(long[][] expectedSolutions, boolean[] seen, boolean found) {
@@ -84,7 +87,9 @@ public class TestUtils {
             }
         }
         
-        sb.delete(sb.length() - 2, sb.length()); // Remove final ", "
+        if (sb.length() > 0) {
+            sb.delete(sb.length() - 2, sb.length()); // Remove final ", "
+        }
         
         return sb.toString();
     }

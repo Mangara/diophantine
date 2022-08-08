@@ -36,6 +36,7 @@ public class LinearSolverTest {
         assertFalse(LinearSolver.solve(6, 9, 2).hasNext());
     }
     
+    @Test
     public void test1() {
         System.out.println("1: -9x + y + 29 = 0");
         int d = -9, e = 1, f = 29;
@@ -69,6 +70,7 @@ public class LinearSolverTest {
         TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
     }
     
+    @Test
     public void test2() {
         System.out.println("2: 2x + 8y - 22 = 0");
         int d = 2, e = 8, f = -22;
@@ -130,6 +132,7 @@ public class LinearSolverTest {
         TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
     }
     
+    @Test
     public void test3() {
         System.out.println("3: 570x + 159y - 3009 = 0");
         int d = 570, e = 159, f = -3009;
