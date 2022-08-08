@@ -155,4 +155,19 @@ public class LinearSolverTest {
         TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
     }
     
+    @Test
+    public void test4() {
+        System.out.println("4: 10 x + 84 y + 16 = 0 (linear)");
+        int d = 10, e = 84, f = 16;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-52, 6},
+            new long[]{-94, 11},
+            new long[]{-136, 16},
+        };
+
+        TestUtils.validateExpectedSolutions(0, 0, 0, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
+    }
+    
 }
