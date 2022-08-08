@@ -47,6 +47,10 @@ public class QuadraticSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        return new EmptyIterator();
+        if (a == 0 && b == 0 && c == 0) {
+            return LinearSolver.solve(d, e, f);
+        }
+        
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 }

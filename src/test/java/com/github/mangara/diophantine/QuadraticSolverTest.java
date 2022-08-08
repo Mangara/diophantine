@@ -23,7 +23,7 @@ public class QuadraticSolverTest {
     }
 
     @Test
-    public void test1() {
+    public void test01() {
         System.out.println("1: x^2 - 15y^2 - 61 = 0 (D > 0)");
         int a = 1, b = 0, c = -15, d = 0, e = 0, f = -61;
 
@@ -38,7 +38,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -77,7 +78,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -116,7 +118,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -136,7 +139,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -185,7 +189,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -237,7 +242,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -250,7 +256,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -264,7 +271,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -284,7 +292,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -300,7 +309,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -314,7 +324,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -349,7 +360,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -427,7 +439,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -443,7 +456,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -457,7 +471,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -519,7 +534,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -533,7 +549,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -601,7 +618,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -629,7 +647,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -814,7 +833,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -848,7 +868,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -904,7 +925,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -925,7 +947,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -942,7 +965,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -996,7 +1020,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1012,7 +1037,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1052,7 +1078,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1080,7 +1107,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1126,7 +1154,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1163,7 +1192,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1185,7 +1215,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -1202,6 +1233,7 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 }
