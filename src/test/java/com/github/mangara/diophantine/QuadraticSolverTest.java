@@ -1236,4 +1236,40 @@ public class QuadraticSolverTest {
         TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
 //        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test50() {
+        System.out.println("50: 4y^2 + 2x - 5y - 124 = 0 (D = 0)");
+        int a = 0, b = 0, c = 4, d = 2, e = -5, f = -124;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-961, -22},
+            new long[]{-788, -20},
+            new long[]{-631, -18},
+            new long[]{-490, -16},
+            new long[]{-365, -14},
+            new long[]{-256, -12},
+            new long[]{-163, -10},
+            new long[]{-86, -8},
+            new long[]{-25, -6},
+            new long[]{20, -4},
+            new long[]{49, -2},
+            new long[]{62, 0},
+            new long[]{59, 2},
+            new long[]{40, 4},
+            new long[]{5, 6},
+            new long[]{-46, 8},
+            new long[]{-113, 10},
+            new long[]{-196, 12},
+            new long[]{-295, 14},
+            new long[]{-410, 16},
+            new long[]{-541, 18},
+            new long[]{-688, 20},
+            new long[]{-851, 22},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
 }
