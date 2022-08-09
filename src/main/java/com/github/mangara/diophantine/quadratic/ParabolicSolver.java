@@ -15,8 +15,8 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
-import com.github.mangara.diophantine.EmptyIterator;
 import com.github.mangara.diophantine.XYPair;
+import java.math.BigInteger;
 import java.util.Iterator;
 
 public class ParabolicSolver {
@@ -35,11 +35,35 @@ public class ParabolicSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        // TODO: Ensure a is not 0 by swapping a and c
         if (a == 0) {
+            // TODO: Ensure a is not 0 by swapping a and c
             throw new UnsupportedOperationException("Not implemented yet.");
         }
         
-        return new EmptyIterator();
+        BigInteger u = computeU(a, b, d, e);
+        
+        if (u.signum() == 0) {
+            return solveSimple(a, b, c, d, e, f);
+        } else {
+            return solveGeneral(a, b, c, d, e, f);
+        }
+    }
+
+    private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private static Iterator<XYPair> solveGeneral(int a, int b, int c, int d, int e, int f) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    private static BigInteger computeU(int a, int b, int d, int e) {
+        BigInteger A = BigInteger.valueOf(a);
+        BigInteger B = BigInteger.valueOf(b);
+        BigInteger D = BigInteger.valueOf(d);
+        BigInteger E = BigInteger.valueOf(e);
+        
+        // u = 2(bd - 2ae)
+        return BigInteger.TWO.multiply(B.multiply(D).subtract(BigInteger.TWO.multiply(A).multiply(E)));
     }
 }
