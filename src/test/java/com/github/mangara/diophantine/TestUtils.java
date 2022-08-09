@@ -25,7 +25,7 @@ import org.junit.jupiter.api.function.Executable;
 public class TestUtils {
 
     public static void assertIsSolution(int a, int b, int c, int d, int e, int f, long x, long y) {
-        assertIsSolution(a, b, c, d, e, f, new XYPair(BigInteger.valueOf(x), BigInteger.valueOf(y)));
+        assertIsSolution(a, b, c, d, e, f, new XYPair(x, y));
     }
     
     public static void assertIsSolution(int a, int b, int c, int d, int e, int f, XYPair sol) {

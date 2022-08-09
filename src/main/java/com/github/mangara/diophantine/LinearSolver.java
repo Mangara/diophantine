@@ -102,7 +102,7 @@ public class LinearSolver {
         long x = -eq.f * prevS;
         long y = -eq.f * prevT;
 
-        return new XYPair(BigInteger.valueOf(x), BigInteger.valueOf(y));
+        return new XYPair(x, y);
     }
 
     private static class LinearIterator implements Iterator<XYPair> {

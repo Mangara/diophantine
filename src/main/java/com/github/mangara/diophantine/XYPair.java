@@ -25,6 +25,11 @@ public class XYPair {
 
     public final BigInteger x, y;
 
+    public XYPair(final long x, final long y) {
+        this.x = BigInteger.valueOf(x);
+        this.y = BigInteger.valueOf(y);
+    }
+    
     public XYPair(final BigInteger x, final BigInteger y) {
         if (x == null || y == null) {
             throw new IllegalArgumentException("x and y may not be null.");
