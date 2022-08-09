@@ -15,6 +15,8 @@
  */
 package com.github.mangara.diophantine;
 
+import java.math.BigInteger;
+
 /**
  * This class contains various utility functions used in multiple parts of the
  * library.
@@ -70,5 +72,23 @@ public class Utils {
         }
 
         return result;
+    }
+
+    /**
+     * Computes the discriminant b^2 - 4ac.
+     * 
+     * @param a
+     * @param b
+     * @param c
+     * @return b^2 - 4ac
+     * @throws ArithmeticException if the final value does not fit in a long
+     */
+    public static long discriminant(long a, long b, long c) {
+        BigInteger A = BigInteger.valueOf(a);
+        BigInteger B = BigInteger.valueOf(b);
+        BigInteger C = BigInteger.valueOf(c);
+        
+        // b * b - 4 * a * c
+        return B.multiply(B).subtract(BigInteger.valueOf(4).multiply(A).multiply(C)).longValueExact();
     }
 }

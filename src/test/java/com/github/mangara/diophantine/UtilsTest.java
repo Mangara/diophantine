@@ -52,4 +52,11 @@ public class UtilsTest {
         assertEquals(2, Utils.gcd(57219486L, 38139166L, 18777898L, 80761648L));
     }
     
+    @Test
+    public void testDiscriminant() {
+        System.out.println("discriminant");
+        assertEquals(-20, Utils.discriminant(3, -8, 7));
+        assertEquals(19976449, Utils.discriminant(1077, 5993, 3700));
+    }
+    
 }
