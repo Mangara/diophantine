@@ -15,6 +15,7 @@
  */
 package com.github.mangara.diophantine;
 
+import com.github.mangara.diophantine.quadratic.*;
 import java.util.Iterator;
 
 /**
@@ -36,7 +37,8 @@ import java.util.Iterator;
 public class QuadraticSolver {
 
     /**
-     * Solves the quadratic Diophantine equation a x^2 + b xy + c y^2 + d x + e y + f = 0.
+     * Solves the quadratic Diophantine equation
+     * a x^2 + b xy + c y^2 + d x + e y + f = 0.
      *
      * @param a
      * @param b
@@ -51,6 +53,12 @@ public class QuadraticSolver {
             return LinearSolver.solve(d, e, f);
         }
         
-        throw new UnsupportedOperationException("Not implemented yet.");
+        long D = Utils.discriminant(a, b, c);
+        
+        if (D == 0) {
+            return ParabolicSolver.solve(a, b, c, d, e, f);
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet.");
+        }
     }
 }
