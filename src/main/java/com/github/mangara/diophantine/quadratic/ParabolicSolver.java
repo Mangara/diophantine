@@ -15,6 +15,9 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
+import com.github.mangara.diophantine.EmptyIterator;
+import com.github.mangara.diophantine.LinearSolver;
+import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -49,7 +52,19 @@ public class ParabolicSolver {
         }
     }
 
+    // Pre: D = 0, a != 0, u = 2(bd - 2ae) = 0
     private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
+//        long h = Utils.gcd(2L * a, b);
+        BigInteger v = computeV(a, d, f);
+        
+        if (v.signum() == 0) {
+            if (a > Integer.MAX_VALUE / 2) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+            
+            return LinearSolver.solve(2 * a, b, d);
+        }
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -65,5 +80,14 @@ public class ParabolicSolver {
         
         // u = 2(bd - 2ae)
         return BigInteger.TWO.multiply(B.multiply(D).subtract(BigInteger.TWO.multiply(A).multiply(E)));
+    }
+    
+    private static BigInteger computeV(int a, int d, int f) {
+        BigInteger A = BigInteger.valueOf(a);
+        BigInteger D = BigInteger.valueOf(d);
+        BigInteger F = BigInteger.valueOf(f);
+        
+        // v = d^2 - 4af
+        return D.multiply(D).subtract(BigInteger.valueOf(4).multiply(A).multiply(F));
     }
 }

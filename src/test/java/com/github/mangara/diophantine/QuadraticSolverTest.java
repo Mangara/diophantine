@@ -1272,4 +1272,83 @@ public class QuadraticSolverTest {
         TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
         //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test51() {
+        System.out.println("51: 9x^2 + 6xy + y^2 + 6x + 2y + 1 = 0 (D = 0)");
+        int a = 9, b = 6, c = 1, d = 6, e = 2, f = 1;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{33, -100},
+            new long[]{32, -97},
+            new long[]{31, -94},
+            new long[]{30, -91},
+            new long[]{29, -88},
+            new long[]{28, -85},
+            new long[]{27, -82},
+            new long[]{26, -79},
+            new long[]{25, -76},
+            new long[]{24, -73},
+            new long[]{23, -70},
+            new long[]{22, -67},
+            new long[]{21, -64},
+            new long[]{20, -61},
+            new long[]{19, -58},
+            new long[]{18, -55},
+            new long[]{17, -52},
+            new long[]{16, -49},
+            new long[]{15, -46},
+            new long[]{14, -43},
+            new long[]{13, -40},
+            new long[]{12, -37},
+            new long[]{11, -34},
+            new long[]{10, -31},
+            new long[]{9, -28},
+            new long[]{8, -25},
+            new long[]{7, -22},
+            new long[]{6, -19},
+            new long[]{5, -16},
+            new long[]{4, -13},
+            new long[]{3, -10},
+            new long[]{2, -7},
+            new long[]{1, -4},
+            new long[]{0, -1},
+            new long[]{-1, 2},
+            new long[]{-2, 5},
+            new long[]{-3, 8},
+            new long[]{-4, 11},
+            new long[]{-5, 14},
+            new long[]{-6, 17},
+            new long[]{-7, 20},
+            new long[]{-8, 23},
+            new long[]{-9, 26},
+            new long[]{-10, 29},
+            new long[]{-11, 32},
+            new long[]{-12, 35},
+            new long[]{-13, 38},
+            new long[]{-14, 41},
+            new long[]{-15, 44},
+            new long[]{-16, 47},
+            new long[]{-17, 50},
+            new long[]{-18, 53},
+            new long[]{-19, 56},
+            new long[]{-20, 59},
+            new long[]{-21, 62},
+            new long[]{-22, 65},
+            new long[]{-23, 68},
+            new long[]{-24, 71},
+            new long[]{-25, 74},
+            new long[]{-26, 77},
+            new long[]{-27, 80},
+            new long[]{-28, 83},
+            new long[]{-29, 86},
+            new long[]{-30, 89},
+            new long[]{-31, 92},
+            new long[]{-32, 95},
+            new long[]{-33, 98},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
 }
