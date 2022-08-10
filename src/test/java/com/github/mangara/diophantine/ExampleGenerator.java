@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 public class ExampleGenerator {
 
     public static void main(String[] args) {
+        generate();
+    }
+        
+    private static void generate() {
         // Pick a quadratic equation a x^2 + b xy + c y^2 + d x + e y + f = 0
         int a = 0;//smallRandomNumber();
         int b = 0;//smallRandomNumber();
@@ -200,8 +204,12 @@ public class ExampleGenerator {
     private static void appendTerm(StringBuilder sb, int factor, String variables) {
         if (sb.isEmpty() && factor != 0) {
             sb.append(Integer.toString(factor)).append(variables);
+        } else if (factor == 1 && !variables.isEmpty()) {
+            sb.append(" + ").append(variables);
         } else if (factor > 0) {
             sb.append(" + ").append(Integer.toString(factor)).append(variables);
+        } else if (factor == -1 && !variables.isEmpty()) {
+            sb.append(" - ").append(variables);
         } else if (factor < 0) {
             sb.append(" - ").append(Integer.toString(Math.abs(factor))).append(variables);
         }
