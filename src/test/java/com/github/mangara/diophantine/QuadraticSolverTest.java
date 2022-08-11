@@ -1351,4 +1351,21 @@ public class QuadraticSolverTest {
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test52() {
+        System.out.println("52: 3x^2 + 6xy + 3y^2 + 7x + 7y + 9 = 0 (D = 0)");
+        int a = 3, b = 6, c = 3, d = 7, e = 7, f = 9;
+
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test53() {
+        System.out.println("53: 3x^2 + 6xy + 3y^2 + 7x + 7y + 1 = 0 (D = 0)");
+        int a = 3, b = 6, c = 3, d = 7, e = 7, f = 1;
+
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
 }

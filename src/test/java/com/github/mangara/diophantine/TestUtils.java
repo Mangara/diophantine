@@ -27,7 +27,7 @@ public class TestUtils {
     public static void assertIsSolution(int a, int b, int c, int d, int e, int f, long x, long y) {
         assertIsSolution(a, b, c, d, e, f, new XYPair(x, y));
     }
-    
+
     public static void assertIsSolution(int a, int b, int c, int d, int e, int f, XYPair sol) {
         BigInteger result = BigInteger.valueOf(a).multiply(sol.x).multiply(sol.x).add(
                 BigInteger.valueOf(b).multiply(sol.x).multiply(sol.y)
@@ -74,12 +74,12 @@ public class TestUtils {
                 // BigInteger out of long range - skip this solution
             }
         }
-        
+
         if (numSeen < expectedSolutions.length) {
             fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
         }
     }
-    
+
     public static void assertAllSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions, Iterator<XYPair> solutions) {
         boolean[] seen = new boolean[expectedSolutions.length];
         int numSeen = 0;
@@ -89,7 +89,7 @@ public class TestUtils {
             assertIsSolution(a, b, c, d, e, f, sol);
 
             boolean found = false;
-            
+
             try {
                 long x = sol.x.longValueExact();
                 long y = sol.y.longValueExact();
@@ -105,34 +105,42 @@ public class TestUtils {
             } catch (ArithmeticException ex) {
                 // BigInteger out of long range - incorrect
             }
-            
+
             if (!found) {
                 fail("Unexpected solution returned: " + sol);
             }
         }
-        
+
         if (numSeen < expectedSolutions.length) {
             fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
         }
     }
-    
+
+    public static void assertNoSolutions(int a, int b, int c, int d, int e, int f, Iterator<XYPair> solutions) {
+        if (solutions.hasNext()) {
+            XYPair sol = solutions.next();
+            assertIsSolution(a, b, c, d, e, f, sol);
+            fail("Expected no solutions, but found at least one solution: " + sol);
+        }
+    }
+
     public static void assertNotSupportedYet(Executable code) {
         assertThrows(UnsupportedOperationException.class, code);
     }
 
     private static String seenString(long[][] expectedSolutions, boolean[] seen, boolean found) {
         StringBuilder sb = new StringBuilder();
-        
+
         for (int i = 0; i < expectedSolutions.length; i++) {
             if (seen[i] == found) {
                 sb.append(String.format("(%d, %d), ", expectedSolutions[i][0], expectedSolutions[i][1]));
             }
         }
-        
+
         if (sb.length() > 0) {
             sb.delete(sb.length() - 2, sb.length()); // Remove final ", "
         }
-        
+
         return sb.toString();
     }
 }

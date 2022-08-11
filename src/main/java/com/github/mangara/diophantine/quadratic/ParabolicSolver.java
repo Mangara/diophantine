@@ -54,7 +54,6 @@ public class ParabolicSolver {
 
     // Pre: D = 0, a != 0, u = 2(bd - 2ae) = 0
     private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
-//        long h = Utils.gcd(2L * a, b);
         BigInteger v = computeV(a, d, f);
         
         if (v.signum() == 0) {
@@ -64,6 +63,18 @@ public class ParabolicSolver {
             
             return LinearSolver.solve(2 * a, b, d);
         }
+        
+        if (v.signum() < 0) {
+            return new EmptyIterator();
+        }
+        
+        BigInteger[] sqrtV = v.sqrtAndRemainder();
+        if (sqrtV[1].signum() != 0) {
+            return new EmptyIterator();
+        }
+        
+        BigInteger g = sqrtV[0];
+        long h = Utils.gcd(2L * a, b);
         
         throw new UnsupportedOperationException("Not supported yet.");
     }
