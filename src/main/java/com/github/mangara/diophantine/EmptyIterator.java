@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
  * <p>
  * This is returned when an equation has no (integer) solutions.
  */
-public class EmptyIterator implements Iterator<XYPair> {
+public class EmptyIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
@@ -32,7 +32,7 @@ public class EmptyIterator implements Iterator<XYPair> {
     }
 
     @Override
-    public XYPair next() {
+    public T next() {
         throw new NoSuchElementException("There are no solutions");
     }
 

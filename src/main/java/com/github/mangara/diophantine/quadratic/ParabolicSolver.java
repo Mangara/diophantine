@@ -65,12 +65,12 @@ public class ParabolicSolver {
         }
         
         if (v.signum() < 0) {
-            return new EmptyIterator();
+            return new EmptyIterator<>();
         }
         
         BigInteger[] sqrtV = v.sqrtAndRemainder();
         if (sqrtV[1].signum() != 0) {
-            return new EmptyIterator();
+            return new EmptyIterator<>();
         }
         
         BigInteger g = sqrtV[0];

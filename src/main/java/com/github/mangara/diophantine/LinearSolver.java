@@ -50,7 +50,7 @@ public class LinearSolver {
         Eq reduced = reduce(d, e, f);
 
         if (reduced == null) {
-            return new EmptyIterator();
+            return new EmptyIterator<>();
         } else {
             return solveReduced(reduced);
         }
