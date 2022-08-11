@@ -24,18 +24,19 @@ import java.util.stream.Collectors;
 public class ExampleGenerator {
 
     public static void main(String[] args) {
+//        findParabolicExamples();
         generate();
     }
         
     private static void generate() {
         // Pick a quadratic equation a x^2 + b xy + c y^2 + d x + e y + f = 0
-        int a = 0;//smallRandomNumber();
-        int b = 0;//smallRandomNumber();
-        int c = smallRandomNumber();
-        int d = smallRandomNumber();
-        int e = smallRandomNumber();
-        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-//        int a = -110, b = 495, c = 165, d = 220, e = -55, f = -11275;
+//        int a = 0;//smallRandomNumber();
+//        int b = 0;//smallRandomNumber();
+//        int c = smallRandomNumber();
+//        int d = smallRandomNumber();
+//        int e = smallRandomNumber();
+//        int f = ensureSmallPositiveSolution(a, b, c, d, e);
+        int a = 3, b = 6, c = 3, d = 7, e = 7, f = 1;
 
         System.out.println("Equation: " + prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("GCD(a, b, c) = " + Utils.gcd(a, b, c));
@@ -212,6 +213,48 @@ public class ExampleGenerator {
             sb.append(" - ").append(variables);
         } else if (factor < 0) {
             sb.append(" - ").append(Integer.toString(Math.abs(factor))).append(variables);
+        }
+    }
+    
+    private static void findParabolicExamples() {
+        for (int a = 1; a < 10; a++) {
+            for (int b = 0; b < 10; b += 2) {
+                // Test D = b^2 - 4ac = 0
+                if ((b * b) % (4 * a) != 0) {
+                    continue;
+                }
+                int c = (b * b) / (4 * a);
+                
+                for (int d = 0; d < 10; d++) {
+                    // Test u = bd - 2ae = 0
+                    if ((b * d) % ( 2 * a) != 0) {
+                        continue;
+                    }
+                    int e = (b * d) / (2 * a);
+                    
+                    // Test v = d^2 - 4af != 0 and not a perfect square
+                    int avoidF = -1;
+                    if ((d * d) % (4 * a) == 0) {
+                        avoidF = (d * d) / (4 * a);
+                    }
+                    for (int f = 0; f < 10; f++) {
+                        if (f == avoidF) {
+                            continue;
+                        }
+                        
+                        int v = d * d - 4 * a * f;
+                        
+                        if (v < 0) {
+                            continue;
+                        }
+                        
+                        long rootV = Math.round(Math.sqrt(v));
+                        if (v != rootV * rootV) {
+                            System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);
+                        }
+                    }
+                }
+            }
         }
     }
 }
