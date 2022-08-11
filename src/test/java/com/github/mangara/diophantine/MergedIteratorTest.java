@@ -37,7 +37,7 @@ public class MergedIteratorTest {
         System.out.println("returns alternating results for two iterators");
         Iterator<Integer> even = Arrays.asList(0, 2, 4, 6, 8).iterator();
         Iterator<Integer> odd = Arrays.asList(1, 3, 5, 7, 9).iterator();
-        Iterator<Integer> it = MergedIterator.merge(Arrays.asList(even, odd));
+        Iterator<Integer> it = MergedIterator.merge(even, odd);
         
         assertEquals(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), take(it, 10));
     }
@@ -49,7 +49,7 @@ public class MergedIteratorTest {
         Iterator<Integer> odd = Arrays.asList(1, 3).iterator();
         Iterator<Integer> negEven = Arrays.asList(-2, -4).iterator();
         Iterator<Integer> negOdd = Arrays.asList(-1, -3).iterator();
-        Iterator<Integer> it = MergedIterator.merge(Arrays.asList(even, odd, negEven, negOdd));
+        Iterator<Integer> it = MergedIterator.merge(even, odd, negEven, negOdd);
         
         assertEquals(Arrays.asList(0, 1, -2, -1, 2, 3, -4, -3), take(it, 8));
     }
@@ -59,7 +59,7 @@ public class MergedIteratorTest {
         System.out.println("returns results from one iterator after others are exhausted");
         Iterator<Integer> even = Arrays.asList(0).iterator();
         Iterator<Integer> odd = Arrays.asList(1, 3, 5).iterator();
-        Iterator<Integer> it = MergedIterator.merge(Arrays.asList(even, odd));
+        Iterator<Integer> it = MergedIterator.merge(even, odd);
         
         assertEquals(Arrays.asList(0, 1, 3, 5), take(it, 4));
     }
@@ -69,7 +69,7 @@ public class MergedIteratorTest {
         System.out.println("hasNext returns true if one iterator still has elements");
         Iterator<Integer> even = Arrays.asList(0).iterator();
         Iterator<Integer> odd = Arrays.asList(1, 3, 5).iterator();
-        Iterator<Integer> it = MergedIterator.merge(Arrays.asList(even, odd));
+        Iterator<Integer> it = MergedIterator.merge(even, odd);
         
         assertEquals(Arrays.asList(0, 1), take(it, 2));
         assertTrue(it.hasNext());
@@ -82,7 +82,7 @@ public class MergedIteratorTest {
         System.out.println("throws if next is called when all iterators are exhausted");
         Iterator<Integer> even = Arrays.asList(0).iterator();
         Iterator<Integer> odd = Arrays.asList(1).iterator();
-        Iterator<Integer> it = MergedIterator.merge(Arrays.asList(even, odd));
+        Iterator<Integer> it = MergedIterator.merge(even, odd);
         
         assertEquals(Arrays.asList(0, 1), take(it, 2));
         assertThrows(NoSuchElementException.class, () -> { it.next(); });
@@ -93,7 +93,7 @@ public class MergedIteratorTest {
         System.out.println("hasNext returns false when all iterators are exhausted");
         Iterator<Integer> even = Arrays.asList(0).iterator();
         Iterator<Integer> odd = Arrays.asList(1).iterator();
-        Iterator<Integer> it = MergedIterator.merge(Arrays.asList(even, odd));
+        Iterator<Integer> it = MergedIterator.merge(even, odd);
         
         assertEquals(Arrays.asList(0, 1), take(it, 2));
         assertFalse(it.hasNext());

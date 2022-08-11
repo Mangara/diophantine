@@ -16,6 +16,7 @@
 package com.github.mangara.diophantine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +27,11 @@ public class MergedIterator<T> implements Iterator<T> {
     private final List<Iterator<T>> iterators;
     private int nextIterator = 0;
 
+    @SafeVarargs
+    public static <E> Iterator<E> merge(Iterator<E>... iterators) {
+        return merge(Arrays.asList(iterators));
+    }
+    
     public static <E> Iterator<E> merge(Collection<? extends Iterator<E>> iterators) {
         List<Iterator<E>> nonEmptyIterators = iterators.stream()
                 .filter((it) -> it.hasNext())
