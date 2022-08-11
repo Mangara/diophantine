@@ -38,7 +38,7 @@ public class ExampleGenerator {
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
         int a = 3, b = 6, c = 3, d = 7, e = 7, f = 1;
 
-        System.out.println("Equation: " + prettyPrintEquation(a, b, c, d, e, f));
+        System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("GCD(a, b, c) = " + Utils.gcd(a, b, c));
         System.out.println("GCD(a, f) = " + Utils.gcd(a, f));
         System.out.println("GCD(d, e) = " + Utils.gcd(d, e));
@@ -175,45 +175,13 @@ public class ExampleGenerator {
                 + "        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);\n"
                 + "        %s(() -> { %s; });\n"
                 + "        //%s(a, b, c, d, e, f, expectedSolutions, %s);\n"
-                + "    }\n", type, prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, unsupportedMethod, solver, testMethod, solver);
+                + "    }\n", type, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, unsupportedMethod, solver, testMethod, solver);
     }
 
     private static Optional<XYPair> leastPositiveSolution(List<XYPair> solutions) {
         return solutions.stream()
                 .filter((sol) -> sol.x.signum() > 0 && sol.y.signum() > 0)
                 .min((sol1, sol2) -> sol1.x.compareTo(sol2.x));
-    }
-
-    private static String prettyPrintEquation(int a, int b, int c, int d, int e, int f) {
-        StringBuilder sb = new StringBuilder();
-        
-        appendTerm(sb, a, "x^2");
-        appendTerm(sb, b, "xy");
-        appendTerm(sb, c, "y^2");
-        appendTerm(sb, d, "x");
-        appendTerm(sb, e, "y");
-        appendTerm(sb, f, "");
-        sb.append(" = 0");
-        
-        long D = Utils.discriminant(a, b, c);
-        String discriminantComparator = D > 0 ? ">" : (D < 0 ? "<" : "=");
-        sb.append(" (D ").append(discriminantComparator).append(" 0)");
-        
-        return sb.toString();
-    }
-
-    private static void appendTerm(StringBuilder sb, int factor, String variables) {
-        if (sb.isEmpty() && factor != 0) {
-            sb.append(Integer.toString(factor)).append(variables);
-        } else if (factor == 1 && !variables.isEmpty()) {
-            sb.append(" + ").append(variables);
-        } else if (factor > 0) {
-            sb.append(" + ").append(Integer.toString(factor)).append(variables);
-        } else if (factor == -1 && !variables.isEmpty()) {
-            sb.append(" - ").append(variables);
-        } else if (factor < 0) {
-            sb.append(" - ").append(Integer.toString(Math.abs(factor))).append(variables);
-        }
     }
     
     private static void findParabolicExamples() {

@@ -42,7 +42,7 @@ public class TestUtils {
         );
 
         assertEquals(BigInteger.ZERO, result,
-                String.format("(%d, %d) is not a solution to %dx^2 + %dxy + %dy^2 + %dx + %dy + %d = 0", sol.x, sol.y, a, b, c, d, e, f));
+                String.format("(%d, %d) is not a solution to %s", sol.x, sol.y, prettyPrintEquation(a, b, c, d, e, f)));
     }
 
     public static void validateExpectedSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions) {
@@ -142,5 +142,41 @@ public class TestUtils {
         }
 
         return sb.toString();
+    }
+    
+    public static String prettyPrintEquation(int a, int b, int c, int d, int e, int f) {
+        StringBuilder sb = new StringBuilder();
+        
+        appendTerm(sb, a, "x^2");
+        appendTerm(sb, b, "xy");
+        appendTerm(sb, c, "y^2");
+        appendTerm(sb, d, "x");
+        appendTerm(sb, e, "y");
+        appendTerm(sb, f, "");
+        sb.append(" = 0");
+        
+        long D = Utils.discriminant(a, b, c);
+        String discriminantComparator = D > 0 ? ">" : (D < 0 ? "<" : "=");
+        sb.append(" (D ").append(discriminantComparator).append(" 0)");
+        
+        return sb.toString();
+    }
+    
+    private static void appendTerm(StringBuilder sb, int factor, String variables) {
+        if (sb.isEmpty() && factor == 1) {
+            sb.append(variables);
+        } else if (sb.isEmpty() && factor == -1) {
+            sb.append("-").append(variables);
+        } else if (sb.isEmpty() && factor != 0) {
+            sb.append(Integer.toString(factor)).append(variables);
+        } else if (factor == 1 && !variables.isEmpty()) {
+            sb.append(" + ").append(variables);
+        } else if (factor > 0) {
+            sb.append(" + ").append(Integer.toString(factor)).append(variables);
+        } else if (factor == -1 && !variables.isEmpty()) {
+            sb.append(" - ").append(variables);
+        } else if (factor < 0) {
+            sb.append(" - ").append(Integer.toString(Math.abs(factor))).append(variables);
+        }
     }
 }
