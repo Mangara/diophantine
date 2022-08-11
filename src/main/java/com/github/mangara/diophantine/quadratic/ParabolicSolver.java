@@ -17,7 +17,7 @@ package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.EmptyIterator;
 import com.github.mangara.diophantine.LinearSolver;
-import com.github.mangara.diophantine.Utils;
+import com.github.mangara.diophantine.MergedIterator;
 import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -43,6 +43,11 @@ public class ParabolicSolver {
             throw new UnsupportedOperationException("Not implemented yet.");
         }
         
+        // Multiply by 4a to get
+        //  (2ax + by)^2 + 4adx + 4aey + 4af = 0
+        // Substitute t = 2ax + by, u = 2(bd - 2ae), and v = d^2 - 4af to get
+        //  (t + d)^2 = uy + v
+        
         BigInteger u = computeU(a, b, d, e);
         
         if (u.signum() == 0) {
@@ -54,29 +59,41 @@ public class ParabolicSolver {
 
     // Pre: D = 0, a != 0, u = 2(bd - 2ae) = 0
     private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
+        if (a > Integer.MAX_VALUE / 2) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        
+        // With u = 0, we're now solving
+        //  (t + d)^2 = v
+        
         BigInteger v = computeV(a, d, f);
         
         if (v.signum() == 0) {
-            if (a > Integer.MAX_VALUE / 2) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-            
+            // (t + d)^2 = 0  =>  t + d = 0  =>  2ax + by + d = 0
             return LinearSolver.solve(2 * a, b, d);
         }
         
         if (v.signum() < 0) {
+            // (t + d)^2 = v has no solutions for v < 0
             return new EmptyIterator<>();
         }
         
         BigInteger[] sqrtV = v.sqrtAndRemainder();
         if (sqrtV[1].signum() != 0) {
+            // (t + d)^2 = v has no solutions for v not a perfect square
             return new EmptyIterator<>();
         }
         
-        BigInteger g = sqrtV[0];
-        long h = Utils.gcd(2L * a, b);
+        long g = sqrtV[0].longValueExact();
+        if (g > Integer.MAX_VALUE - d) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
         
-        throw new UnsupportedOperationException("Not supported yet.");
+        // (t + d)^2 = g^2  =>  t + d = +/- g  =>  2ax + by + d +/- g = 0
+        Iterator<XYPair> negativeG = LinearSolver.solve(2 * a, b, d - (int) g);
+        Iterator<XYPair> positiveG = LinearSolver.solve(2 * a, b, d + (int) g);
+        
+        return MergedIterator.merge(negativeG, positiveG);
     }
 
     private static Iterator<XYPair> solveGeneral(int a, int b, int c, int d, int e, int f) {
