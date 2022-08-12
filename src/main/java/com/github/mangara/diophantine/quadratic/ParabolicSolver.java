@@ -59,10 +59,6 @@ public class ParabolicSolver {
 
     // Pre: D = 0, a != 0, u = 2(bd - 2ae) = 0
     private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
-        if (a > Integer.MAX_VALUE / 2) {
-            throw new UnsupportedOperationException("a too large.");
-        }
-        
         // With u = 0, we're now solving
         //  (t + d)^2 = v
         
@@ -70,7 +66,7 @@ public class ParabolicSolver {
         
         if (v.signum() == 0) {
             // (t + d)^2 = 0  =>  t + d = 0  =>  2ax + by + d = 0
-            return LinearSolver.solve(2 * a, b, d);
+            return LinearSolver.solve(Math.multiplyExact(2, a), b, d);
         }
         
         if (v.signum() < 0) {
@@ -84,19 +80,26 @@ public class ParabolicSolver {
             return new EmptyIterator<>();
         }
         
-        long g = sqrtV[0].longValueExact();
-        if (g > Integer.MAX_VALUE - d) {
-            throw new UnsupportedOperationException("d too large");
-        }
+        int g = Math.toIntExact(sqrtV[0].longValueExact());
         
         // (t + d)^2 = g^2  =>  t + d = +/- g  =>  2ax + by + d +/- g = 0
-        Iterator<XYPair> negativeG = LinearSolver.solve(2 * a, b, d - (int) g);
-        Iterator<XYPair> positiveG = LinearSolver.solve(2 * a, b, d + (int) g);
+        Iterator<XYPair> negativeG = LinearSolver.solve(Math.multiplyExact(2, a), b, Math.subtractExact(d, g));
+        Iterator<XYPair> positiveG = LinearSolver.solve(Math.multiplyExact(2, a), b, Math.addExact(d, g));
         
         return MergedIterator.merge(negativeG, positiveG);
     }
 
+    // Pre: D = 0, a != 0, u = 2(bd - 2ae) != 0
     private static Iterator<XYPair> solveGeneral(int a, int b, int c, int d, int e, int f) {
+        // With u != 0, we're still solving
+        //  (t + d)^2 = uy + v
+        // To do that, we first solve
+        //  (t + d)^2 = v (mod |u|)
+        
+        
+        
+        
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
