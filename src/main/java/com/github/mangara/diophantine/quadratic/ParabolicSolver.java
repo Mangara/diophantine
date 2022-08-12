@@ -60,7 +60,7 @@ public class ParabolicSolver {
     // Pre: D = 0, a != 0, u = 2(bd - 2ae) = 0
     private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
         if (a > Integer.MAX_VALUE / 2) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("a too large.");
         }
         
         // With u = 0, we're now solving
@@ -86,7 +86,7 @@ public class ParabolicSolver {
         
         long g = sqrtV[0].longValueExact();
         if (g > Integer.MAX_VALUE - d) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("d too large");
         }
         
         // (t + d)^2 = g^2  =>  t + d = +/- g  =>  2ax + by + d +/- g = 0
