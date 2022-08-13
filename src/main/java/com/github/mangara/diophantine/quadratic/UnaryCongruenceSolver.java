@@ -16,60 +16,70 @@
 
 package com.github.mangara.diophantine.quadratic;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UnaryCongruenceSolver {
     
     /**
      * Solves the quadratic congruence
-     *  a x^2 + b x + c = 0 (mod N)
-     * given that a > 0 and N > 1.
+     *  a x^2 + b x + c = 0 (mod n)
+     * given that a > 0 and n > 1.
      * 
      * @param a
      * @param b
      * @param c
-     * @param N
-     * @return all integer solutions to a x^2 + b x + c = 0 (mod N)
+     * @param n
+     * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
      */
-    public static List<Integer> solve(int a, int b, int c, int N) {
-        if (a <= 0 || N <= 1) {
-            throw new UnsupportedOperationException("a or N too small");
+    public static List<Integer> solve(int a, int b, int c, int n) {
+        if (a <= 0 || n <= 1) {
+            throw new UnsupportedOperationException("a or n too small");
         }
         
         if (b == 0) {
-            return solveReduced(a, c, N);
-        } else if (b % 2 == 0) {
-            return solveEven(a, b, c, N);
+            return solveReduced(a, c, n);
         } else {
-            return solveOdd(a, b, c, N);
+            return bruteForce(a, b, c, n);
         }
     }
     
     /**
      * Solves the quadratic congruence
-     *  a x^2 + c = 0 (mod N)
-     * given that a > 0 and N > 1.
+     *  a x^2 + c = 0 (mod n)
+     * given that a > 0 and n > 1.
      *  
      * @param a
      * @param c
-     * @param N
-     * @return 
+     * @param n
+     * @return all integer solutions 0 <= x < n to a x^2 + c = 0 (mod n)
      */
-    public static List<Integer> solveReduced(int a, int c, int N) {
-        if (a <= 0 || N <= 1) {
-            throw new UnsupportedOperationException("a or N too small");
+    public static List<Integer> solveReduced(int a, int c, int n) {
+        if (a <= 0 || n <= 1) {
+            throw new UnsupportedOperationException("a or n too small");
         }
         
-        throw new UnsupportedOperationException("Not supported yet.");
+        return bruteForce(a, 0, c, n);
     }
+    
+    private static List<Integer> bruteForce(int a, int b, int c, int n) {
+        List<Integer> result = new ArrayList<>();
+        
+        BigInteger N = BigInteger.valueOf(n);
+        BigInteger A = BigInteger.valueOf(a).remainder(N);
+        BigInteger B = BigInteger.valueOf(b).remainder(N);
+        BigInteger C = BigInteger.valueOf(c).remainder(N);
+        
+        for (int x = 0; x < n; x++) {
+            BigInteger X = BigInteger.valueOf(x);
+            BigInteger calc = A.multiply(X).multiply(X).add(B.multiply(X)).add(C).mod(N);
 
-    // Pre: b != 0 and b is even
-    private static List<Integer> solveEven(int a, int b, int c, int N) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    // Pre: b is odd
-    private static List<Integer> solveOdd(int a, int b, int c, int N) {
-        throw new UnsupportedOperationException("Not supported yet.");
+            if (calc == BigInteger.ZERO) {
+                result.add(x);
+            }
+        }
+        
+        return result;
     }
 }
