@@ -1365,5 +1365,13 @@ public class QuadraticSolverTest {
 
         TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test54() {
+        System.out.println("54: 2x^2 + 4xy + 2y^2 + 6x + 3y + 5 = 0 (D = 0)");
+        int a = 2, b = 4, c = 2, d = 6, e = 3, f = 5;
+
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
 
 }

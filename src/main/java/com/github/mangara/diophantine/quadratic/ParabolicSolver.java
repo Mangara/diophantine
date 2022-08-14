@@ -21,6 +21,7 @@ import com.github.mangara.diophantine.MergedIterator;
 import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.List;
 
 public class ParabolicSolver {
 
@@ -96,6 +97,14 @@ public class ParabolicSolver {
         // To do that, we first solve
         //  (t + d)^2 = v (mod |u|)
         
+        BigInteger u = computeU(a, b, d, e);
+        BigInteger v = computeV(a, d, f);
+        
+        List<Integer> Ti = UnaryCongruenceSolver.solveReduced(1, v.negate().intValueExact(), u.abs().intValueExact());
+        
+        if (Ti.isEmpty()) {
+            return new EmptyIterator<>();
+        }
         
         
         

@@ -15,6 +15,7 @@
  */
 package com.github.mangara.diophantine;
 
+import com.github.mangara.diophantine.quadratic.UnaryCongruenceSolver;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 3, b = 6, c = 3, d = 7, e = 7, f = 1;
+        int a = 2, b = 4, c = 2, d = 6, e = 3, f = 5;
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("GCD(a, b, c) = " + Utils.gcd(a, b, c));
@@ -194,31 +195,30 @@ public class ExampleGenerator {
                 int c = (b * b) / (4 * a);
                 
                 for (int d = 0; d < 10; d++) {
-                    // Test u = bd - 2ae = 0
+                    // Ensure u = bd - 2ae != 0
+                    int avoidE = -1;
                     if ((b * d) % ( 2 * a) != 0) {
-                        continue;
+                        avoidE = (b * d) / (2 * a);
                     }
-                    int e = (b * d) / (2 * a);
                     
-                    // Test v = d^2 - 4af != 0 and not a perfect square
-                    int avoidF = -1;
-                    if ((d * d) % (4 * a) == 0) {
-                        avoidF = (d * d) / (4 * a);
-                    }
-                    for (int f = 0; f < 10; f++) {
-                        if (f == avoidF) {
+                    for (int e = 0; e < 10; e++) {
+                        if (e == avoidE) {
                             continue;
                         }
                         
-                        int v = d * d - 4 * a * f;
-                        
-                        if (v < 0) {
-                            continue;
-                        }
-                        
-                        long rootV = Math.round(Math.sqrt(v));
-                        if (v != rootV * rootV) {
-                            System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);
+                        for (int f = 0; f < 10; f++) {
+                            int u = b * d - 2 * a * e;
+                            int v = d * d - 4 * a * f;
+                            
+                            if (Math.abs(u) <= 1) {
+                                continue;
+                            }
+
+                            List<Integer> Ti = UnaryCongruenceSolver.solveReduced(1, -v, Math.abs(u));
+                            
+                            if (Ti.isEmpty()) {
+                                System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);
+                            }
                         }
                     }
                 }
