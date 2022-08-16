@@ -24,6 +24,11 @@ Work in progress.
 | Case             | Status        |
 | -------------    | ------------- |
 | Linear           | Completed     |
-| Quadratic, D = 0 | Partial       |
+| Quadratic, D = 0 | Completed     |
 | Quadratic, D > 0 | None          |
 | Quadratic, D < 0 | None          |
+
+## Principles
+
+- If this library can solve your equation, you get an iterator over *all* solutions.
+- If this library cannot solve your equation, it throws an exception rather than returning incorrect results.
