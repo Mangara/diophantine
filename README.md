@@ -7,8 +7,8 @@ Solver for linear and quadratic diophantine equations
 import com.github.mangara.diophantine.*;
 import java.util.Iterator;
 
-// Solve x^2 - 6xy + 9y^2 - 324 = 0
-Iterator<XYPair> solutions = QuadraticSolver.solve(1, -6, 9, 0, 0, -324);
+// Solve 8x^2 - 24xy + 18y^2 + 5x + 7y + 16 = 0
+Iterator<XYPair> solutions = QuadraticSolver.solve(8, -24, 18, 5, 7, 16);
 
 System.out.println("The first 10 solutions are:");
 for (int i = 0; i < 10; i++) {
