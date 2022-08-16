@@ -16,6 +16,8 @@
 package com.github.mangara.diophantine;
 
 import com.github.mangara.diophantine.iterators.EmptyIterator;
+import com.github.mangara.diophantine.iterators.IntegerIterator;
+import com.github.mangara.diophantine.iterators.MappingIterator;
 import java.math.BigInteger;
 import java.util.Iterator;
 
@@ -70,7 +72,13 @@ public class LinearSolver {
 
     private static Iterator<XYPair> solveReduced(Eq eq) {
         XYPair solution = findAnySolution(eq);
-        return new LinearIterator(eq, solution);
+
+        return new MappingIterator<>(new IntegerIterator(),
+                (k) -> new XYPair(
+                        solution.x.add(BigInteger.valueOf(eq.e).multiply(k)),
+                        solution.y.add(BigInteger.valueOf(-eq.d).multiply(k))
+                )
+        );
     }
 
     private static XYPair findAnySolution(Eq eq) {
@@ -104,57 +112,6 @@ public class LinearSolver {
         long y = -eq.f * prevT;
 
         return new XYPair(x, y);
-    }
-
-    private static class LinearIterator implements Iterator<XYPair> {
-
-        private final BigInteger xStep, yStep;
-        private BigInteger posX, negX, posY, negY;
-        private boolean posNext = true;
-
-        public LinearIterator(Eq eq, XYPair initialSolution) {
-            this.posX = initialSolution.x;
-            this.negX = initialSolution.x;
-            this.xStep = BigInteger.valueOf(eq.e);
-            this.posY = initialSolution.y;
-            this.negY = initialSolution.y;
-            this.yStep = BigInteger.valueOf(-eq.d);
-
-            // Move the negative solution one step, so we don't return (x, y) twice
-            stepNeg();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return true;
-        }
-
-        @Override
-        public XYPair next() {
-            XYPair solution;
-
-            if (posNext) {
-                solution = new XYPair(posX, posY);
-                stepPos();
-            } else {
-                solution = new XYPair(negX, negY);
-                stepNeg();
-            }
-
-            posNext = !posNext;
-            return solution;
-        }
-
-        private void stepPos() {
-            posX = posX.add(xStep);
-            posY = posY.add(yStep);
-        }
-
-        private void stepNeg() {
-            negX = negX.subtract(xStep);
-            negY = negY.subtract(yStep);
-        }
-
     }
 
     private static class Eq {

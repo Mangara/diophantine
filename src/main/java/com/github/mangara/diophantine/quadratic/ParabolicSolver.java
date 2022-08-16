@@ -19,6 +19,7 @@ import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.LinearSolver;
 import com.github.mangara.diophantine.iterators.MergedIterator;
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.iterators.IntegerIterator;
 import com.github.mangara.diophantine.iterators.MappingIterator;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -139,7 +140,16 @@ public class ParabolicSolver {
             BigInteger doubleA = BigInteger.TWO.multiply(BigInteger.valueOf(a));
             
             if (c1.mod(doubleA.abs()) == BigInteger.ZERO && c2.mod(doubleA.abs()) == BigInteger.ZERO && c3.mod(doubleA.abs()) == BigInteger.ZERO) {
-                familyIterators.add(new ParabolicIterator(c1.divide(doubleA), c2.divide(doubleA), c3.divide(doubleA), r, s, u));
+                BigInteger c1by2a = c1.divide(doubleA);
+                BigInteger c2by2a = c2.divide(doubleA);
+                BigInteger c3by2a = c3.divide(doubleA);
+                
+                familyIterators.add(new MappingIterator<>(new IntegerIterator(),
+                        (k) -> new XYPair(
+                                c1by2a.add(c2by2a.multiply(k)).add(c3by2a.multiply(k).multiply(k)), 
+                                r.add(s.multiply(k)).add(u.multiply(k).multiply(k))
+                        )
+                ));
             }
         }
         
@@ -163,51 +173,5 @@ public class ParabolicSolver {
         
         // v = d^2 - 4af
         return D.multiply(D).subtract(BigInteger.valueOf(4).multiply(A).multiply(F));
-    }
-    
-    private static class ParabolicIterator implements Iterator<XYPair> {
-
-        private final BigInteger c1, c2, c3, r, s, u;
-        private BigInteger k;
-
-        public ParabolicIterator(BigInteger c1, BigInteger c2, BigInteger c3, BigInteger r, BigInteger s, BigInteger u) {
-            this.c1 = c1;
-            this.c2 = c2;
-            this.c3 = c3;
-            this.r = r;
-            this.s = s;
-            this.u = u;
-            
-            k = BigInteger.ZERO;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return true;
-        }
-
-        @Override
-        public XYPair next() {
-            XYPair result = new XYPair(x(k), y(k));
-            
-            if (k.signum() > 0) {
-                k = k.negate();
-            } else {
-                k = k.negate().add(BigInteger.ONE);
-            }
-            
-            return result;
-        }
-
-        private BigInteger x(BigInteger k) {
-            // x = c1 + c2k - c3k^2
-            return c1.add(c2.multiply(k)).add(c3.multiply(k).multiply(k));
-        }
-
-        private BigInteger y(BigInteger k) {
-            // y = r + sk + uk^2
-            return r.add(s.multiply(k)).add(u.multiply(k).multiply(k));
-        }
-
     }
 }
