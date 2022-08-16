@@ -20,6 +20,7 @@ import com.github.mangara.diophantine.LinearSolver;
 import com.github.mangara.diophantine.MergedIterator;
 import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -100,16 +101,41 @@ public class ParabolicSolver {
         BigInteger u = computeU(a, b, d, e);
         BigInteger v = computeV(a, d, f);
         
-        List<Integer> Ti = UnaryCongruenceSolver.solveReduced(1, v.negate().intValueExact(), u.abs().intValueExact());
+        List<Integer> SqrtVModU = UnaryCongruenceSolver.solveReduced(1, v.negate().intValueExact(), u.abs().intValueExact());
         
-        if (Ti.isEmpty()) {
+        if (SqrtVModU.isEmpty()) {
             return new EmptyIterator<>();
         }
         
+        List<Iterator<XYPair>> familyIterators = new ArrayList<>();
         
+        for (Integer Ti : SqrtVModU) {
+            // t + d = T_i + uk satisfies (t + d)^2 = v (mod |u|) for every integer k
+            // Substituting t + d = Ti + uk into (t + d)^2 = uy + v and solving for y yields
+            //  y = (Ti^2 - v) / u + 2Tik + uk^2 = r + sk + uk^2
+            // where r = (Ti^2 - v) / u and s = 2Ti
+            
+            BigInteger BigTi = BigInteger.valueOf(Ti);
+            BigInteger r = BigTi.multiply(BigTi).subtract(v).divide(u); // r = (Ti^2 - v) / u
+            BigInteger s = BigInteger.TWO.multiply(BigTi);              // s = 2Ti
+            
+            // Substituting y = r + sk + uk^2 into 2ax + by = t = T_i - d + uk yields
+            //  2ax = Ti - d - br + (u - bs)k - buk^2
+            //    x = (Ti - d - br) / 2a + ((u - bs) / 2a)k - (bu / 2a)k^2
+            // If all three coefficients are integers, this yields an x and y for each k
+            
+            BigInteger c1 = BigTi.subtract(BigInteger.valueOf(d)).subtract(BigInteger.valueOf(b).multiply(r));
+            BigInteger c2 = u.subtract(BigInteger.valueOf(b).multiply(s));
+            BigInteger c3 = BigInteger.valueOf(b).multiply(u).negate();
+            
+            BigInteger doubleA = BigInteger.TWO.multiply(BigInteger.valueOf(a));
+            
+            if (c1.mod(doubleA.abs()) == BigInteger.ZERO && c2.mod(doubleA.abs()) == BigInteger.ZERO && c3.mod(doubleA.abs()) == BigInteger.ZERO) {
+                familyIterators.add(new ParabolicIterator(c1.divide(doubleA), c2.divide(doubleA), c3.divide(doubleA), r, s, u));
+            }
+        }
         
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MergedIterator.merge(familyIterators);
     }
     
     private static BigInteger computeU(int a, int b, int d, int e) {
@@ -129,5 +155,51 @@ public class ParabolicSolver {
         
         // v = d^2 - 4af
         return D.multiply(D).subtract(BigInteger.valueOf(4).multiply(A).multiply(F));
+    }
+    
+    private static class ParabolicIterator implements Iterator<XYPair> {
+
+        private final BigInteger c1, c2, c3, r, s, u;
+        private BigInteger k;
+
+        public ParabolicIterator(BigInteger c1, BigInteger c2, BigInteger c3, BigInteger r, BigInteger s, BigInteger u) {
+            this.c1 = c1;
+            this.c2 = c2;
+            this.c3 = c3;
+            this.r = r;
+            this.s = s;
+            this.u = u;
+            
+            k = BigInteger.ZERO;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public XYPair next() {
+            XYPair result = new XYPair(x(k), y(k));
+            
+            if (k.signum() > 0) {
+                k = k.negate();
+            } else {
+                k = k.negate().add(BigInteger.ONE);
+            }
+            
+            return result;
+        }
+
+        private BigInteger x(BigInteger k) {
+            // x = c1 + c2k - c3k^2
+            return c1.add(c2.multiply(k)).add(c3.multiply(k).multiply(k));
+        }
+
+        private BigInteger y(BigInteger k) {
+            // y = r + sk + uk^2
+            return r.add(s.multiply(k)).add(u.multiply(k).multiply(k));
+        }
+
     }
 }

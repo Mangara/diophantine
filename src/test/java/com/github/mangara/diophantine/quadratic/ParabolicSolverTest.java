@@ -38,8 +38,7 @@ public class ParabolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { ParabolicSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, ParabolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, ParabolicSolver.solve(a, b, c, d, e, f));
     }
     
     @Test
@@ -80,8 +79,7 @@ public class ParabolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { ParabolicSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, ParabolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -102,8 +100,7 @@ public class ParabolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { ParabolicSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, ParabolicSolver.solve(a, b, c, d, e, f));
     }
     
     @Test
@@ -125,8 +122,7 @@ public class ParabolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { ParabolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, ParabolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, ParabolicSolver.solve(a, b, c, d, e, f));
     }
     
     @Test
