@@ -73,10 +73,13 @@ public class LinearSolver {
     private static Iterator<XYPair> solveReduced(Eq eq) {
         XYPair solution = findAnySolution(eq);
 
+        final BigInteger dx = BigInteger.valueOf(eq.e);
+        final BigInteger dy = BigInteger.valueOf(-eq.d);
+        
         return new MappingIterator<>(new IntegerIterator(),
                 (k) -> new XYPair(
-                        solution.x.add(BigInteger.valueOf(eq.e).multiply(k)),
-                        solution.y.add(BigInteger.valueOf(-eq.d).multiply(k))
+                        solution.x.add(dx.multiply(k)),
+                        solution.y.add(dy.multiply(k))
                 )
         );
     }
