@@ -403,14 +403,19 @@ public class QuadraticSolverTest {
         int a = 8, b = -24, c = 18, d = 5, e = 7, f = 16;
 
         long[][] expectedSolutions = new long[][]{
-            new long[]{-4, -4},
             new long[]{-2, -2},
+            new long[]{-4, -4},
             new long[]{-137, -83},
             new long[]{-159, -97},
-            new long[]{-219, -157},
             new long[]{-193, -139},
-            new long[]{-782, -542},
+            new long[]{-219, -157},
+            new long[]{-618, -394},
+            new long[]{-664, -424},
             new long[]{-732, -508},
+            new long[]{-782, -542},
+            new long[]{-1447, -937},
+            new long[]{-1517, -983},
+            new long[]{-1619, -1109},
             new long[]{-1693, -1159},
         };
 
