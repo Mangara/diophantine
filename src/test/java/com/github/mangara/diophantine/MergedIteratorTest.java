@@ -15,6 +15,7 @@
  */
 package com.github.mangara.diophantine;
 
+import com.github.mangara.diophantine.iterators.MergedIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;

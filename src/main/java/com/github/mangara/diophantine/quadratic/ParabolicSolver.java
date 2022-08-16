@@ -15,10 +15,11 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
-import com.github.mangara.diophantine.EmptyIterator;
+import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.LinearSolver;
-import com.github.mangara.diophantine.MergedIterator;
+import com.github.mangara.diophantine.iterators.MergedIterator;
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.iterators.MappingIterator;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,10 +42,17 @@ public class ParabolicSolver {
      */
     public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
         if (a == 0) {
-            // TODO: Ensure a is not 0 by swapping a and c
-            throw new UnsupportedOperationException("Not implemented yet.");
+            // b^2 = 4ac = 0 implies both a and b are 0.
+            // Since not all of a, b, and c are zero, c is non-zero, so we swap x and y
+            Iterator<XYPair> yxSolutions = solveNonZeroA(c, b, a, e, d, f);
+            return new MappingIterator<>(yxSolutions, (sol) -> new XYPair(sol.y, sol.x));
+        } else {
+            return solveNonZeroA(a, b, c, d, e, f);
         }
-        
+    }
+    
+    // Pre: D = 0, a != 0
+    private static Iterator<XYPair> solveNonZeroA(int a, int b, int c, int d, int e, int f) {
         // Multiply by 4a to get
         //  (2ax + by)^2 + 4adx + 4aey + 4af = 0
         // Substitute t = 2ax + by, u = 2(bd - 2ae), and v = d^2 - 4af to get

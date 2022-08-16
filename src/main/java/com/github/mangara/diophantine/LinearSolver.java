@@ -15,6 +15,7 @@
  */
 package com.github.mangara.diophantine;
 
+import com.github.mangara.diophantine.iterators.EmptyIterator;
 import java.math.BigInteger;
 import java.util.Iterator;
 

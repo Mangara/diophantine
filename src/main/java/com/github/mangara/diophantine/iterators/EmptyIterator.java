@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.mangara.diophantine;
+package com.github.mangara.diophantine.iterators;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
