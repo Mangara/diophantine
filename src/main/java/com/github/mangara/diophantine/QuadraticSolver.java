@@ -15,7 +15,9 @@
  */
 package com.github.mangara.diophantine;
 
+import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.quadratic.*;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -70,6 +72,13 @@ public class QuadraticSolver {
 
     // Pre: D = b^2 - 4ac != 0 && D not a perfect square && Legendre's k = 0
     private static Iterator<XYPair> solveTrivialCase(int a, int b, int c, int d, int e, int f, long D) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long alpha = Utils.legendreAlpha(b, c, d, e);
+        long beta = Utils.legendreBeta(a, b, d, e);
+        
+        if (alpha % D == 0 && beta % D == 0) {
+            return Collections.singletonList(new XYPair(alpha / D, beta / D)).iterator();
+        } else {
+            return new EmptyIterator<>();
+        }
     }
 }

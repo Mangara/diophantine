@@ -79,4 +79,18 @@ public class UtilsTest {
         assertEquals(4720832, Utils.legendreConstant(a, b, c, d, e, f, D));
     }
     
+    @Test
+    public void testLegendreAlpha() {
+        System.out.println("legendreAlpha");
+        int a = 8, b = -4, c = -8, d = -9, e = -9, f = -65;
+        assertEquals(108, Utils.legendreAlpha(b, c, d, e));
+    }
+    
+    @Test
+    public void testLegendreBeta() {
+        System.out.println("legendreBeta");
+        int a = 8, b = -4, c = -8, d = -9, e = -9, f = -65;
+        assertEquals(-180, Utils.legendreBeta(a, b, d, e));
+    }
+    
 }

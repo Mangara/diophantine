@@ -117,14 +117,31 @@ public class Utils {
         BigInteger BD = BigInteger.valueOf(D);
         
         // -D(ae^2 - bed + cd^2 + fD)
-        
-//        System.out.printf("a = %d, b = %d, c = %d, d = %d, e = %d, f = %d%n", Ba, );
-        
         return BD.negate().multiply(
                 Ba.multiply(Be).multiply(Be)
                     .subtract(Bb.multiply(Be).multiply(Bd))
                     .add(Bc.multiply(Bd).multiply(Bd))
                     .add(Bf.multiply(BD))
         ).longValueExact();
+    }
+    
+    public static long legendreAlpha(long b, long c, long d, long e) {
+        BigInteger Bb = BigInteger.valueOf(b);
+        BigInteger Bc = BigInteger.valueOf(c);
+        BigInteger Bd = BigInteger.valueOf(d);
+        BigInteger Be = BigInteger.valueOf(e);
+        
+        // 2cd - be
+        return BigInteger.TWO.multiply(Bc).multiply(Bd).subtract(Bb.multiply(Be)).longValueExact();
+    }
+    
+    public static long legendreBeta(long a, long b, long d, long e) {
+        BigInteger Ba = BigInteger.valueOf(a);
+        BigInteger Bb = BigInteger.valueOf(b);
+        BigInteger Bd = BigInteger.valueOf(d);
+        BigInteger Be = BigInteger.valueOf(e);
+        
+        // 2ae - bd
+        return BigInteger.TWO.multiply(Ba).multiply(Be).subtract(Bb.multiply(Bd)).longValueExact();
     }
 }
