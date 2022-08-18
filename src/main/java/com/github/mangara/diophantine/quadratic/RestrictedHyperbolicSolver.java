@@ -19,25 +19,25 @@ package com.github.mangara.diophantine.quadratic;
 import com.github.mangara.diophantine.XYPair;
 import java.util.Iterator;
 
-public class HyperbolicSolver {
+/**
+ * This implementation is based on Keith Matthews' paper
+ * "The Diophantine equation a x^2 + b xy + c y^2 = N, D = b^2 - 4ac > 0"
+ * Journal de Théorie des Nombres de Bordeaux 14 (2002), 257-270
+ */
+public class RestrictedHyperbolicSolver {
 
     /**
      * Solves the quadratic Diophantine equation 
-     * a x^2 + b xy + c y^2 + d x + e y + f = 0,
+     * a x^2 + b xy + c y^2 + f = 0,
      * given that D = b^2 - 4ac > 0 and not a perfect square.
      *
      * @param a
      * @param b
      * @param c
-     * @param d
-     * @param e
      * @param f
      * @return an iterator over all integer solutions (x, y)
      */
-    public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        if (d == 0 && e == 0) {
-            return RestrictedHyperbolicSolver.solve(a, b, c, f);
-        }
+    public static Iterator<XYPair> solve(int a, int b, int c, int f) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
