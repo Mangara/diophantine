@@ -53,10 +53,30 @@ public class UtilsTest {
     }
     
     @Test
+    public void testIsSquare() {
+        System.out.println("isSquare");
+        assertFalse(Utils.isSquare(-1));
+        assertTrue(Utils.isSquare(0));
+        assertTrue(Utils.isSquare(1));
+        assertFalse(Utils.isSquare(2));
+        assertFalse(Utils.isSquare(3));
+        assertTrue(Utils.isSquare(4));
+        assertFalse(Utils.isSquare(5));
+    }
+    
+    @Test
     public void testDiscriminant() {
         System.out.println("discriminant");
         assertEquals(-20, Utils.discriminant(3, -8, 7));
         assertEquals(19976449, Utils.discriminant(1077, 5993, 3700));
+    }
+    
+    @Test
+    public void testLegendreConstant() {
+        System.out.println("legendreConstant");
+        int a = 8, b = -4, c = -8, d = -9, e = -9, f = -65;
+        long D = Utils.discriminant(a, b, c);
+        assertEquals(4720832, Utils.legendreConstant(a, b, c, d, e, f, D));
     }
     
 }

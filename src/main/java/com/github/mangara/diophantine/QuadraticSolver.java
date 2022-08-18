@@ -57,8 +57,19 @@ public class QuadraticSolver {
         
         if (D == 0) {
             return ParabolicSolver.solve(a, b, c, d, e, f);
+        } else if (Utils.isSquare(D)) {
+            return SquareDiscriminantSolver.solve(a, b, c, d, e, f);
+        } else if (Utils.legendreConstant(a, b, c, d, e, f, D) == 0) {
+            return solveTrivialCase(a, b, c, d, e, f, D);
+        } else if (D < 0) {
+            return EllipticalSolver.solve(a, b, c, d, e, f);
         } else {
-            throw new UnsupportedOperationException("Not implemented yet.");
+            return HyperbolicSolver.solve(a, b, c, d, e, f);
         }
+    }
+
+    // Pre: D = b^2 - 4ac != 0 && D not a perfect square && Legendre's k = 0
+    private static Iterator<XYPair> solveTrivialCase(int a, int b, int c, int d, int e, int f, long D) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

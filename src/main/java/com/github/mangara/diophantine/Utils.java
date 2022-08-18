@@ -73,6 +73,21 @@ public class Utils {
 
         return result;
     }
+    
+    /**
+     * Tests whether the given number is a perfect square.
+     * 
+     * @param n
+     * @return true iff there is an integer x such that n = x^2
+     */
+    public static boolean isSquare(long n) {
+        if (n < 0) {
+            return false;
+        }
+        
+        long root = Math.round(Math.sqrt(n));
+        return n == root * root;
+    }
 
     /**
      * Computes the discriminant b^2 - 4ac.
@@ -90,5 +105,26 @@ public class Utils {
         
         // b * b - 4 * a * c
         return B.multiply(B).subtract(BigInteger.valueOf(4).multiply(A).multiply(C)).longValueExact();
+    }
+    
+    public static long legendreConstant(long a, long b, long c, long d, long e, long f, long D) {
+        BigInteger Ba = BigInteger.valueOf(a);
+        BigInteger Bb = BigInteger.valueOf(b);
+        BigInteger Bc = BigInteger.valueOf(c);
+        BigInteger Bd = BigInteger.valueOf(d);
+        BigInteger Be = BigInteger.valueOf(e);
+        BigInteger Bf = BigInteger.valueOf(f);
+        BigInteger BD = BigInteger.valueOf(D);
+        
+        // -D(ae^2 - bed + cd^2 + fD)
+        
+//        System.out.printf("a = %d, b = %d, c = %d, d = %d, e = %d, f = %d%n", Ba, );
+        
+        return BD.negate().multiply(
+                Ba.multiply(Be).multiply(Be)
+                    .subtract(Bb.multiply(Be).multiply(Bd))
+                    .add(Bc.multiply(Bd).multiply(Bd))
+                    .add(Bf.multiply(BD))
+        ).longValueExact();
     }
 }
