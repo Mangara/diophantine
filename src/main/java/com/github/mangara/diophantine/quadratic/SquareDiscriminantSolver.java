@@ -35,7 +35,21 @@ public class SquareDiscriminantSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (a == 0) {
+            return solveZeroA(a, b, c, d, e, f);
+        } else {
+            return solveNonZeroA(a, b, c, d, e, f);
+        }
+    }
+
+    // Pre: D = b^2 - 4ac = g^2, g > 0 && a == 0
+    private static Iterator<XYPair> solveZeroA(int a, int b, int c, int d, int e, int f) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    // Pre: D = b^2 - 4ac = g^2, g > 0 && a != 0
+    private static Iterator<XYPair> solveNonZeroA(int a, int b, int c, int d, int e, int f) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
