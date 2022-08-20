@@ -45,7 +45,7 @@ public class LinearSolver {
      * @return an iterator over all integer solutions (x, y)
      * @throws IllegalArgumentException if d or e are zero.
      */
-    public static Iterator<XYPair> solve(int d, int e, int f) {
+    public static Iterator<XYPair> solve(long d, long e, long f) {
         if (d == 0 || e == 0) {
             throw new IllegalArgumentException("d and e should be non-zero.");
         }
@@ -59,8 +59,8 @@ public class LinearSolver {
         }
     }
 
-    private static Eq reduce(int d, int e, int f) {
-        int gcd = Utils.gcd(d, e);
+    private static Eq reduce(long d, long e, long f) {
+        long gcd = Utils.gcd(d, e);
 
         if (f % gcd != 0) {
             // No solutions, as d x + e y will always be a multiple of gcd for integer x and y
@@ -111,17 +111,17 @@ public class LinearSolver {
         // Results are in prevR (which is the gcd = 1), prevS, and prevT
         // Thus, d * prevS + e * prevT = 1
         // We want d * x + e * y + f = 0, so we need to multiply by -f
-        long x = -eq.f * prevS;
-        long y = -eq.f * prevT;
+        long x = Math.multiplyExact(Math.negateExact(eq.f), prevS); // -f * prevS
+        long y = Math.multiplyExact(Math.negateExact(eq.f), prevT); // -f * prevT
 
         return new XYPair(x, y);
     }
 
     private static class Eq {
 
-        int d, e, f;
+        long d, e, f;
 
-        Eq(int d, int e, int f) {
+        Eq(long d, long e, long f) {
             this.d = d;
             this.e = e;
             this.f = f;
