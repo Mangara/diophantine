@@ -26,7 +26,8 @@ public class ExampleGenerator {
 
     public static void main(String[] args) {
 //        findParabolicExamples();
-        generate();
+        findSquareDiscriminantExamples();
+//        generate();
     }
         
     private static void generate() {
@@ -220,6 +221,78 @@ public class ExampleGenerator {
                                 System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void findSquareDiscriminantExamples() {
+        for (int g = 1; g < 30; g++) {
+            for (int a = -29; a < 30; a++) {
+                if (a == 0) {
+                    continue; // Looking for a != 0 currently
+                }
+                
+                for (int b = -29; b < 30; b++) {
+                    if (a == 0) {
+                        if (b != g) {
+                            continue;
+                        }
+                        
+                        for (int c = -29; c < 30; c++) {
+                            findSquareDiscriminantExamples2(a, b, c);
+                        }
+                    } else {
+                        int top = b * b - g * g;
+                        if (top % (4 * a) != 0) {
+                            continue;
+                        }
+
+                        int c = top / (4 * a);
+                    
+                        findSquareDiscriminantExamples2(a, b, c);
+                    }
+                }
+            }
+        }
+    }
+    
+    private static void findSquareDiscriminantExamples2(int a, int b, int c) {
+        long D = Utils.discriminant(a, b, c);
+        long g = Math.round(Math.sqrt(D));
+        
+        long g1 = Utils.gcd(Math.multiplyExact(2L, a), Math.addExact(b, g));
+        long g2 = Utils.gcd(Math.multiplyExact(2L, a), Math.subtractExact(b, g));
+        long g1g2 = Math.multiplyExact(g1, g2);
+        
+        System.out.printf("a = %d, D = %d, g1g2 = %d", a, D, g1g2);
+        
+        if (g1g2 == 1) {
+            System.out.println(" Trivial");
+            return;
+        }
+        
+        if ((4 * a) % g1g2 == 0) {
+            System.out.println(" Divides 4a");
+            return;
+        }
+        
+        if ((4 * a * D) % g1g2 == 0) {
+            System.out.println(" Divides 4aD");
+            return;
+        }
+        
+        System.out.println(" Checking...");
+        
+        for (int d = -99; d < 100; d++) {
+            for (int e = -99; e < 100; e++) {
+                for (int f = -999; f < 1000; f++) {
+                    long k = Utils.legendreConstant(a, b, c, d, e, f, D);
+                    long fourAK = Math.multiplyExact(4L * a, k);
+
+                    if (fourAK % g1g2 != 0) {
+                        System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);
                     }
                 }
             }
