@@ -21,12 +21,13 @@ for (int i = 0; i < 10; i++) {
 
 Work in progress.
 
-| Case             | Status        |
-| -------------    | ------------- |
-| Linear           | Completed     |
-| Quadratic, D = 0 | Completed     |
-| Quadratic, D > 0 | None          |
-| Quadratic, D < 0 | None          |
+| Case                | Status        |
+| -------------       | ------------- |
+| Linear              | Completed     |
+| Quadratic, D = 0    | Completed     |
+| Quadratic, D square | Partial       |
+| Quadratic, D > 0    | None          |
+| Quadratic, D < 0    | None          |
 
 ## Principles
 
