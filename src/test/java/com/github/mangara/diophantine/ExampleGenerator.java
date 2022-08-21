@@ -26,8 +26,8 @@ public class ExampleGenerator {
 
     public static void main(String[] args) {
 //        findParabolicExamples();
-        findSquareDiscriminantExamples();
-//        generate();
+//        findSquareDiscriminantExamples();
+        generate();
     }
         
     private static void generate() {
@@ -38,7 +38,7 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 2, b = 4, c = 2, d = 6, e = 3, f = 5;
+        int a = 0, b = 0, c = 0, d = -5, e = -4, f = 8;
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("GCD(a, b, c) = " + Utils.gcd(a, b, c));
@@ -80,7 +80,7 @@ public class ExampleGenerator {
     }
 
     private static List<XYPair> bruteForceSmallSolutions(int a, int b, int c, int d, int e, int f) {
-        int bound = 1000;
+        int bound = 50;
         List<XYPair> solutions = new ArrayList<>();
 
         System.out.println();
@@ -228,19 +228,24 @@ public class ExampleGenerator {
     }
 
     private static void findSquareDiscriminantExamples() {
-        for (int g = 1; g < 30; g++) {
-            for (int a = -29; a < 30; a++) {
+        int bound = 9;
+        for (int g = 1; g <= bound; g++) {
+            for (int a = -bound; a <= bound; a++) {
                 if (a == 0) {
                     continue; // Looking for a != 0 currently
                 }
                 
-                for (int b = -29; b < 30; b++) {
+                for (int b = -bound; b <= bound; b++) {
+                    if (b == g || b == -g) {
+                        continue; // Looking for |b| != |g| currently
+                    }
+                    
                     if (a == 0) {
                         if (b != g) {
                             continue;
                         }
                         
-                        for (int c = -29; c < 30; c++) {
+                        for (int c = -bound; c <= bound; c++) {
                             findSquareDiscriminantExamples2(a, b, c);
                         }
                     } else {
@@ -266,32 +271,35 @@ public class ExampleGenerator {
         long g2 = Utils.gcd(Math.multiplyExact(2L, a), Math.subtractExact(b, g));
         long g1g2 = Math.multiplyExact(g1, g2);
         
-        System.out.printf("a = %d, D = %d, g1g2 = %d", a, D, g1g2);
+        int bound = 9;
         
-        if (g1g2 == 1) {
-            System.out.println(" Trivial");
-            return;
-        }
-        
-        if ((4 * a) % g1g2 == 0) {
-            System.out.println(" Divides 4a");
-            return;
-        }
-        
-        if ((4 * a * D) % g1g2 == 0) {
-            System.out.println(" Divides 4aD");
-            return;
-        }
-        
-        System.out.println(" Checking...");
-        
-        for (int d = -99; d < 100; d++) {
-            for (int e = -99; e < 100; e++) {
-                for (int f = -999; f < 1000; f++) {
-                    long k = Utils.legendreConstant(a, b, c, d, e, f, D);
-                    long fourAK = Math.multiplyExact(4L * a, k);
+        for (int d = -bound; d <= bound; d++) {
+            for (int e = -bound; e <= bound; e++) {
+                long alpha = Utils.legendreAlpha(b, c, d, e);
+                long beta = Utils.legendreBeta(a, b, d, e);
 
-                    if (fourAK % g1g2 != 0) {
+                long Dg1 = Math.multiplyExact(D, g1);
+                long right1 = Math.addExact(
+                        Math.multiplyExact(2L * a, alpha),
+                        Math.multiplyExact(Math.addExact(b, g), beta));
+                
+                if (right1 % Dg1 != 0) {
+                    continue;
+                }
+                
+                long Dg2 = Math.multiplyExact(D, g2);
+                long right2 = Math.addExact(
+                        Math.multiplyExact(2L * a, alpha),
+                        Math.multiplyExact(Math.subtractExact(b, g), beta));
+
+                if (right2 % Dg2 != 0) {
+                    continue;
+                }
+                
+                for (int f = -bound; f <= bound; f++) {
+                    long k = Utils.legendreConstant(a, b, c, d, e, f, D);
+                    
+                    if (k == 0) {
                         System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);
                     }
                 }
