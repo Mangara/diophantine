@@ -170,4 +170,36 @@ public class LinearSolverTest {
         TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
     }
     
+    @Test
+    public void test5() {
+        System.out.println("5: -5x - 4y + 8 = 0 (linear)");
+        int d = -5, e = -4, f = 8;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{40, -48},
+            new long[]{36, -43},
+            new long[]{32, -38},
+            new long[]{28, -33},
+            new long[]{24, -28},
+            new long[]{20, -23},
+            new long[]{16, -18},
+            new long[]{12, -13},
+            new long[]{8, -8},
+            new long[]{4, -3},
+            new long[]{0, 2},
+            new long[]{-4, 7},
+            new long[]{-8, 12},
+            new long[]{-12, 17},
+            new long[]{-16, 22},
+            new long[]{-20, 27},
+            new long[]{-24, 32},
+            new long[]{-28, 37},
+            new long[]{-32, 42},
+            new long[]{-36, 47},
+        };
+
+        TestUtils.validateExpectedSolutions(0, 0, 0, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
+    }
+    
 }

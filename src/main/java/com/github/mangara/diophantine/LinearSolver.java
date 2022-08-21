@@ -108,11 +108,12 @@ public class LinearSolver {
             prevT = tempT;
         }
 
-        // Results are in prevR (which is the gcd = 1), prevS, and prevT
-        // Thus, d * prevS + e * prevT = 1
-        // We want d * x + e * y + f = 0, so we need to multiply by -f
-        long x = Math.multiplyExact(Math.negateExact(eq.f), prevS); // -f * prevS
-        long y = Math.multiplyExact(Math.negateExact(eq.f), prevT); // -f * prevT
+        // Results are in prevR (which is the gcd = +/- 1), prevS, and prevT
+        // Thus, d * prevS + e * prevT = +/- 1
+        // We want d * x + e * y = -f, so we need to multiply by f or -f, depending on the sign of prevR
+        long factor = Math.multiplyExact(Math.negateExact(eq.f), prevR);
+        long x = Math.multiplyExact(factor, prevS); // -/+ f * prevS
+        long y = Math.multiplyExact(factor, prevT); // -/+ f * prevT
 
         return new XYPair(x, y);
     }
