@@ -96,15 +96,7 @@ public class SquareDiscriminantSolver {
             
             Iterator<XYPair> eq1 = new EmptyIterator<>();
             if (right1 % Dg1 == 0) {
-                // TODO: do this in LinearSolver instead
-                if (Math.addExact(b, g) == 0) {
-                    if (alpha % D == 0) {
-                        BigInteger alphaByD = BigInteger.valueOf(alpha / D);
-                        eq1 = new MappingIterator<>(new IntegerIterator(), y -> { return new XYPair(alphaByD, y); });
-                    }
-                } else {
-                    eq1 = LinearSolver.solve(2L * a / g1, Math.addExact(b, g) / g1, Math.negateExact(right1) / Dg1);
-                }
+                eq1 = LinearSolver.solve(2L * a / g1, Math.addExact(b, g) / g1, Math.negateExact(right1) / Dg1);
             }
             
             long Dg2 = Math.multiplyExact(D, g2);
@@ -114,14 +106,7 @@ public class SquareDiscriminantSolver {
             
             Iterator<XYPair> eq2 = new EmptyIterator<>();
             if (right2 % Dg2 == 0) {
-                if (Math.subtractExact(b, g) == 0) {
-                    if (alpha % D == 0) {
-                        BigInteger alphaByD = BigInteger.valueOf(alpha / D);
-                        eq2 = new MappingIterator<>(new IntegerIterator(), y -> { return new XYPair(alphaByD, y); });
-                    }
-                } else {
-                    eq2 = LinearSolver.solve(2L * a / g2, Math.subtractExact(b, g) / g2, Math.negateExact(right2) / Dg2);
-                }
+                eq2 = LinearSolver.solve(2L * a / g2, Math.subtractExact(b, g) / g2, Math.negateExact(right2) / Dg2);
             }
             
             return MergedIterator.merge(eq1, eq2);
