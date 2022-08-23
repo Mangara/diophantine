@@ -18,8 +18,10 @@ package com.github.mangara.diophantine;
 import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.iterators.IntegerIterator;
 import com.github.mangara.diophantine.iterators.MappingIterator;
+import com.github.mangara.diophantine.iterators.XYIterator;
 import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.function.Function;
 
 /**
  * Solves linear Diophantine equations.
@@ -36,20 +38,63 @@ public class LinearSolver {
 
     /**
      * Solves the linear Diophantine equation d x + e y + f = 0.
-     * <p>
-     * Both d and e must be non-zero.
      *
      * @param d
      * @param e
      * @param f
      * @return an iterator over all integer solutions (x, y)
-     * @throws IllegalArgumentException if d or e are zero.
      */
     public static Iterator<XYPair> solve(long d, long e, long f) {
-        if (d == 0 || e == 0) {
-            throw new IllegalArgumentException("d and e should be non-zero.");
+        if (d == 0 && e == 0) {
+            return solveTrivial(f);
+        } else if (d == 0) {
+            return solveSingle(e, f, true);
+        } else if (e == 0) {
+            return solveSingle(d, f, false);
+        } else {
+            return solveGeneral(d, e, f);
         }
+    }
 
+    private static Iterator<XYPair> solveTrivial(long f) {
+        if (f != 0) {
+            return new EmptyIterator<>();
+        }
+        
+        return new XYIterator();
+    }
+
+    /**
+     * Solves the linear Diophantine equations g x + f = 0 or g y + f = 0.
+     * <p>
+     * If arbitraryX is true, the equation solved is g y + f = 0 and x ranges
+     * over all integers. Otherwise, it is g x + f = 0, with y ranging over all
+     * integers.
+     *
+     * @param g
+     * @param f
+     * @param arbitraryX
+     * @return an iterator over all integer solutions (x, y)
+     */
+    private static Iterator<XYPair> solveSingle(long g, long f, boolean arbitraryX) {
+        if (f % g != 0) {
+            return new EmptyIterator<>();
+        }
+        
+        BigInteger val = BigInteger.valueOf(Math.negateExact(f) / g);
+        
+        Function<BigInteger, XYPair> map;
+        if (arbitraryX) {
+            map = k -> { return new XYPair(k, val); };
+        } else {
+            map = k -> { return new XYPair(val, k); };
+        }
+        
+        return new MappingIterator<>(new IntegerIterator(), map);
+    }
+
+    // Pre: d != 0 && e != 0
+    private static Iterator<XYPair> solveGeneral(long d, long e, long f) {
         Eq reduced = reduce(d, e, f);
 
         if (reduced == null) {
@@ -70,12 +115,13 @@ public class LinearSolver {
         return new Eq(d / gcd, e / gcd, f / gcd);
     }
 
+    // Pre: d != 0 && e != 0 && d and e are co-prime
     private static Iterator<XYPair> solveReduced(Eq eq) {
         XYPair solution = findAnySolution(eq);
 
         final BigInteger dx = BigInteger.valueOf(eq.e);
         final BigInteger dy = BigInteger.valueOf(-eq.d);
-        
+
         return new MappingIterator<>(new IntegerIterator(),
                 (k) -> new XYPair(
                         solution.x.add(dx.multiply(k)),

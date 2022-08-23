@@ -22,13 +22,6 @@ public class LinearSolverTest {
     
     public LinearSolverTest() {
     }
-
-    @Test
-    public void testSolveZero() {
-        System.out.println("solve throws when d or e are zero");
-        assertThrows(IllegalArgumentException.class, () -> { LinearSolver.solve(0, 3, 2); });
-        assertThrows(IllegalArgumentException.class, () -> { LinearSolver.solve(3, 0, 2); });
-    }
     
     @Test
     public void testSolveNoSolutions() {
@@ -202,4 +195,154 @@ public class LinearSolverTest {
         TestUtils.assertSolutionsInclude(0, 0, 0, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
     }
     
+    @Test
+    public void test6() {
+        System.out.println("6: -3x + 8 = 0 (linear)");
+        int d = -3, e = 0, f = 8;
+
+        TestUtils.assertNoSolutions(0, 0, 0, d, e, f, LinearSolver.solve(d, e, f));
+    }
+    
+    @Test
+    public void test7() {
+        System.out.println("7: 5y + 8 = 0 (linear)");
+        int d = 0, e = 5, f = 8;
+
+        TestUtils.assertNoSolutions(0, 0, 0, d, e, f, LinearSolver.solve(d, e, f));
+    }
+    
+    @Test
+    public void test8() {
+        System.out.println("8: 4x + 8 = 0 (D = 0)");
+        int a = 0, b = 0, c = 0, d = 4, e = 0, f = 8;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-2, -10},
+            new long[]{-2, -9},
+            new long[]{-2, -8},
+            new long[]{-2, -7},
+            new long[]{-2, -6},
+            new long[]{-2, -5},
+            new long[]{-2, -4},
+            new long[]{-2, -3},
+            new long[]{-2, -2},
+            new long[]{-2, -1},
+            new long[]{-2, 0},
+            new long[]{-2, 1},
+            new long[]{-2, 2},
+            new long[]{-2, 3},
+            new long[]{-2, 4},
+            new long[]{-2, 5},
+            new long[]{-2, 6},
+            new long[]{-2, 7},
+            new long[]{-2, 8},
+            new long[]{-2, 9},
+            new long[]{-2, 10},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
+    }
+    
+    @Test
+    public void test9() {
+        System.out.println("9: 3y + 21 = 0 (D = 0)");
+        int a = 0, b = 0, c = 0, d = 0, e = 3, f = 21;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-10, -7},
+            new long[]{-9, -7},
+            new long[]{-8, -7},
+            new long[]{-7, -7},
+            new long[]{-6, -7},
+            new long[]{-5, -7},
+            new long[]{-4, -7},
+            new long[]{-3, -7},
+            new long[]{-2, -7},
+            new long[]{-1, -7},
+            new long[]{0, -7},
+            new long[]{1, -7},
+            new long[]{2, -7},
+            new long[]{3, -7},
+            new long[]{4, -7},
+            new long[]{5, -7},
+            new long[]{6, -7},
+            new long[]{7, -7},
+            new long[]{8, -7},
+            new long[]{9, -7},
+            new long[]{10, -7},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
+    }
+    
+    @Test
+    public void test10() {
+        System.out.println("10: 8 = 0 (linear)");
+        int d = 0, e = 0, f = 8;
+
+        TestUtils.assertNoSolutions(0, 0, 0, d, e, f, LinearSolver.solve(d, e, f));
+    }
+    
+    @Test
+    public void test11() {
+        System.out.println("11: 0 = 0 (D = 0)");
+        int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-3, -3},
+            new long[]{-2, -3},
+            new long[]{-1, -3},
+            new long[]{0, -3},
+            new long[]{1, -3},
+            new long[]{2, -3},
+            new long[]{3, -3},
+            new long[]{-3, -2},
+            new long[]{-2, -2},
+            new long[]{-1, -2},
+            new long[]{0, -2},
+            new long[]{1, -2},
+            new long[]{2, -2},
+            new long[]{3, -2},
+            new long[]{-3, -1},
+            new long[]{-2, -1},
+            new long[]{-1, -1},
+            new long[]{0, -1},
+            new long[]{1, -1},
+            new long[]{2, -1},
+            new long[]{3, -1},
+            new long[]{-3, 0},
+            new long[]{-2, 0},
+            new long[]{-1, 0},
+            new long[]{0, 0},
+            new long[]{1, 0},
+            new long[]{2, 0},
+            new long[]{3, 0},
+            new long[]{-3, 1},
+            new long[]{-2, 1},
+            new long[]{-1, 1},
+            new long[]{0, 1},
+            new long[]{1, 1},
+            new long[]{2, 1},
+            new long[]{3, 1},
+            new long[]{-3, 2},
+            new long[]{-2, 2},
+            new long[]{-1, 2},
+            new long[]{0, 2},
+            new long[]{1, 2},
+            new long[]{2, 2},
+            new long[]{3, 2},
+            new long[]{-3, 3},
+            new long[]{-2, 3},
+            new long[]{-1, 3},
+            new long[]{0, 3},
+            new long[]{1, 3},
+            new long[]{2, 3},
+            new long[]{3, 3},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, LinearSolver.solve(d, e, f));
+    }
 }
