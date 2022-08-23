@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.diophantine;
+package com.github.mangara.diophantine.iterators;
 
 import com.github.mangara.diophantine.iterators.MergedIterator;
 import java.util.ArrayList;
