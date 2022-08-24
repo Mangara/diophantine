@@ -71,8 +71,7 @@ public class SquareDiscriminantSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -233,8 +232,7 @@ public class SquareDiscriminantSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
     
     @Test
