@@ -85,9 +85,9 @@ public class LinearSolver {
         
         Function<BigInteger, XYPair> map;
         if (arbitraryX) {
-            map = k -> { return new XYPair(k, val); };
+            map = k -> new XYPair(k, val);
         } else {
-            map = k -> { return new XYPair(val, k); };
+            map = k -> new XYPair(val, k);
         }
         
         return new MappingIterator<>(new IntegerIterator(), map);
