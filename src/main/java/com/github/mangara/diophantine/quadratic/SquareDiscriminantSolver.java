@@ -19,8 +19,11 @@ import com.github.mangara.diophantine.LinearSolver;
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import com.github.mangara.diophantine.iterators.EmptyIterator;
+import com.github.mangara.diophantine.iterators.IntegerIterator;
+import com.github.mangara.diophantine.iterators.MappingIterator;
 import com.github.mangara.diophantine.iterators.MergedIterator;
 import com.github.mangara.diophantine.utils.Divisors;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,7 +53,35 @@ public class SquareDiscriminantSolver {
 
     // Pre: D = b^2 - 4ac = g^2, g > 0 && a == 0
     private static Iterator<XYPair> solveZeroA(int a, int b, int c, int d, int e, int f) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Legendre's transformation with Dx = X + alpha and Dy = Y + beta gives
+        //  aX^2 + bXY + cY^2 = k
+        // With a = 0, this reduces to
+        //  Y(bX + cY) = k
+        
+        long D = Utils.discriminant(a, b, c);
+        long alpha = Utils.legendreAlpha(b, c, d, e);
+        long beta = Utils.legendreBeta(a, b, d, e);
+        long k = Utils.legendreConstant(a, b, c, d, e, f, D);
+        long h = Utils.gcd(b, c);
+        
+        if (k == 0) {
+            // Y(bX + cY) = 0, so 
+            // Y = 0  or  bX + cY = 0
+            Iterator<XYPair> yZero = new EmptyIterator<>();
+            Iterator<XYPair> yNonZero = new EmptyIterator<>();
+            
+            // Dy - beta = 0  =>  y = beta / D
+            if (beta % D == 0) {
+                BigInteger betaByD = BigInteger.valueOf(beta / D);
+                yZero = new MappingIterator<>(new IntegerIterator(), i -> new XYPair(i, betaByD));
+            }
+            
+            // TODO: bX + cY = 0
+            
+            return MergedIterator.merge(yZero, yNonZero);
+        } else {
+            return new EmptyIterator<>();
+        }
     }
 
     // Pre: D = b^2 - 4ac = g^2, g > 0 && a != 0
