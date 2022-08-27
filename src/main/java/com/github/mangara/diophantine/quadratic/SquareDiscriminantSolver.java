@@ -19,11 +19,8 @@ import com.github.mangara.diophantine.LinearSolver;
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import com.github.mangara.diophantine.iterators.EmptyIterator;
-import com.github.mangara.diophantine.iterators.IntegerIterator;
-import com.github.mangara.diophantine.iterators.MappingIterator;
 import com.github.mangara.diophantine.iterators.MergedIterator;
 import com.github.mangara.diophantine.utils.Divisors;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -67,20 +64,44 @@ public class SquareDiscriminantSolver {
         if (k == 0) {
             // Y(bX + cY) = 0, so 
             // Y = 0  or  bX + cY = 0
-            Iterator<XYPair> yZero = new EmptyIterator<>();
-            Iterator<XYPair> yNonZero = new EmptyIterator<>();
             
-            // Dy - beta = 0  =>  y = beta / D
-            if (beta % D == 0) {
-                BigInteger betaByD = BigInteger.valueOf(beta / D);
-                yZero = new MappingIterator<>(new IntegerIterator(), i -> new XYPair(i, betaByD));
-            }
+            // Dy - beta = 0  =>  Dy = beta
+            Iterator<XYPair> yZero = LinearSolver.solve(0, D, Math.negateExact(beta));
             
-            // TODO: bX + cY = 0
+            // b(Dx - alpha) + c(Dy - beta) = 0  =>  bDx + cDy = b alpha + c beta
+            long t = Math.addExact(Math.multiplyExact(b, alpha), Math.multiplyExact(c, beta));
+            Iterator<XYPair> yNonZero = LinearSolver.solve(Math.multiplyExact(b, D), Math.multiplyExact(c, D), Math.negateExact(t));
             
             return MergedIterator.merge(yZero, yNonZero);
         } else {
-            return new EmptyIterator<>();
+            //  Y((b/h)X + (c/h)Y) = k/h
+            // We need to examine all divisors d_i of k/h and solve the system
+            //  Y = d_i  and  (b/h)X + (c/h)Y = k/(h d_i)
+            
+            long b2 = b / h;
+            long c2 = c / h;
+            long k2 = k / h;
+            
+            List<XYPair> solutions = new ArrayList<>();
+            List<Long> divisors = Divisors.getPositiveAndNegativeDivisors(k2);
+            
+            for (Long divisor : divisors) {
+                long Y = divisor;
+                long Xtop = Math.subtractExact(k2 / divisor, Math.multiplyExact(c2, Y));
+                
+                if (Xtop % b2 == 0) {
+                    long X = Xtop / b2;
+                    
+                    long xD = Math.addExact(X, alpha);
+                    long yD = Math.addExact(Y, beta);
+
+                    if (xD % D == 0 && yD % D == 0) {
+                        solutions.add(new XYPair(xD / D, yD / D));
+                    }
+                }
+            }
+            
+            return solutions.iterator();
         }
     }
 

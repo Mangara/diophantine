@@ -38,7 +38,7 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 0, b = 0, c = 0, d = -5, e = -4, f = 8;
+        int a = 0, b = -8, c = 0, d = -8, e = 7, f = 527;
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("GCD(a, b, c) = " + Utils.gcd(a, b, c));
@@ -80,7 +80,7 @@ public class ExampleGenerator {
     }
 
     private static List<XYPair> bruteForceSmallSolutions(int a, int b, int c, int d, int e, int f) {
-        int bound = 50;
+        int bound = 10000;
         List<XYPair> solutions = new ArrayList<>();
 
         System.out.println();

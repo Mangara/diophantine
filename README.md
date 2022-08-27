@@ -1,5 +1,5 @@
 # diophantine
-Solver for linear and quadratic diophantine equations
+A solver for linear and quadratic diophantine equations.
 
 ## Usage
 
@@ -25,11 +25,11 @@ Work in progress.
 | -------------       | ------------- |
 | Linear              | Completed     |
 | Quadratic, D = 0    | Completed     |
-| Quadratic, D square | Partial       |
+| Quadratic, D square | Completed     |
 | Quadratic, D > 0    | None          |
 | Quadratic, D < 0    | None          |
 
 ## Principles
 
-- If this library can solve your equation, you get an iterator over *all* solutions.
-- If this library cannot solve your equation, it throws an exception rather than returning incorrect results.
+- If this library can solve an equation, it returns an iterator over *all* solutions.
+- If this library cannot solve an equation, it throws an exception rather than returning incorrect results.

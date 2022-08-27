@@ -42,8 +42,7 @@ public class SquareDiscriminantSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
     
     @Test
@@ -91,8 +90,7 @@ public class SquareDiscriminantSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -150,17 +148,68 @@ public class SquareDiscriminantSolverTest {
 
     @Test
     public void test25() {
-        System.out.println("25: xy + 3y^2 - 2x - y - 10 = 0");
+        System.out.println("25: xy + 3y^2 - 2x - y - 10 = 0 (D > 0)");
         int a = 0, b = 1, c = 3, d = -2, e = -1, f = -10;
 
         long[][] expectedSolutions = new long[][]{
-            new long[]{1, 2},
+            new long[]{19, -8},
+            new long[]{16, -7},
+            new long[]{13, -6},
+            new long[]{10, -5},
+            new long[]{7, -4},
+            new long[]{4, -3},
             new long[]{1, -2},
+            new long[]{-2, -1},
+            new long[]{-5, 0},
+            new long[]{-8, 1},
+            new long[]{-20, 2},
+            new long[]{-19, 2},
+            new long[]{-18, 2},
+            new long[]{-17, 2},
+            new long[]{-16, 2},
+            new long[]{-15, 2},
+            new long[]{-14, 2},
+            new long[]{-13, 2},
+            new long[]{-12, 2},
+            new long[]{-11, 2},
+            new long[]{-10, 2},
+            new long[]{-9, 2},
+            new long[]{-8, 2},
+            new long[]{-7, 2},
+            new long[]{-6, 2},
+            new long[]{-5, 2},
+            new long[]{-4, 2},
+            new long[]{-3, 2},
+            new long[]{-2, 2},
+            new long[]{-1, 2},
+            new long[]{0, 2},
+            new long[]{1, 2},
+            new long[]{2, 2},
+            new long[]{3, 2},
+            new long[]{4, 2},
+            new long[]{5, 2},
+            new long[]{6, 2},
+            new long[]{7, 2},
+            new long[]{8, 2},
+            new long[]{9, 2},
+            new long[]{10, 2},
+            new long[]{11, 2},
+            new long[]{12, 2},
+            new long[]{13, 2},
+            new long[]{14, 2},
+            new long[]{15, 2},
+            new long[]{16, 2},
+            new long[]{17, 2},
+            new long[]{18, 2},
+            new long[]{19, 2},
+            new long[]{20, 2},
+            new long[]{-14, 3},
+            new long[]{-17, 4},
+            new long[]{-20, 5},
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -188,8 +237,7 @@ public class SquareDiscriminantSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -203,8 +251,7 @@ public class SquareDiscriminantSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { SquareDiscriminantSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, SquareDiscriminantSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
