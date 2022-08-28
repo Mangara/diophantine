@@ -24,14 +24,8 @@ import java.util.Iterator;
 import java.util.function.Function;
 
 /**
- * Solves linear Diophantine equations.
+ * Solves linear Diophantine equations in two variables.
  * <p>
- * This class allows you to solve Diophantine equations of the form
- *
- * \[d x + e y + f = 0\]
- *
- * where both d and e are non-zero.
- *
  * The method is based on https://www.alpertron.com.ar/METHODS.HTM#Linear
  */
 public class LinearSolver {
