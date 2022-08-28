@@ -16,10 +16,14 @@
 
 package com.github.mangara.diophantine.quadratic;
 
-import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import java.util.Iterator;
 
+/**
+ * Solves elliptical quadratic Diophantine equations in two variables.
+ * <p>
+ * The method is based on K. R. Matthews, "Solving the Diophantine equation \(ax^2 + bxy + cy^2 + dx + ey + f = 0\)", http://www.numbertheory.org/PDFS/general_quadratic_solution.pdf
+ */
 public class EllipticalSolver {
 
     /**

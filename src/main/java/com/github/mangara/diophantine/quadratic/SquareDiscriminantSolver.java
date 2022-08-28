@@ -25,6 +25,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Solves quadratic Diophantine equations in two variables, where the discriminant is a perfect square.
+ * <p>
+ * The method is based on K. R. Matthews, "Solving the Diophantine equation \(ax^2 + bxy + cy^2 + dx + ey + f = 0\)", http://www.numbertheory.org/PDFS/general_quadratic_solution.pdf
+ */
 public class SquareDiscriminantSolver {
 
     /**
