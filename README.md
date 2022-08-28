@@ -92,7 +92,7 @@ In general, development on this repository follows the ["fork-and-pull" Git work
 
 ## License
 
-Copyright 2022 Sander Verdonschot (@Mangara)
+Copyright 2022 Sander Verdonschot ([@Mangara](https://github.com/Mangara))
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
