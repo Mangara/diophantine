@@ -16,10 +16,7 @@
 package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.TestUtils;
-import com.github.mangara.diophantine.XYPair;
-import java.util.Iterator;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class EllipticalSolverTest {
     
@@ -88,7 +85,7 @@ public class EllipticalSolverTest {
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -109,7 +106,7 @@ public class EllipticalSolverTest {
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions);
     }
 
     @Test
@@ -130,7 +127,7 @@ public class EllipticalSolverTest {
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions);
     }
 
     @Test
@@ -145,7 +142,7 @@ public class EllipticalSolverTest {
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions);
     }
 
     @Test
@@ -162,7 +159,7 @@ public class EllipticalSolverTest {
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions);
     }
     
 }

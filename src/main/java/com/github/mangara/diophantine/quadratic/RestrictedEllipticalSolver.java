@@ -13,33 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.github.mangara.diophantine.quadratic;
 
-import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import java.util.Iterator;
 
-public class EllipticalSolver {
+public class RestrictedEllipticalSolver {
 
     /**
-     * Solves the quadratic Diophantine equation 
-     * a x^2 + b xy + c y^2 + d x + e y + f = 0,
+     * Solves the quadratic Diophantine equation
+     * a x^2 + b xy + c y^2 + f = 0,
      * given that D = b^2 - 4ac < 0 and not a perfect square.
      *
      * @param a
      * @param b
      * @param c
-     * @param d
-     * @param e
      * @param f
      * @return an iterator over all integer solutions (x, y)
      */
-    public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        // Use Legendre's transform to a X^2 + b XY + c Y^2 = k
-        // Solve restricted
-        // For each solution (X, Y), if D|(X + alpha) and D|(Y + beta)
-        // then ((X + alpha)/D, (Y + beta)/D) is a solution
+    public static Iterator<XYPair> solve(int a, int b, int c, int f) {
+        // Ensure gcd(a, n) = 1
+        // Ensure a > 0 and n > 0
+        // Factor f
+        // Solve for square factors
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
