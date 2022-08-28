@@ -121,12 +121,6 @@ public class SquareDiscriminantSolver {
         long g2 = Utils.gcd(Math.multiplyExact(2L, a), Math.subtractExact(b, g));
         long g1g2 = Math.multiplyExact(g1, g2);
 
-        if (fourAK % g1g2 != 0) {
-            // I haven't been able to find an example that hits this case.
-            // It is possible that g1g2 always divides 4ak.
-            return new EmptyIterator<>();
-        }
-
         long alpha = Utils.legendreAlpha(b, c, d, e);
         long beta = Utils.legendreBeta(a, b, d, e);
 
