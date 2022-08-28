@@ -80,4 +80,41 @@ public class Divisors {
                 .flatMap(d -> Stream.of(d, -d))
                 .collect(Collectors.toList());
     }
+    
+    /**
+     * Returns a list of all divisors of n that are perfect squares.
+     *
+     * @param n the number to divide, must be positive
+     * @return
+     */
+    public static List<Long> getSquareDivisors(long n) {
+        List<Long> factors = Primes.getPrimeFactors(n);
+        List<Long> squareDivisors = new ArrayList<>();
+        squareDivisors.add(1L);
+        long prevFactor = -1;
+        int factorCount = -1;
+
+        for (Long f : factors) {
+            if (f == prevFactor) {
+                factorCount++;
+                continue;
+            }
+
+            if (prevFactor > 0 && factorCount > 1) {
+                // Process the previous factors
+                squareDivisors.addAll(getNewDivisors(squareDivisors, prevFactor * prevFactor, factorCount / 2));
+            }
+
+            // Reset
+            prevFactor = f;
+            factorCount = 1;
+        }
+
+        // Process the previous factors
+        if (factorCount > 1) {
+            squareDivisors.addAll(getNewDivisors(squareDivisors, prevFactor * prevFactor, factorCount / 2));
+        }
+
+        return squareDivisors;
+    }
 }

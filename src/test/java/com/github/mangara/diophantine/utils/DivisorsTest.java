@@ -51,4 +51,16 @@ public class DivisorsTest {
         assertEquals(expected170, Divisors.getPositiveAndNegativeDivisors(-170));
     }
     
+    @Test
+    public void testGetSquareDivisors() {
+        System.out.println("getSquareDivisors");
+        
+        assertEquals(Arrays.asList(1L), Divisors.getSquareDivisors(1));
+        assertEquals(Arrays.asList(1L), Divisors.getSquareDivisors(2));
+        assertEquals(Arrays.asList(1L), Divisors.getSquareDivisors(170));
+        
+        List<Long> expected55440 = Arrays.asList(1L, 4L, 16L, 9L, 36L, 144L);
+        assertEquals(expected55440, Divisors.getSquareDivisors(55440));
+    }
+    
 }
