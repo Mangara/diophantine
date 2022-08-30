@@ -26,6 +26,12 @@ public class UnaryCongruenceSolverTest {
     }
 
     @Test
+    public void testSolve0() {
+        List<Integer> expectedSolutions = Arrays.asList(0);
+        assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(6, 14, 8, 1));
+    }
+    
+    @Test
     public void testSolve1() {
         List<Integer> expectedSolutions = Arrays.asList(8, 20);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(6, 14, 8, 21));

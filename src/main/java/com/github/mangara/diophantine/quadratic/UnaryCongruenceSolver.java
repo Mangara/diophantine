@@ -18,6 +18,7 @@ package com.github.mangara.diophantine.quadratic;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UnaryCongruenceSolver {
@@ -34,8 +35,15 @@ public class UnaryCongruenceSolver {
      * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
      */
     public static List<Integer> solve(int a, int b, int c, int n) {
-        if (a <= 0 || n <= 1) {
-            throw new UnsupportedOperationException("a or n too small");
+        if (a <= 0) {
+            throw new IllegalArgumentException("a too small");
+        }
+        if (n <= 0) {
+            throw new IllegalArgumentException("n too small");
+        }
+        
+        if (n == 1) {
+            return Collections.singletonList(0);
         }
         
         if (b == 0) {
