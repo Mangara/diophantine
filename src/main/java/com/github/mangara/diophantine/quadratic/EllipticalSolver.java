@@ -40,6 +40,10 @@ public class EllipticalSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
+        if (d == 0 && e == 0) {
+            return RestrictedEllipticalSolver.solve(a, b, c, f);
+        }
+        
         // Use Legendre's transform to a X^2 + b XY + c Y^2 = k
         // Solve restricted
         // For each solution (X, Y), if D|(X + alpha) and D|(Y + beta)
