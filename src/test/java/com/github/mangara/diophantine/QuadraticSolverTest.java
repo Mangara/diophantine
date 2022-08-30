@@ -1920,5 +1920,147 @@ public class QuadraticSolverTest {
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test57() {
+        System.out.println("57: 7x^2 - 9xy + 3y^2 - 19 = 0 (D < 0)");
+        int a = 7, b = -9, c = 3, d = 0, e = 0, f = -19;
 
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-8, -13},
+            new long[]{-7, -12},
+            new long[]{-8, -11},
+            new long[]{-7, -9},
+            new long[]{-1, -4},
+            new long[]{1, -1},
+            new long[]{-1, 1},
+            new long[]{1, 4},
+            new long[]{7, 9},
+            new long[]{8, 11},
+            new long[]{7, 12},
+            new long[]{8, 13},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test58() {
+        System.out.println("58: 7x^2 + 5xy + y^2 - 36 = 0 (D < 0)");
+        int a = 7, b = 5, c = 1, d = 0, e = 0, f = -36;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{6, -18},
+            new long[]{6, -12},
+            new long[]{0, -6},
+            new long[]{0, 6},
+            new long[]{-6, 12},
+            new long[]{-6, 18},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test59() {
+        System.out.println("59: x^2 - xy + y^2 - 8 = 0 (D < 0)");
+        int a = 1, b = -1, c = 1, d = 0, e = 0, f = -8;
+
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test60() {
+        System.out.println("60: x^2 - 4xy + 5y^2 - 5 = 0 (D < 0)");
+        int a = 1, b = -4, c = 5, d = 0, e = 0, f = -5;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-5, -2},
+            new long[]{-3, -2},
+            new long[]{-4, -1},
+            new long[]{0, -1},
+            new long[]{0, 1},
+            new long[]{4, 1},
+            new long[]{3, 2},
+            new long[]{5, 2},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test61() {
+        System.out.println("61: 5x^2 - 4xy + y^2 - 9 = 0 (D < 0)");
+        int a = 5, b = -4, c = 1, d = 0, e = 0, f = -9;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-3, -6},
+            new long[]{0, -3},
+            new long[]{0, 3},
+            new long[]{3, 6},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test62() {
+        System.out.println("62: x^2 + y^2 - 7 = 0 (D < 0)");
+        int a = 1, b = 0, c = 1, d = 0, e = 0, f = -7;
+
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test63() {
+        System.out.println("63: 7x^2 + 4xy + y^2 - 36 = 0 (D < 0)");
+        int a = 7, b = 4, c = 1, d = 0, e = 0, f = -36;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{3, -9},
+            new long[]{0, -6},
+            new long[]{3, -3},
+            new long[]{-3, 3},
+            new long[]{0, 6},
+            new long[]{-3, 9},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test64() {
+        System.out.println("64: 8x^2 + 3xy + 5y^2 - 5 = 0 (D < 0)");
+        int a = 8, b = 3, c = 5, d = 0, e = 0, f = -5;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{0, -1},
+            new long[]{0, 1},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test65() {
+        System.out.println("65: 3x^2 + xy + 8y^2 - 4 = 0 (D < 0)");
+        int a = 3, b = 1, c = 8, d = 0, e = 0, f = -4;
+
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
 }

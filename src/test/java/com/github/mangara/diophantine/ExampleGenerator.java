@@ -16,6 +16,7 @@
 package com.github.mangara.diophantine;
 
 import com.github.mangara.diophantine.quadratic.UnaryCongruenceSolver;
+import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class ExampleGenerator {
     public static void main(String[] args) {
 //        findParabolicExamples();
 //        findSquareDiscriminantExamples();
+//        findRestrictedEllipticalExamples();
         generate();
     }
         
@@ -38,23 +40,29 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 0, b = -8, c = 0, d = -8, e = 7, f = 527;
+        int a = 3, b = 1, c = 8, d = 0, e = 0, f = -4;
+        
+        String solver = "RestrictedEllipticalSolver.solve(a, b, c, f)";
+        
+        long D = Utils.discriminant(a, b, c);
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
-        System.out.println("GCD(a, b, c) = " + Utils.gcd(a, b, c));
-        System.out.println("GCD(a, f) = " + Utils.gcd(a, f));
-        System.out.println("GCD(d, e) = " + Utils.gcd(d, e));
+        System.out.println("D = " + D + " GCD(a, b, c) = " + Utils.gcd(a, b, c) + " GCD(a, f) = " + Utils.gcd(a, f) + " GCD(d, e) = " + Utils.gcd(d, e));
 
-        List<XYPair> solutions = bruteForceSmallSolutions(a, b, c, d, e, f);
+        List<XYPair> solutions = bruteForceSmallSolutions(a, b, c, d, e, f, 10000, true);
 
-        printTestCase("", a, b, c, d, e, f, solutions);
+        if (D < 0) {
+            printTestCase("all", solver, a, b, c, d, e, f, solutions);
+        } else {
+            printTestCase("", solver, a, b, c, d, e, f, solutions);
+        }
 
-        if (d == 0 && e == 0) {
+        if (d == 0 && e == 0 && D > 0) {
             List<XYPair> representativeSolutions = keepRepresentativeSolutions(solutions, a, b, c, d, e, f);
-            printTestCase("Representative", a, b, c, d, e, f, representativeSolutions);
+            printTestCase("Representative", solver, a, b, c, d, e, f, representativeSolutions);
 
             List<XYPair> primitiveSolutions = keepPrimitiveSolutions(representativeSolutions);
-            printTestCase("Primitive", a, b, c, d, e, f, primitiveSolutions);
+            printTestCase("Primitive", solver, a, b, c, d, e, f, primitiveSolutions);
         }
 
         if (a == 1 && b == 0 && c < 0 && d == 0 && e == 0) {
@@ -79,16 +87,21 @@ public class ExampleGenerator {
         return -1 * (a * x * x + b * x * y + c * y * y + d * x + e * y);
     }
 
-    private static List<XYPair> bruteForceSmallSolutions(int a, int b, int c, int d, int e, int f) {
-        int bound = 10000;
+    private static List<XYPair> bruteForceSmallSolutions(int a, int b, int c, int d, int e, int f, int bound, boolean verbose) {
         List<XYPair> solutions = new ArrayList<>();
 
-        System.out.println();
-        System.out.println("Small integer solutions:");
+        if (verbose) {
+            System.out.println();
+            System.out.println("Small integer solutions:");
+        }
+        
         for (long y = -bound; y <= bound; y++) {
             for (long x = -bound; x <= bound; x++) {
                 if (a * x * x + b * x * y + c * y * y + d * x + e * y + f == 0) {
-                    System.out.printf("(%d, %d)%n", x, y);
+                    if (verbose) {
+                        System.out.printf("(%d, %d)%n", x, y);
+                    }
+                    
                     solutions.add(new XYPair(x, y));
                 }
             }
@@ -139,45 +152,60 @@ public class ExampleGenerator {
         return cong1 % Math.abs(f) == 0 && cong2 % Math.abs(f) == 0;
     }
 
-    private static void printTestCase(String type, int a, int b, int c, int d, int e, int f, List<XYPair> solutions) {
-        String solutionList = solutions.stream()
-                .map((sol) -> String.format("            new long[]{%d, %d},\n", sol.x, sol.y))
-                .collect(Collectors.joining());
-
-        String unsupportedMethod, testMethod;
-
-        switch (type) {
-            case "Primitive" -> {
-                unsupportedMethod = "assertPrimitiveNotSupportedYet";
-                testMethod = "assertPrimitiveSolutions";
-            }
-            case "Representative" -> {
-                unsupportedMethod = "assertRepresentativeNotSupportedYet";
-                testMethod = "assertRepresentativeSolutions";
-            }
-            default -> {
-                unsupportedMethod = "TestUtils.assertNotSupportedYet";
-                testMethod = "TestUtils.assertSolutionsInclude";
-            }
-        }
-        
-        String solver = "ParabolicSolver.solve(a, b, c, d, e, f)";
-
+    private static void printTestCase(String type, String solver, int a, int b, int c, int d, int e, int f, List<XYPair> solutions) {
         System.out.println();
-        System.out.printf(
-                  "    @Test\n"
-                + "    public void test%sN() {\n"
-                + "        System.out.println(\"N: %s\");\n"
-                + "        int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;\n"
-                + "\n"
-                + "        long[][] expectedSolutions = new long[][]{\n"
-                + solutionList
-                + "        };\n"
-                + "\n"
-                + "        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);\n"
-                + "        %s(() -> { %s; });\n"
-                + "        //%s(a, b, c, d, e, f, expectedSolutions, %s);\n"
-                + "    }\n", type, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, unsupportedMethod, solver, testMethod, solver);
+        String testName = type == "all" ? "" : type;
+        if (solutions.isEmpty()) {
+            System.out.printf(
+                      "    @Test\n"
+                    + "    public void test%sN() {\n"
+                    + "        System.out.println(\"N: %s\");\n"
+                    + "        int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;\n"
+                    + "\n"
+                    + "        TestUtils.assertNotSupportedYet(() -> { %s; });\n"
+                    + "        //TestUtils.assertNoSolutions(a, b, c, d, e, f, %s);\n"
+                    + "    }\n", testName, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, solver, solver);
+        } else {
+            String solutionList = solutions.stream()
+                    .map((sol) -> String.format("            new long[]{%d, %d},\n", sol.x, sol.y))
+                    .collect(Collectors.joining());
+
+            String unsupportedMethod, testMethod;
+
+            switch (type) {
+                case "Primitive" -> {
+                    unsupportedMethod = "assertPrimitiveNotSupportedYet";
+                    testMethod = "assertPrimitiveSolutions";
+                }
+                case "Representative" -> {
+                    unsupportedMethod = "assertRepresentativeNotSupportedYet";
+                    testMethod = "assertRepresentativeSolutions";
+                }
+                case "all" -> {
+                    unsupportedMethod = "TestUtils.assertNotSupportedYet";
+                    testMethod = "TestUtils.assertAllSolutions";
+                }
+                default -> {
+                    unsupportedMethod = "TestUtils.assertNotSupportedYet";
+                    testMethod = "TestUtils.assertSolutionsInclude";
+                }
+            }
+
+            System.out.printf(
+                      "    @Test\n"
+                    + "    public void test%sN() {\n"
+                    + "        System.out.println(\"N: %s\");\n"
+                    + "        int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;\n"
+                    + "\n"
+                    + "        long[][] expectedSolutions = new long[][]{\n"
+                    + solutionList
+                    + "        };\n"
+                    + "\n"
+                    + "        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);\n"
+                    + "        %s(() -> { %s; });\n"
+                    + "        //%s(a, b, c, d, e, f, expectedSolutions, %s);\n"
+                    + "    }\n", testName, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, unsupportedMethod, solver, testMethod, solver);
+        }
     }
 
     private static Optional<XYPair> leastPositiveSolution(List<XYPair> solutions) {
@@ -305,5 +333,39 @@ public class ExampleGenerator {
                 }
             }
         }
+    }
+
+    private static void findRestrictedEllipticalExamples() {
+        int bound = 9;
+        for (int a = 1; a <= bound; a++) {
+            for (int b = -bound; b < bound; b++) {
+                for (int c = -bound; c < bound; c++) {
+                    int D = b * b - 4 * a * c;
+                    
+                    if (D >= 0) {
+                        continue;
+                    }
+                    
+                    if (D >= -4) {
+                        continue;
+                    }
+                    
+                    for (int f = -bound; f < 0; f++) {
+                        if (Utils.gcd(a, f) != 1) {
+                            continue;
+                        }
+                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+
+                        if (numSmallSolutions == 0) {
+                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean hasSmallSolutions(int a, int b, int c, int d, int e, int f, int bound) {
+        return !bruteForceSmallSolutions(a, b, c, d, e, f, bound, false).isEmpty();
     }
 }
