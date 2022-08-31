@@ -120,8 +120,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -139,8 +138,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -148,8 +146,7 @@ public class RestrictedEllipticalSolverTest {
         System.out.println("59: x^2 - xy + y^2 - 8 = 0 (D < 0)");
         int a = 1, b = -1, c = 1, d = 0, e = 0, f = -8;
 
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -169,8 +166,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -186,8 +182,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -195,8 +190,7 @@ public class RestrictedEllipticalSolverTest {
         System.out.println("62: x^2 + y^2 - 7 = 0 (D < 0)");
         int a = 1, b = 0, c = 1, d = 0, e = 0, f = -7;
 
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -214,8 +208,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -237,7 +230,6 @@ public class RestrictedEllipticalSolverTest {
         System.out.println("65: 3x^2 + xy + 8y^2 - 4 = 0 (D < 0)");
         int a = 3, b = 1, c = 8, d = 0, e = 0, f = -4;
 
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 }

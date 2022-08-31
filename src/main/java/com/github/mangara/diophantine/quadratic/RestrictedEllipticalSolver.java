@@ -66,9 +66,9 @@ public class RestrictedEllipticalSolver {
         for (Long divisor : Divisors.getSquareDivisors(n)) {
             List<XYPair> primitive = getPrimtiveSolutions(a, b, c, (int) (n / divisor));
             
-            BigInteger bigDivisor = BigInteger.valueOf(divisor);
+            BigInteger factor = BigInteger.valueOf(divisor).sqrt();
             for (XYPair sol : primitive) {
-                solutions.add(new XYPair(sol.x.multiply(bigDivisor), sol.y.multiply(bigDivisor)));
+                solutions.add(new XYPair(sol.x.multiply(factor), sol.y.multiply(factor)));
             }
         }
         
@@ -76,6 +76,8 @@ public class RestrictedEllipticalSolver {
     }
 
     private static List<XYPair> getPrimtiveSolutions(int a, int b, int c, int n) {
+//        System.out.printf("Looking for primitive solutions to %d x^2 + %d xy + %d y^2 = %d%n", a, b, c, n);
+        
         List<XYPair> solutions = new ArrayList<>();
         
         // Solve at^2 + bt + c = 0 (mod n) for -n/2 < t <= n/2
@@ -83,6 +85,8 @@ public class RestrictedEllipticalSolver {
         List<Integer> thetas = congruenceSolutions.stream()
                 .map(t -> t > n / 2 ? t - n : t)
                 .collect(Collectors.toList());
+        
+//        System.out.printf("Solutions to %d t^2 + %d t + %d = 0 (mod %d): %s%n", a, b, c, n, thetas.toString());
         
         long D = Utils.discriminant(a, b, c);
         
@@ -94,13 +98,23 @@ public class RestrictedEllipticalSolver {
                     / n;
             
             if (D < -4 && P == 1) {
+//                System.out.printf("Case Y. D = %d, theta = %d, P = %d%n", D, theta, P);
                 solutions.add(exceptionalSolution(-1, 0, theta, n));
                 solutions.add(exceptionalSolution(1, 0, theta, n));
                 continue;
             }
             
             // Q = 2at + b
-            long Q = Math.addExact(Math.multiplyExact(2, Math.multiplyExact(a, (long) theta)), b);
+            long Q = Math.negateExact(Math.addExact(Math.multiplyExact(2, Math.multiplyExact(a, (long) theta)), b));
+            
+            if (D == -4 && P == 1) {
+//                System.out.printf("Case X. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, Q / 2);
+                solutions.add(exceptionalSolution(-1, 0, theta, n));
+                solutions.add(exceptionalSolution(1, 0, theta, n));
+                solutions.add(exceptionalSolution(-Q / 2, 1, theta, n));
+                solutions.add(exceptionalSolution(Q / 2, -1, theta, n));
+                continue;
+            }
             
         }
         
@@ -108,6 +122,8 @@ public class RestrictedEllipticalSolver {
     }
 
     private static XYPair exceptionalSolution(long u, long y, int theta, int n) {
+//        System.out.printf("Exceptional solution (%d, %d) with theta = %d and n = %d, gives real solution (%d, %d)%n", u, y, theta, n, theta * u - n * y, u);
+        
         // (tu - ny, u)
         return new XYPair(
                 Math.subtractExact(
