@@ -20,9 +20,9 @@ import com.github.mangara.diophantine.XYPair;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Solves some elliptical quadratic Diophantine equations in two variables.
@@ -48,22 +48,23 @@ public class RestrictedEllipticalSolver {
             throw new UnsupportedOperationException("Not supported yet.");
         }
         
-        // Ensure a > 0 and n > 0
+        // Ensure a > 0 and f < 0
         if (a <= 0 || f >= 0) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
         
-        return solveReduced(a, b, c, f);
+        return solveReduced(a, b, c, -f);
     }
 
-    private static Iterator<XYPair> solveReduced(int a, int b, int c, int f) {
+    // Pre: a > 0, f < 0, gcd(a, f) = 1, D = b^2 - 4ac < 0 and not a perfect square
+    private static Iterator<XYPair> solveReduced(int a, int b, int c, int n) {
         // If a x^2 + b xy + c y^2 + f = 0 with gcd(x, y) = h, f must be divisible by h^2.
         // So to find all such (x, y), we can solve a X^2 + b XY + c Y^2 + f/h^2 = 0 for relatively prime (X, Y).
         // We then obtain (x, y) = (hX, hY).
         List<XYPair> solutions = new ArrayList<>();
         
-        for (Long divisor : Divisors.getSquareDivisors(Math.abs(f))) {
-            List<XYPair> primitive = getPrimtiveSolutions(a, b, c, f / (divisor * divisor));
+        for (Long divisor : Divisors.getSquareDivisors(n)) {
+            List<XYPair> primitive = getPrimtiveSolutions(a, b, c, (int) (n / divisor));
             
             BigInteger bigDivisor = BigInteger.valueOf(divisor);
             for (XYPair sol : primitive) {
@@ -74,8 +75,47 @@ public class RestrictedEllipticalSolver {
         return solutions.iterator();
     }
 
-    private static List<XYPair> getPrimtiveSolutions(int a, int b, int c, long l) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static List<XYPair> getPrimtiveSolutions(int a, int b, int c, int n) {
+        List<XYPair> solutions = new ArrayList<>();
+        
+        // Solve at^2 + bt + c = 0 (mod n) for -n/2 < t <= n/2
+        List<Integer> congruenceSolutions = UnaryCongruenceSolver.solve(a, b, c, n);
+        List<Integer> thetas = congruenceSolutions.stream()
+                .map(t -> t > n / 2 ? t - n : t)
+                .collect(Collectors.toList());
+        
+        long D = Utils.discriminant(a, b, c);
+        
+        for (Integer theta : thetas) {
+            // P = (at^2 + bt + c) / n
+            long P = Math.addExact(
+                    Math.multiplyExact(a, Math.multiplyExact((long) theta, (long) theta)),
+                    Math.addExact(Math.multiplyExact(b, (long) theta), c))
+                    / n;
+            
+            if (D < -4 && P == 1) {
+                solutions.add(exceptionalSolution(-1, 0, theta, n));
+                solutions.add(exceptionalSolution(1, 0, theta, n));
+                continue;
+            }
+            
+            // Q = 2at + b
+            long Q = Math.addExact(Math.multiplyExact(2, Math.multiplyExact(a, (long) theta)), b);
+            
+        }
+        
+        return solutions;
+    }
+
+    private static XYPair exceptionalSolution(long u, long y, int theta, int n) {
+        // (tu - ny, u)
+        return new XYPair(
+                Math.subtractExact(
+                        Math.multiplyExact(theta, u), 
+                        Math.multiplyExact(n, y)
+                ), 
+                u
+        );
     }
     
     
