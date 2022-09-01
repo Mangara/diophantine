@@ -15,6 +15,7 @@
  */
 package com.github.mangara.diophantine;
 
+import com.github.mangara.diophantine.quadratic.RestrictedEllipticalSolver;
 import com.github.mangara.diophantine.quadratic.UnaryCongruenceSolver;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
@@ -40,7 +41,7 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 3, b = 1, c = 8, d = 0, e = 0, f = -4;
+        int a = 5, b = 4, c = 1, d = 0, e = 0, f = -2;
         
         String solver = "RestrictedEllipticalSolver.solve(a, b, c, f)";
         
@@ -346,7 +347,7 @@ public class ExampleGenerator {
                         continue;
                     }
                     
-                    if (D >= -4) {
+                    if (D != -4) {
                         continue;
                     }
                     
@@ -354,10 +355,17 @@ public class ExampleGenerator {
                         if (Utils.gcd(a, f) != 1) {
                             continue;
                         }
-                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
-
-                        if (numSmallSolutions == 0) {
-                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+//                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+//
+//                        if (numSmallSolutions == 0) {
+//                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+//                        }
+                        try {
+                            RestrictedEllipticalSolver.solve(a, b, c, f);
+                        } catch (RuntimeException ex) {
+                            if (ex.getMessage().equals("Boom")) {
+                                System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size());
+                            }
                         }
                     }
                 }

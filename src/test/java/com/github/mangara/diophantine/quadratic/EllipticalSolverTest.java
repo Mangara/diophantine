@@ -202,8 +202,7 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -211,8 +210,7 @@ public class EllipticalSolverTest {
         System.out.println("59: x^2 - xy + y^2 - 8 = 0 (D < 0)");
         int a = 1, b = -1, c = 1, d = 0, e = 0, f = -8;
 
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -232,8 +230,7 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -249,8 +246,7 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -258,8 +254,7 @@ public class EllipticalSolverTest {
         System.out.println("62: x^2 + y^2 - 7 = 0 (D < 0)");
         int a = 1, b = 0, c = 1, d = 0, e = 0, f = -7;
 
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -303,6 +298,41 @@ public class EllipticalSolverTest {
 
         TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
         //TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test66() {
+        System.out.println("66: x^2 + 3xy + 3y^2 - 4 = 0 (D < 0)");
+        int a = 1, b = 3, c = 3, d = 0, e = 0, f = -4;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{2, -2},
+            new long[]{4, -2},
+            new long[]{-2, 0},
+            new long[]{2, 0},
+            new long[]{-4, 2},
+            new long[]{-2, 2},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test67() {
+        System.out.println("67: 5x^2 + 4xy + y^2 - 2 = 0 (D < 0)");
+        int a = 5, b = 4, c = 1, d = 0, e = 0, f = -2;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{1, -3},
+            new long[]{1, -1},
+            new long[]{-1, 1},
+            new long[]{-1, 3},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
+//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
     
 }

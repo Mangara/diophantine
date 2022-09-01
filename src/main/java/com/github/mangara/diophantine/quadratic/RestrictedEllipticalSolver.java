@@ -18,6 +18,7 @@ package com.github.mangara.diophantine.quadratic;
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import com.github.mangara.diophantine.utils.Divisors;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -96,26 +97,50 @@ public class RestrictedEllipticalSolver {
                     Math.multiplyExact(a, Math.multiplyExact((long) theta, (long) theta)),
                     Math.addExact(Math.multiplyExact(b, (long) theta), c))
                     / n;
-            
-            if (D < -4 && P == 1) {
-//                System.out.printf("Case Y. D = %d, theta = %d, P = %d%n", D, theta, P);
-                solutions.add(exceptionalSolution(-1, 0, theta, n));
-                solutions.add(exceptionalSolution(1, 0, theta, n));
-                continue;
-            }
-            
-            // Q = 2at + b
+            // Q = -(2at + b)
             long Q = Math.negateExact(Math.addExact(Math.multiplyExact(2, Math.multiplyExact(a, (long) theta)), b));
             
-            if (D == -4 && P == 1) {
-//                System.out.printf("Case X. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, Q / 2);
+            if (D < -4 && P == 1) {
+//                System.out.printf("Case A. D = %d, theta = %d, P = %d%n", D, theta, P);
                 solutions.add(exceptionalSolution(-1, 0, theta, n));
                 solutions.add(exceptionalSolution(1, 0, theta, n));
-                solutions.add(exceptionalSolution(-Q / 2, 1, theta, n));
-                solutions.add(exceptionalSolution(Q / 2, -1, theta, n));
-                continue;
-            }
+            } else if (D == -4 && P == 1) {
+                long N = Q / 2;
+//                System.out.printf("Case B. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
+                solutions.add(exceptionalSolution(-1, 0, theta, n));
+                solutions.add(exceptionalSolution(1, 0, theta, n));
+                solutions.add(exceptionalSolution(-N, 1, theta, n));
+                solutions.add(exceptionalSolution(N, -1, theta, n));
+            } else if (D == -4 && P == 2) {
+                long N = Q / 2;
+//                System.out.printf("Case C. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
+                solutions.add(exceptionalSolution((-N + 1) / 2, 1, theta, n));
+                solutions.add(exceptionalSolution((N - 1) / 2, -1, theta, n));
+                solutions.add(exceptionalSolution(-(N + 1) / 2, 1, theta, n));
+                solutions.add(exceptionalSolution((N + 1) / 2, -1, theta, n));
+            } else if (D == -3 && P == 1) {
+                long N = (Q - 1) / 2;
+//                System.out.printf("Case D. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
+                solutions.add(exceptionalSolution(1, 0, theta, n));
+                solutions.add(exceptionalSolution(-1, 0, theta, n));
+                solutions.add(exceptionalSolution(-N, 1, theta, n));
+                solutions.add(exceptionalSolution(N, -1, theta, n));
+                solutions.add(exceptionalSolution(-(N + 1), 1, theta, n));
+                solutions.add(exceptionalSolution(N + 1, -1, theta, n));
+            } else if (D == -3 && P == 3) {
+                long N = (Q - 1) / 2;
+//                System.out.printf("Case E. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
+                solutions.add(exceptionalSolution((-N + 1)/3, 1, theta, n));
+                solutions.add(exceptionalSolution((N - 1)/3, -1, theta, n));
+                solutions.add(exceptionalSolution(-(2 * N + 1)/3, 2, theta, n));
+                solutions.add(exceptionalSolution((2 * N + 1)/3, -2, theta, n));
+                solutions.add(exceptionalSolution(-(N + 2)/3, 1, theta, n));
+                solutions.add(exceptionalSolution((N + 2)/3, -1, theta, n));
+            } else {
+                long bound = (long) Math.sqrt(Math.multiplyExact(4, P) / -D);
             
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
         }
         
         return solutions;
