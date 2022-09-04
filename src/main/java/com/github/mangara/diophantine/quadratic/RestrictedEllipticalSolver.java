@@ -17,10 +17,11 @@ package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.utils.ContinuedFraction;
 import com.github.mangara.diophantine.utils.Divisors;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,8 +78,6 @@ public class RestrictedEllipticalSolver {
     }
 
     private static List<XYPair> getPrimtiveSolutions(int a, int b, int c, int n) {
-//        System.out.printf("Looking for primitive solutions to %d x^2 + %d xy + %d y^2 = %d%n", a, b, c, n);
-        
         List<XYPair> solutions = new ArrayList<>();
         
         // Solve at^2 + bt + c = 0 (mod n) for -n/2 < t <= n/2
@@ -87,11 +86,12 @@ public class RestrictedEllipticalSolver {
                 .map(t -> t > n / 2 ? t - n : t)
                 .collect(Collectors.toList());
         
-//        System.out.printf("Solutions to %d t^2 + %d t + %d = 0 (mod %d): %s%n", a, b, c, n, thetas.toString());
-        
         long D = Utils.discriminant(a, b, c);
         
         for (Integer theta : thetas) {
+            // By substituting x = tu - ny, we obtain
+            //  Pu^2 + Quy + Ry^2 = 1, with
+            
             // P = (at^2 + bt + c) / n
             long P = Math.addExact(
                     Math.multiplyExact(a, Math.multiplyExact((long) theta, (long) theta)),
@@ -99,64 +99,82 @@ public class RestrictedEllipticalSolver {
                     / n;
             // Q = -(2at + b)
             long Q = Math.negateExact(Math.addExact(Math.multiplyExact(2, Math.multiplyExact(a, (long) theta)), b));
+            // R = na
             
             if (D < -4 && P == 1) {
-//                System.out.printf("Case A. D = %d, theta = %d, P = %d%n", D, theta, P);
-                solutions.add(exceptionalSolution(-1, 0, theta, n));
-                solutions.add(exceptionalSolution(1, 0, theta, n));
+                solutions.addAll(solutions(1, 0, theta, n));
             } else if (D == -4 && P == 1) {
                 long N = Q / 2;
-//                System.out.printf("Case B. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
-                solutions.add(exceptionalSolution(-1, 0, theta, n));
-                solutions.add(exceptionalSolution(1, 0, theta, n));
-                solutions.add(exceptionalSolution(-N, 1, theta, n));
-                solutions.add(exceptionalSolution(N, -1, theta, n));
+                solutions.addAll(solutions(1, 0, theta, n));
+                solutions.addAll(solutions(N, -1, theta, n));
             } else if (D == -4 && P == 2) {
                 long N = Q / 2;
-//                System.out.printf("Case C. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
-                solutions.add(exceptionalSolution((-N + 1) / 2, 1, theta, n));
-                solutions.add(exceptionalSolution((N - 1) / 2, -1, theta, n));
-                solutions.add(exceptionalSolution(-(N + 1) / 2, 1, theta, n));
-                solutions.add(exceptionalSolution((N + 1) / 2, -1, theta, n));
+                solutions.addAll(solutions((N - 1) / 2, -1, theta, n));
+                solutions.addAll(solutions((N + 1) / 2, -1, theta, n));
             } else if (D == -3 && P == 1) {
                 long N = (Q - 1) / 2;
-//                System.out.printf("Case D. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
-                solutions.add(exceptionalSolution(1, 0, theta, n));
-                solutions.add(exceptionalSolution(-1, 0, theta, n));
-                solutions.add(exceptionalSolution(-N, 1, theta, n));
-                solutions.add(exceptionalSolution(N, -1, theta, n));
-                solutions.add(exceptionalSolution(-(N + 1), 1, theta, n));
-                solutions.add(exceptionalSolution(N + 1, -1, theta, n));
+                solutions.addAll(solutions(1, 0, theta, n));
+                solutions.addAll(solutions(N, -1, theta, n));
+                solutions.addAll(solutions(N + 1, -1, theta, n));
             } else if (D == -3 && P == 3) {
                 long N = (Q - 1) / 2;
-//                System.out.printf("Case E. D = %d, theta = %d, P = %d, Q = %d, N = %d%n", D, theta, P, Q, N);
-                solutions.add(exceptionalSolution((-N + 1)/3, 1, theta, n));
-                solutions.add(exceptionalSolution((N - 1)/3, -1, theta, n));
-                solutions.add(exceptionalSolution(-(2 * N + 1)/3, 2, theta, n));
-                solutions.add(exceptionalSolution((2 * N + 1)/3, -2, theta, n));
-                solutions.add(exceptionalSolution(-(N + 2)/3, 1, theta, n));
-                solutions.add(exceptionalSolution((N + 2)/3, -1, theta, n));
+                solutions.addAll(solutions((N - 1)/3, -1, theta, n));
+                solutions.addAll(solutions((2 * N + 1)/3, -2, theta, n));
+                solutions.addAll(solutions((N + 2)/3, -1, theta, n));
             } else {
                 long bound = (long) Math.sqrt(Math.multiplyExact(4, P) / -D);
-            
-                throw new UnsupportedOperationException("Not supported yet.");
+                List<XYPair> convergents = ContinuedFraction.ofFraction(-Q, 2 * P).getConvergents();
+                
+                for (int i = 0; i < convergents.size(); i++) {
+                    XYPair convergent = convergents.get(i);
+                    
+                    try {
+                        if (convergent.y.longValueExact() > bound) {
+                            break;
+                        }
+                    } catch (ArithmeticException ex) {
+                        // convergent.y is too large for a long, so certainly larger than bound
+                        break;
+                    }
+                    
+                    BigInteger Ai = convergent.x;
+                    BigInteger Bi = convergent.y;
+                    
+                    // Test if (Ai, Bi) is a solution to the reduced equation
+                    BigInteger result = Ai.multiply(Ai).multiply(BigInteger.valueOf(P))
+                            .add(Ai.multiply(Bi).multiply(BigInteger.valueOf(Q)))
+                            .add(Bi.multiply(Bi).multiply(BigInteger.valueOf(n * a)));
+                    
+                    if (result.equals(BigInteger.ONE)) {
+                        solutions.addAll(solutions(Ai.longValueExact(), Bi.longValueExact(), theta, n));
+                        
+                        if (D == -3 || D == -4) {
+                            XYPair convergent2 = convergents.get(i + 1);
+                            solutions.addAll(solutions(convergent2.x.longValueExact(), convergent2.y.longValueExact(), theta, n));
+                        }
+                        
+                        if (D == -3) {
+                            XYPair convergent3 = convergents.get(i + 2);
+                            solutions.addAll(solutions(convergent3.x.longValueExact(), convergent3.y.longValueExact(), theta, n));
+                        }
+                        
+                        break;
+                    }
+                }
             }
         }
         
         return solutions;
     }
 
-    private static XYPair exceptionalSolution(long u, long y, int theta, int n) {
-//        System.out.printf("Exceptional solution (%d, %d) with theta = %d and n = %d, gives real solution (%d, %d)%n", u, y, theta, n, theta * u - n * y, u);
+    private static List<XYPair> solutions(long u, long y, int theta, int n) {
+        long x = Math.subtractExact(
+                Math.multiplyExact(theta, u), 
+                Math.multiplyExact(n, y)
+        );
         
         // (tu - ny, u)
-        return new XYPair(
-                Math.subtractExact(
-                        Math.multiplyExact(theta, u), 
-                        Math.multiplyExact(n, y)
-                ), 
-                u
-        );
+        return Arrays.asList(new XYPair(x, u), new XYPair(Math.negateExact(x), Math.negateExact(u)));
     }
     
     

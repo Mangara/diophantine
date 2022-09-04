@@ -216,6 +216,19 @@ public class ContinuedFraction {
     }
 
     /**
+     * Returns all convergents of this finite continued fraction.
+     *
+     * @return a list of convergents x/y
+     */
+    public List<XYPair> getConvergents() {
+        if (repetitionStart != NO_REPETITION) {
+            throw new IllegalArgumentException("Must specify a length for infinite continued fractions.");
+        }
+        
+        return getConvergents(coefficients.size());
+    }
+    
+    /**
      * Returns the first length convergents of this continued fraction.
      *
      * Algorithm adapted from Moore (1964) An Introduction to Continuous
@@ -258,5 +271,36 @@ public class ContinuedFraction {
         }
 
         return result;
+    }
+    
+    @Override
+    public String toString() {
+        if (coefficients.isEmpty()) {
+            return "[]";
+        } else if (coefficients.size() == 1) {
+            return "[" + Long.toString(coefficients.get(0)) + "]";
+        }
+
+        StringBuilder sb = new StringBuilder("[");
+
+        sb.append(coefficients.get(0));
+        sb.append(';');
+
+        for (int i = 1; i < coefficients.size(); i++) {
+            if (i == repetitionStart) {
+                sb.append('(');
+            }
+
+            sb.append(coefficients.get(i));
+            sb.append(',');
+        }
+
+        sb.deleteCharAt(sb.length() - 1); // Remove last comma
+        if (repetitionStart != NO_REPETITION) {
+            sb.append(')');
+        }
+        sb.append(']');
+
+        return sb.toString();
     }
 }
