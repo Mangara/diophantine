@@ -19,7 +19,9 @@ import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContinuedFraction {
 
@@ -28,6 +30,88 @@ public class ContinuedFraction {
     private final List<Long> coefficients;
     private final int repetitionStart;
 
+    /**
+     * Returns the continued fraction of a/c.
+     *
+     * @param a
+     * @param c
+     * @return
+     */
+    public static ContinuedFraction ofFraction(long a, long c) {
+        return ofExpression(a, 0, c);
+    }
+    
+    /**
+     * Returns the continued fraction of sqrt(b).
+     *
+     * @param b
+     * @return
+     */
+    public static ContinuedFraction ofRoot(long b) {
+        return ofExpression(0, b, 1);
+    }
+    
+    /**
+     * Returns the continued fraction of (a + sqrt(b))/c.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @return
+     */
+    public static ContinuedFraction ofExpression(long a, long b, long c) {
+        BigInteger A = BigInteger.valueOf(a), B = BigInteger.valueOf(b), C = BigInteger.valueOf(c);
+        if (B.subtract(A.multiply(A)).remainder(C) != BigInteger.ZERO) { // b - a^2 is not divisible by c, multiply by c first so that all divisions are exact
+            A = A.multiply(C);
+            B = B.multiply(C).multiply(C);
+            C = C.multiply(C);
+        }
+
+        List<Long> coefficients = new ArrayList<>();
+        Map<XYPair, Integer> pairs = new HashMap<>();
+        
+        BigInteger[] sqrtBAndRemainder = B.sqrtAndRemainder();
+        BigInteger sqrtB = sqrtBAndRemainder[0];
+        boolean bIsPerfectSquare = sqrtBAndRemainder[1].signum() == 0;
+
+        long coefficient = coefficient(A, sqrtB, C, bIsPerfectSquare);
+        XYPair pair = new XYPair(A, C);
+        int i = 0;
+
+        do {
+            coefficients.add(coefficient);
+            pairs.put(pair, i);
+            i++;
+
+            A = BigInteger.valueOf(coefficient).multiply(C).subtract(A); // coefficient * C - A;
+            C = B.subtract(A.multiply(A)).divide(C); // (B - A * A) / C;
+
+            if (C.signum() == 0) {
+                return new ContinuedFraction(coefficients, NO_REPETITION);
+            }
+
+            coefficient = coefficient(A, sqrtB, C, bIsPerfectSquare);
+            
+            pair = new XYPair(A, C);
+        } while (!pairs.containsKey(pair));
+
+        return new ContinuedFraction(coefficients, pairs.get(pair));
+    }
+    
+    // floor((a + sqrt(b))/c)
+    private static long coefficient(BigInteger A, BigInteger sqrtB, BigInteger C, boolean bIsPerfectSquare) {
+        BigInteger top = A.add(sqrtB);
+        long coefficient = top.divide(C).longValueExact();
+        
+        if (top.remainder(C) == BigInteger.ZERO && C.signum() == -1 && !bIsPerfectSquare) {
+            coefficient--;
+        } else if (top.signum() * C.signum() == -1) {
+            coefficient--;
+        }
+        
+        return coefficient;
+    }
+    
     /**
      * Creates a new continued fraction.
      *
