@@ -674,8 +674,7 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -2087,5 +2086,13 @@ public class QuadraticSolverTest {
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test68() {
+        System.out.println("68: -3x^2 - 4xy - 6y^2 - 2 = 0 (D < 0)");
+        int a = -3, b = -4, c = -6, d = 0, e = 0, f = -2;
+
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 }
