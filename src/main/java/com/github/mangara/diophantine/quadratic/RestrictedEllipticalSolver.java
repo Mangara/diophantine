@@ -47,14 +47,12 @@ public class RestrictedEllipticalSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(int a, int b, int c, int f) {
-        int n = -f;
-        
-        if (n == 0) {
+        if (f == 0) {
             // We can't get here from QuadraticSolver, as it ends up
             // in the trivial case, but I included it for completeness.
             
             // Solving for x with the quadratic formula gives
-            //  D' = Dy^2 + 4an = Dy^2
+            //  D' = Dy^2 - 4af = Dy^2
             // If y != 0, Dy^2 < 0, so there are no solutions.
             // y = 0 gives ax^2 = 0 => x = 0
             return Collections.singletonList(new XYPair(0, 0)).iterator();
@@ -68,34 +66,34 @@ public class RestrictedEllipticalSolver {
             a = -a;
             b = -b;
             c = -c;
-            n = -n;
+            f = -f;
         }
-        
         // Now a > 0
         
-        if (n < 0) {
+        if (f > 0) {
             // Solving for x with the quadratic formula gives
-            //  D' = Dy^2 + 4an
+            //  D' = Dy^2 - 4af
             // As D < 0 and y^2 >= 0, Dy^2 <= 0.
-            // Thus there are no solutions if 4an < 0.
+            // Thus there are no solutions if 4af > 0.
             return new EmptyIterator<>();
         }
         
-        return solveSignCorrected(a, b, c, n);
+        return solveSignCorrected(a, b, c, f);
     }
     
-    // Pre: a > 0, n > 0, D = b^2 - 4ac < 0 and not a perfect square
-    private static Iterator<XYPair> solveSignCorrected(int a, int b, int c, int n) {
+    // Pre: a > 0, f < 0, D = b^2 - 4ac < 0 and not a perfect square
+    private static Iterator<XYPair> solveSignCorrected(int a, int b, int c, int f) {
         // TODO: Ensure gcd(a, n) = 1
-        if (Utils.gcd(a, n) != 1) {
+        if (Utils.gcd(a, f) != 1) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
         
-        return solveReduced(a, b, c, n);
+        return solveReduced(a, b, c, f);
     }
 
     // Pre: a > 0, n > 0, gcd(a, n) = 1, D = b^2 - 4ac < 0 and not a perfect square
-    private static Iterator<XYPair> solveReduced(int a, int b, int c, int n) {
+    private static Iterator<XYPair> solveReduced(int a, int b, int c, int f) {
+        int n = -f;
         // If a x^2 + b xy + c y^2 = n with gcd(x, y) = h, n must be divisible by h^2.
         // So to find all such (x, y), we can solve a X^2 + b XY + c Y^2 + n/h^2 = 0 for relatively prime (X, Y).
         // We then obtain (x, y) = (hX, hY).
@@ -212,6 +210,4 @@ public class RestrictedEllipticalSolver {
         // (tu - ny, u)
         return Arrays.asList(new XYPair(x, u), new XYPair(Math.negateExact(x), Math.negateExact(u)));
     }
-    
-    
 }
