@@ -99,12 +99,20 @@ public class Utils {
      * @throws ArithmeticException if the final value does not fit in a long
      */
     public static long discriminant(long a, long b, long c) {
-        BigInteger A = BigInteger.valueOf(a);
-        BigInteger B = BigInteger.valueOf(b);
-        BigInteger C = BigInteger.valueOf(c);
-        
+        return discriminant(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c)).longValueExact();
+    }
+    
+    /**
+     * Computes the discriminant b^2 - 4ac.
+     * 
+     * @param a
+     * @param b
+     * @param c
+     * @return b^2 - 4ac
+     */
+    public static BigInteger discriminant(BigInteger a, BigInteger b, BigInteger c) {
         // b * b - 4 * a * c
-        return B.multiply(B).subtract(BigInteger.valueOf(4).multiply(A).multiply(C)).longValueExact();
+        return b.multiply(b).subtract(BigInteger.valueOf(4).multiply(a).multiply(c));
     }
     
     public static long legendreConstant(long a, long b, long c, long d, long e, long f, long D) {
