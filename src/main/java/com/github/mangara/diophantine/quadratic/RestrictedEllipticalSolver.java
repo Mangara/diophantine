@@ -101,8 +101,6 @@ public class RestrictedEllipticalSolver {
         // We then obtain (x, y) = (hX, hY).
         List<XYPair> solutions = new ArrayList<>();
         
-        System.out.println("D: " + eq.D);
-        
         for (Long divisor : Divisors.getSquareDivisors(n)) {
             List<XYPair> primitive = getPrimtiveSolutions(eq.a, eq.b, eq.c, BigInteger.valueOf(n / divisor));
             
