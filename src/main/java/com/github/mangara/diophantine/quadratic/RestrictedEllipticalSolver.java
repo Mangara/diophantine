@@ -83,24 +83,28 @@ public class RestrictedEllipticalSolver {
     
     // Pre: a > 0, f < 0, D = b^2 - 4ac < 0 and not a perfect square
     private static Iterator<XYPair> solveSignCorrected(int a, int b, int c, int f) {
-        // TODO: Ensure gcd(a, n) = 1
-        if (Utils.gcd(a, f) != 1) {
-            throw new UnsupportedOperationException("Not supported yet.");
+        RestrictedEquation eq = new RestrictedEquation(a, b, c, f).withoutCommonDivisor();
+        
+        if (eq.a.gcd(eq.f).equals(BigInteger.ONE)) {
+            return solveReduced(eq);
         }
         
-        return solveReduced(a, b, c, f);
+        // TODO: Ensure gcd(a, n) = 1
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     // Pre: a > 0, n > 0, gcd(a, n) = 1, D = b^2 - 4ac < 0 and not a perfect square
-    private static Iterator<XYPair> solveReduced(int a, int b, int c, int f) {
-        int n = -f;
+    private static Iterator<XYPair> solveReduced(RestrictedEquation eq) {
+        long n = eq.f.negate().longValueExact();
         // If a x^2 + b xy + c y^2 = n with gcd(x, y) = h, n must be divisible by h^2.
         // So to find all such (x, y), we can solve a X^2 + b XY + c Y^2 + n/h^2 = 0 for relatively prime (X, Y).
         // We then obtain (x, y) = (hX, hY).
         List<XYPair> solutions = new ArrayList<>();
         
+        System.out.println("D: " + eq.D);
+        
         for (Long divisor : Divisors.getSquareDivisors(n)) {
-            List<XYPair> primitive = getPrimtiveSolutions(a, b, c, (int) (n / divisor));
+            List<XYPair> primitive = getPrimtiveSolutions(eq.a, eq.b, eq.c, BigInteger.valueOf(n / divisor));
             
             BigInteger factor = BigInteger.valueOf(divisor).sqrt();
             for (XYPair sol : primitive) {
@@ -111,63 +115,65 @@ public class RestrictedEllipticalSolver {
         return solutions.iterator();
     }
 
-    private static List<XYPair> getPrimtiveSolutions(int a, int b, int c, int n) {
+    private static List<XYPair> getPrimtiveSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger n) {
         List<XYPair> solutions = new ArrayList<>();
         
         // Solve at^2 + bt + c = 0 (mod n) for -n/2 < t <= n/2
-        List<Integer> congruenceSolutions = UnaryCongruenceSolver.solve(a, b, c, n);
+        // TODO: Make UnaryCongruenceSolver work with BigInteger
+        List<Integer> congruenceSolutions = UnaryCongruenceSolver.solve(a.intValueExact(), b.intValueExact(), c.intValueExact(), n.intValueExact());
         List<Integer> thetas = congruenceSolutions.stream()
-                .map(t -> t > n / 2 ? t - n : t)
+                .map(t -> t > n.intValueExact() / 2 ? t - n.intValueExact() : t)
                 .collect(Collectors.toList());
         
-        long D = Utils.discriminant(a, b, c);
+        BigInteger D = Utils.discriminant(a, b, c);
+        BigInteger minusThree = BigInteger.valueOf(-3);
+        BigInteger minusFour = BigInteger.valueOf(-4);
         
         for (Integer theta : thetas) {
+            BigInteger t = BigInteger.valueOf(theta);
             // By substituting x = tu - ny, we obtain
             //  Pu^2 + Quy + Ry^2 = 1, with
             
             // P = (at^2 + bt + c) / n
-            long P = Math.addExact(
-                    Math.multiplyExact(a, Math.multiplyExact((long) theta, (long) theta)),
-                    Math.addExact(Math.multiplyExact(b, (long) theta), c))
-                    / n;
+            BigInteger P = a.multiply(t).multiply(t)
+                    .add(b.multiply(t))
+                    .add(c)
+                    .divide(n);
+            
             // Q = -(2at + b)
-            long Q = Math.negateExact(Math.addExact(Math.multiplyExact(2, Math.multiplyExact(a, (long) theta)), b));
+            BigInteger Q = BigInteger.TWO.multiply(a).multiply(t).add(b).negate();
             // R = na
             
-            if (D < -4 && P == 1) {
-                solutions.addAll(solutions(1, 0, theta, n));
-            } else if (D == -4 && P == 1) {
-                long N = Q / 2;
-                solutions.addAll(solutions(1, 0, theta, n));
-                solutions.addAll(solutions(N, -1, theta, n));
-            } else if (D == -4 && P == 2) {
-                long N = Q / 2;
-                solutions.addAll(solutions((N - 1) / 2, -1, theta, n));
-                solutions.addAll(solutions((N + 1) / 2, -1, theta, n));
-            } else if (D == -3 && P == 1) {
-                long N = (Q - 1) / 2;
-                solutions.addAll(solutions(1, 0, theta, n));
-                solutions.addAll(solutions(N, -1, theta, n));
-                solutions.addAll(solutions(N + 1, -1, theta, n));
-            } else if (D == -3 && P == 3) {
-                long N = (Q - 1) / 2;
-                solutions.addAll(solutions((N - 1)/3, -1, theta, n));
-                solutions.addAll(solutions((2 * N + 1)/3, -2, theta, n));
-                solutions.addAll(solutions((N + 2)/3, -1, theta, n));
+            if (D.compareTo(minusFour) < 0 && P.equals(BigInteger.ONE)) { // D < -4 && P == 1
+                solutions.addAll(solutions(BigInteger.ONE, BigInteger.ZERO, t, n)); // +/- (1, 0)
+            } else if (D.equals(minusFour) && P.equals(BigInteger.ONE)) { // D == -4 && P == 1
+                BigInteger N = Q.divide(BigInteger.TWO); // N = Q / 2
+                solutions.addAll(solutions(BigInteger.ONE, BigInteger.ZERO, t, n)); // +/- (1, 0)
+                solutions.addAll(solutions(N, BigInteger.ONE.negate(), t, n)); // +/- (N, -1)
+            } else if (D.equals(minusFour) && P.equals(BigInteger.TWO)) { // D == -4 && P == 2
+                BigInteger N = Q.divide(BigInteger.TWO); // N = Q / 2
+                solutions.addAll(solutions(N.subtract(BigInteger.ONE).divide(BigInteger.TWO), BigInteger.ONE.negate(), t, n)); // +/- ((N - 1)/2, -1)
+                solutions.addAll(solutions(N.add(BigInteger.ONE).divide(BigInteger.TWO), BigInteger.ONE.negate(), t, n)); // +/- ((N + 1)/2, -1)
+            } else if (D.equals(minusThree) && P.equals(BigInteger.ONE)) { // D == -3 && P == 1
+                BigInteger N = Q.subtract(BigInteger.ONE).divide(BigInteger.TWO); // N = (Q - 1) / 2
+                solutions.addAll(solutions(BigInteger.ONE, BigInteger.ZERO, t, n)); // +/- (1, 0)
+                solutions.addAll(solutions(N, BigInteger.ONE.negate(), t, n)); // +/- (N, -1)
+                solutions.addAll(solutions(N.add(BigInteger.ONE), BigInteger.ONE.negate(), t, n)); // +/- (N + 1, -1)
+            } else if (D.equals(minusThree) && P.equals(BigInteger.valueOf(3))) { // D == -3 && P == 3
+                BigInteger N = Q.subtract(BigInteger.ONE).divide(BigInteger.TWO); // N = (Q - 1) / 2
+                solutions.addAll(solutions(N.subtract(BigInteger.ONE).divide(minusThree), BigInteger.ONE, t, n)); // +/- ((N - 1)/3, -1)
+                solutions.addAll(solutions(N.multiply(BigInteger.TWO).add(BigInteger.ONE).divide(minusThree), BigInteger.TWO, t, n)); // +/- ((2N + 1)/3, -2)
+                solutions.addAll(solutions(N.add(BigInteger.TWO).divide(minusThree), BigInteger.ONE, t, n)); // +/- ((N + 2)/3, -1)
             } else {
-                long bound = (long) Math.sqrt(Math.multiplyExact(4, P) / -D);
-                List<XYPair> convergents = ContinuedFraction.ofFraction(-Q, 2 * P).getConvergents();
+                BigInteger bound = P.multiply(minusFour).divide(D).sqrt(); // sqrt(4P/-D)
+                
+                // convergents of -Q / 2P
+                List<XYPair> convergents = ContinuedFraction.ofFraction(Q.negate().longValueExact(), P.multiply(BigInteger.TWO).longValueExact()).getConvergents();
                 
                 for (int i = 0; i < convergents.size(); i++) {
                     XYPair convergent = convergents.get(i);
                     
-                    try {
-                        if (convergent.y.longValueExact() > bound) {
-                            break;
-                        }
-                    } catch (ArithmeticException ex) {
-                        // convergent.y is too large for a long, so certainly larger than bound
+                    if (convergent.y.compareTo(bound) > 0) {
                         break;
                     }
                     
@@ -175,21 +181,21 @@ public class RestrictedEllipticalSolver {
                     BigInteger Bi = convergent.y;
                     
                     // Test if (Ai, Bi) is a solution to the reduced equation
-                    BigInteger result = Ai.multiply(Ai).multiply(BigInteger.valueOf(P))
-                            .add(Ai.multiply(Bi).multiply(BigInteger.valueOf(Q)))
-                            .add(Bi.multiply(Bi).multiply(BigInteger.valueOf(n * a)));
+                    BigInteger result = Ai.multiply(Ai).multiply(P)
+                            .add(Ai.multiply(Bi).multiply(Q))
+                            .add(Bi.multiply(Bi).multiply(n.multiply(a)));
                     
                     if (result.equals(BigInteger.ONE)) {
-                        solutions.addAll(solutions(Ai.longValueExact(), Bi.longValueExact(), theta, n));
+                        solutions.addAll(solutions(Ai, Bi, t, n));
                         
-                        if (D == -3 || D == -4) {
+                        if (D.equals(minusThree) || D.equals(minusFour)) {
                             XYPair convergent2 = convergents.get(i + 1);
-                            solutions.addAll(solutions(convergent2.x.longValueExact(), convergent2.y.longValueExact(), theta, n));
+                            solutions.addAll(solutions(convergent2.x, convergent2.y, t, n));
                         }
                         
-                        if (D == -3) {
+                        if (D.equals(minusThree)) {
                             XYPair convergent3 = convergents.get(i + 2);
-                            solutions.addAll(solutions(convergent3.x.longValueExact(), convergent3.y.longValueExact(), theta, n));
+                            solutions.addAll(solutions(convergent3.x, convergent3.y, t, n));
                         }
                         
                         break;
@@ -201,13 +207,10 @@ public class RestrictedEllipticalSolver {
         return solutions;
     }
 
-    private static List<XYPair> solutions(long u, long y, int theta, int n) {
-        long x = Math.subtractExact(
-                Math.multiplyExact(theta, u), 
-                Math.multiplyExact(n, y)
-        );
+    private static List<XYPair> solutions(BigInteger u, BigInteger y, BigInteger theta, BigInteger n) {
+        BigInteger x = theta.multiply(u).subtract(n.multiply(y));
         
         // (tu - ny, u)
-        return Arrays.asList(new XYPair(x, u), new XYPair(Math.negateExact(x), Math.negateExact(u)));
+        return Arrays.asList(new XYPair(x, u), new XYPair(x.negate(), u.negate()));
     }
 }
