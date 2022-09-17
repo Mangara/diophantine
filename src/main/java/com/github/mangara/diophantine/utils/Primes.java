@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A classic sieve of Eratosthenes.
@@ -71,6 +72,10 @@ public class Primes {
         }
 
         return factors;
+    }
+    
+    public static List<Long> getDistinctPrimeFactors(long n) {
+        return getPrimeFactors(n).stream().distinct().collect(Collectors.toList());
     }
 
     private static void checkUpperBound(long n) {

@@ -35,4 +35,16 @@ public class PrimesTest {
         assertEquals(Arrays.asList(10111L), Primes.getPrimeFactors(10111));
     }
     
+    @Test
+    public void testGetDistinctPrimeFactors() {
+        System.out.println("getDistinctPrimeFactors");
+        
+        assertEquals(Arrays.asList(), Primes.getDistinctPrimeFactors(1));
+        assertEquals(Arrays.asList(2L), Primes.getDistinctPrimeFactors(2));
+        assertEquals(Arrays.asList(2L, 3L), Primes.getDistinctPrimeFactors(6));
+        assertEquals(Arrays.asList(3L), Primes.getDistinctPrimeFactors(9));
+        assertEquals(Arrays.asList(2L, 3L, 5L, 7L, 11L), Primes.getDistinctPrimeFactors(55440));
+        assertEquals(Arrays.asList(10111L), Primes.getDistinctPrimeFactors(10111));
+    }
+    
 }
