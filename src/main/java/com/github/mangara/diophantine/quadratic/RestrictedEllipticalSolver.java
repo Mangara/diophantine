@@ -86,15 +86,16 @@ public class RestrictedEllipticalSolver {
         RestrictedEquation eq = new RestrictedEquation(a, b, c, f).withoutCommonDivisor();
         
         if (eq.a.gcd(eq.f).equals(BigInteger.ONE)) {
-            return solveReduced(eq);
+            return solveReduced(eq).iterator();
         }
         
-        // TODO: Ensure gcd(a, n) = 1
-        throw new UnsupportedOperationException("Not supported yet.");
+        Reduction reduction = Reduction.forEquation(eq);
+        List<XYPair> reducedSolutions = solveReduced(eq);
+        return reduction.unreduce(reducedSolutions).iterator();
     }
 
     // Pre: a > 0, n > 0, gcd(a, n) = 1, D = b^2 - 4ac < 0 and not a perfect square
-    private static Iterator<XYPair> solveReduced(RestrictedEquation eq) {
+    private static List<XYPair> solveReduced(RestrictedEquation eq) {
         long n = eq.f.negate().longValueExact();
         // If a x^2 + b xy + c y^2 = n with gcd(x, y) = h, n must be divisible by h^2.
         // So to find all such (x, y), we can solve a X^2 + b XY + c Y^2 + n/h^2 = 0 for relatively prime (X, Y).
@@ -110,7 +111,7 @@ public class RestrictedEllipticalSolver {
             }
         }
         
-        return solutions.iterator();
+        return solutions;
     }
 
     private static List<XYPair> getPrimtiveSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger n) {
