@@ -15,6 +15,7 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
+import com.github.mangara.diophantine.utils.ExtendedEuclidean;
 import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -44,7 +45,8 @@ public class Reduction {
     }
 
     private static XYPair findBetaDelta(BigInteger alpha, BigInteger gamma) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XYPair deltaBeta = ExtendedEuclidean.gcdPair(alpha, gamma);
+        return new XYPair(deltaBeta.y.negate(), deltaBeta.x);
     }
     
     private final BigInteger alpha, beta, gamma, delta;
