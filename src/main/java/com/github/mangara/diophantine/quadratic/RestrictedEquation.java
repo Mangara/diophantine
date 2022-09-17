@@ -57,4 +57,9 @@ public class RestrictedEquation {
             return NO_SOLUTIONS;
         }
     }
+    
+    @Override
+    public String toString() {
+        return String.format("%d x^2 + %d xy + %d y^2 = %d, with D = %d", a, b, c, f.negate(), D);
+    }
 }
