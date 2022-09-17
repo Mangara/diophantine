@@ -28,6 +28,17 @@ public class ReductionTest {
     }
 
     @Test
+    public void testForEquation() {
+        System.out.println("forEquation");
+        
+        RestrictedEquation eq = new RestrictedEquation(7, -1, -4, -580594);
+        Reduction reduction = Reduction.forEquation(eq);
+        
+        RestrictedEquation reduced = reduction.reduce(eq);
+        assertEquals("-983750013509 x^2 + -327920624737 xy + -27327048196 y^2 = 580594, with D = 113", reduced.toString());
+    }
+    
+    @Test
     public void testReduced() {
         System.out.println("reduced");
         
@@ -43,7 +54,7 @@ public class ReductionTest {
         System.out.println("unreduce");
         
         List<XYPair> reducedSolutions = Arrays.asList(new XYPair(-14098152293L, 84587893911L), new XYPair(-1413994162L, 8483862685L), new XYPair(-2631814898L, 15790699005L), new XYPair(-48120635L, 288720329L), new XYPair(-1819538693L, 10917100535L), new XYPair(-35624078L, 213741891L), new XYPair(-410527342L, 2463134355L), new XYPair(-29983835L, 179900841L));
-        Reduction reduction = new Reduction(BigInteger.valueOf(82943), BigInteger.valueOf(13824), BigInteger.valueOf(497652), BigInteger.valueOf(82943));;
+        Reduction reduction = new Reduction(BigInteger.valueOf(82943), BigInteger.valueOf(13824), BigInteger.valueOf(497652), BigInteger.valueOf(82943));
         
         List<XYPair> expected = Arrays.asList(new XYPair(-212635, -255963), new XYPair(-21326, -25669), new XYPair(-39694, -47781), new XYPair(-709, -773), new XYPair(-17659, 25669), new XYPair(-370, 357), new XYPair(-3986, 5781), new XYPair(-421, -357));
         List<XYPair> result = reduction.unreduce(reducedSolutions);

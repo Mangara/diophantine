@@ -15,8 +15,10 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
+import com.github.mangara.diophantine.utils.ChineseRemainder;
 import com.github.mangara.diophantine.utils.ExtendedEuclidean;
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.utils.Primes;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,36 @@ public class Reduction {
     }
     
     private static XYPair findAlphaGamma(RestrictedEquation eq) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Long> distinctFactors = Primes.getDistinctPrimeFactors(eq.absF.longValueExact());
+        List<XYPair> xEquations = new ArrayList<>();
+        List<XYPair> yEquations = new ArrayList<>();
+
+        for (Long p : distinctFactors) {
+            BigInteger factor = BigInteger.valueOf(p);
+            
+            if (eq.a.mod(factor).signum() == 0) {
+                if (eq.c.mod(factor).signum() == 0) {
+                    if (eq.b.mod(factor).signum() == 0) {
+                        throw new UnsupportedOperationException();
+                    } else {
+                        xEquations.add(new XYPair(BigInteger.ONE, factor));
+                        yEquations.add(new XYPair(BigInteger.ONE, factor));
+                    }
+                } else {
+                    xEquations.add(new XYPair(BigInteger.ZERO, factor));
+                    yEquations.add(new XYPair(BigInteger.ONE, factor));
+                }
+            } else {
+                xEquations.add(new XYPair(BigInteger.ONE, factor));
+                yEquations.add(new XYPair(BigInteger.ZERO, factor));
+            }
+        }
+
+        BigInteger alpha = ChineseRemainder.solveSystem(xEquations);
+        BigInteger gamma = ChineseRemainder.solveSystem(yEquations);
+        BigInteger gcdAlphaGamma = alpha.gcd(gamma);
+
+        return new XYPair(alpha.divide(gcdAlphaGamma), gamma.divide(gcdAlphaGamma));
     }
 
     private static XYPair findBetaDelta(BigInteger alpha, BigInteger gamma) {
