@@ -41,7 +41,7 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 5, b = 4, c = 1, d = 0, e = 0, f = -2;
+        int a = 3, b = -8, c = 7, d = -4, e = 2, f = -109;
         
         String solver = "RestrictedEllipticalSolver.solve(a, b, c, f)";
         
@@ -244,7 +244,7 @@ public class ExampleGenerator {
                                 continue;
                             }
 
-                            List<Integer> Ti = UnaryCongruenceSolver.solveReduced(1, -v, Math.abs(u));
+                            List<BigInteger> Ti = UnaryCongruenceSolver.solveReduced(1, -v, Math.abs(u));
                             
                             if (Ti.isEmpty()) {
                                 System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);

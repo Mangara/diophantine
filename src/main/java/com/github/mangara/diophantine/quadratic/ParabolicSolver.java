@@ -110,7 +110,7 @@ public class ParabolicSolver {
         BigInteger u = computeU(a, b, d, e);
         BigInteger v = computeV(a, d, f);
         
-        List<Integer> SqrtVModU = UnaryCongruenceSolver.solveReduced(1, v.negate().intValueExact(), u.abs().intValueExact());
+        List<BigInteger> SqrtVModU = UnaryCongruenceSolver.solveReduced(BigInteger.ONE, v.negate(), u.abs());
         
         if (SqrtVModU.isEmpty()) {
             return new EmptyIterator<>();
@@ -118,22 +118,21 @@ public class ParabolicSolver {
         
         List<Iterator<XYPair>> familyIterators = new ArrayList<>();
         
-        for (Integer Ti : SqrtVModU) {
+        for (BigInteger Ti : SqrtVModU) {
             // t + d = T_i + uk satisfies (t + d)^2 = v (mod |u|) for every integer k
             // Substituting t + d = Ti + uk into (t + d)^2 = uy + v and solving for y yields
             //  y = (Ti^2 - v) / u + 2Tik + uk^2 = r + sk + uk^2
             // where r = (Ti^2 - v) / u and s = 2Ti
             
-            BigInteger BigTi = BigInteger.valueOf(Ti);
-            BigInteger r = BigTi.multiply(BigTi).subtract(v).divide(u); // r = (Ti^2 - v) / u
-            BigInteger s = BigInteger.TWO.multiply(BigTi);              // s = 2Ti
+            BigInteger r = Ti.multiply(Ti).subtract(v).divide(u); // r = (Ti^2 - v) / u
+            BigInteger s = BigInteger.TWO.multiply(Ti);              // s = 2Ti
             
             // Substituting y = r + sk + uk^2 into 2ax + by = t = T_i - d + uk yields
             //  2ax = Ti - d - br + (u - bs)k - buk^2
             //    x = (Ti - d - br) / 2a + ((u - bs) / 2a)k - (bu / 2a)k^2
             // If all three coefficients are integers, this yields an x and y for each k
             
-            BigInteger c1 = BigTi.subtract(BigInteger.valueOf(d)).subtract(BigInteger.valueOf(b).multiply(r));
+            BigInteger c1 = Ti.subtract(BigInteger.valueOf(d)).subtract(BigInteger.valueOf(b).multiply(r));
             BigInteger c2 = u.subtract(BigInteger.valueOf(b).multiply(s));
             BigInteger c3 = BigInteger.valueOf(b).multiply(u).negate();
             

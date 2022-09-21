@@ -17,7 +17,6 @@ package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.utils.ContinuedFraction;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
@@ -46,8 +45,38 @@ public class RestrictedEllipticalSolver {
      * @param f
      * @return an iterator over all integer solutions (x, y)
      */
-    public static Iterator<XYPair> solve(int a, int b, int c, int f) {
-        if (f == 0) {
+    public static Iterator<XYPair> solve(long a, long b, long c, long f) {
+        return solve(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f));
+    }
+    
+    /**
+     * Solves the quadratic Diophantine equation
+     * a x^2 + b xy + c y^2 + f = 0,
+     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param f
+     * @return an iterator over all integer solutions (x, y)
+     */
+    public static Iterator<XYPair> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
+        return getAllSolutions(a, b, c, f).iterator();
+    }
+    
+    /**
+     * Solves the quadratic Diophantine equation
+     * a x^2 + b xy + c y^2 + f = 0,
+     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param f
+     * @return a list of all integer solutions (x, y)
+     */
+    public static List<XYPair> getAllSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
+        if (f.signum() == 0) {
             // We can't get here from QuadraticSolver, as it ends up
             // in the trivial case, but I included it for completeness.
             
@@ -55,43 +84,43 @@ public class RestrictedEllipticalSolver {
             //  D' = Dy^2 - 4af = Dy^2
             // If y != 0, Dy^2 < 0, so there are no solutions.
             // y = 0 gives ax^2 = 0 => x = 0
-            return Collections.singletonList(new XYPair(0, 0)).iterator();
+            return Collections.singletonList(new XYPair(0, 0));
         }
         
         // We know: b^2 - 4ac < 0, so ac > 0, which means 
         // a != 0, c != 0 and they have the same sign
         
-        if (a < 0) {
-            // Multiply by -1
-            a = -a;
-            b = -b;
-            c = -c;
-            f = -f;
+        if (a.signum() < 0) {
+            // Negate everything
+            a = a.negate();
+            b = b.negate();
+            c = c.negate();
+            f = f.negate();
         }
         // Now a > 0
         
-        if (f > 0) {
+        if (f.signum() > 0) {
             // Solving for x with the quadratic formula gives
             //  D' = Dy^2 - 4af
             // As D < 0 and y^2 >= 0, Dy^2 <= 0.
             // Thus there are no solutions if 4af > 0.
-            return new EmptyIterator<>();
+            return Collections.emptyList();
         }
         
         return solveSignCorrected(a, b, c, f);
     }
     
     // Pre: a > 0, f < 0, D = b^2 - 4ac < 0 and not a perfect square
-    private static Iterator<XYPair> solveSignCorrected(int a, int b, int c, int f) {
+    private static List<XYPair> solveSignCorrected(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
         RestrictedEquation eq = new RestrictedEquation(a, b, c, f).withoutCommonDivisor();
         
         if (eq.a.gcd(eq.f).equals(BigInteger.ONE)) {
-            return solveReduced(eq).iterator();
+            return solveReduced(eq);
         }
         
         Reduction reduction = Reduction.forEquation(eq);
         List<XYPair> reducedSolutions = solveReduced(reduction.reduce(eq));
-        return reduction.unreduce(reducedSolutions).iterator();
+        return reduction.unreduce(reducedSolutions);
     }
 
     // Pre: a > 0, n > 0, gcd(a, n) = 1, D = b^2 - 4ac < 0 and not a perfect square
@@ -118,18 +147,16 @@ public class RestrictedEllipticalSolver {
         List<XYPair> solutions = new ArrayList<>();
         
         // Solve at^2 + bt + c = 0 (mod n) for -n/2 < t <= n/2
-        // TODO: Make UnaryCongruenceSolver work with BigInteger
-        List<Integer> congruenceSolutions = UnaryCongruenceSolver.solve(a.intValueExact(), b.intValueExact(), c.intValueExact(), n.intValueExact());
-        List<Integer> thetas = congruenceSolutions.stream()
-                .map(t -> t > n.intValueExact() / 2 ? t - n.intValueExact() : t)
+        List<BigInteger> congruenceSolutions = UnaryCongruenceSolver.solve(a, b, c, n);
+        List<BigInteger> thetas = congruenceSolutions.stream()
+                .map(t -> t.compareTo(n.divide(BigInteger.TWO)) > 0 ? t.subtract(n) : t)
                 .collect(Collectors.toList());
         
         BigInteger D = Utils.discriminant(a, b, c);
         BigInteger minusThree = BigInteger.valueOf(-3);
         BigInteger minusFour = BigInteger.valueOf(-4);
         
-        for (Integer theta : thetas) {
-            BigInteger t = BigInteger.valueOf(theta);
+        for (BigInteger t : thetas) {
             // By substituting x = tu - ny, we obtain
             //  Pu^2 + Quy + Ry^2 = 1, with
             

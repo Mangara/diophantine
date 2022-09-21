@@ -15,8 +15,10 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,56 +29,59 @@ public class UnaryCongruenceSolverTest {
 
     @Test
     public void testSolve0() {
-        List<Integer> expectedSolutions = Arrays.asList(0);
+        List<BigInteger> expectedSolutions = integers(0);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(6, 14, 8, 1));
     }
     
     @Test
     public void testSolve1() {
-        List<Integer> expectedSolutions = Arrays.asList(8, 20);
+        List<BigInteger> expectedSolutions = integers(8, 20);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(6, 14, 8, 21));
     }
     
     @Test
     public void testSolve2() {
-        List<Integer> expectedSolutions = Arrays.asList(5, 20);
+        List<BigInteger> expectedSolutions = integers(5, 20);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(18, 5, 8, 21));
     }
     
     @Test
     public void testSolve3() {
-        List<Integer> expectedSolutions = Arrays.asList(17, 61, 82, 126);
+        List<BigInteger> expectedSolutions = integers(17, 61, 82, 126);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(1, 0, -3, 143));
     }
     
     @Test
     public void testSolve4() {
-        List<Integer> expectedSolutions = Arrays.asList(19, 82);
+        List<BigInteger> expectedSolutions = integers(19, 82);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(1, 0, -58, 101));
     }
     
     @Test
     public void testSolve5() {
-        List<Integer> expectedSolutions = Arrays.asList(26, 87);
+        List<BigInteger> expectedSolutions = integers(26, 87);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(1, 0, -111, 113));
     }
     
     @Test
     public void testSolveReduced3() {
-        List<Integer> expectedSolutions = Arrays.asList(17, 61, 82, 126);
+        List<BigInteger> expectedSolutions = integers(17, 61, 82, 126);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solveReduced(1, -3, 143));
     }
     
     @Test
     public void testSolveReduced4() {
-        List<Integer> expectedSolutions = Arrays.asList(19, 82);
+        List<BigInteger> expectedSolutions = integers(19, 82);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solveReduced(1, -58, 101));
     }
     
     @Test
     public void testSolveReduced5() {
-        List<Integer> expectedSolutions = Arrays.asList(26, 87);
+        List<BigInteger> expectedSolutions = integers(26, 87);
         assertEquals(expectedSolutions, UnaryCongruenceSolver.solveReduced(1, -111, 113));
     }
     
+    private List<BigInteger> integers(long... numbers) {
+        return Arrays.stream(numbers).mapToObj(n -> BigInteger.valueOf(n)).collect(Collectors.toList());
+    }
 }

@@ -34,19 +34,34 @@ public class UnaryCongruenceSolver {
      * @param n
      * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
      */
-    public static List<Integer> solve(int a, int b, int c, int n) {
-        if (a <= 0) {
+    public static List<BigInteger> solve(long a, long b, long c, long n) {
+        return solve(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(n));
+    }
+    
+    /**
+     * Solves the quadratic congruence
+     *  a x^2 + b x + c = 0 (mod n)
+     * given that a > 0 and n > 1.
+     * 
+     * @param a
+     * @param b
+     * @param c
+     * @param n
+     * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
+     */
+    public static List<BigInteger> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger n) {
+        if (a.signum() <= 0) {
             throw new IllegalArgumentException("a too small");
         }
-        if (n <= 0) {
+        if (n.signum() <= 0) {
             throw new IllegalArgumentException("n too small");
         }
         
-        if (n == 1) {
-            return Collections.singletonList(0);
+        if (n.equals(BigInteger.ONE)) {
+            return Collections.singletonList(BigInteger.ZERO);
         }
         
-        if (b == 0) {
+        if (b.signum() == 0) {
             return solveReduced(a, c, n);
         } else {
             return bruteForce(a, b, c, n);
@@ -63,27 +78,42 @@ public class UnaryCongruenceSolver {
      * @param n
      * @return all integer solutions 0 <= x < n to a x^2 + c = 0 (mod n)
      */
-    public static List<Integer> solveReduced(int a, int c, int n) {
-        if (a <= 0 || n <= 1) {
-            throw new UnsupportedOperationException("a or n too small");
-        }
-        
-        return bruteForce(a, 0, c, n);
+    public static List<BigInteger> solveReduced(long a, long c, long n) {
+        return solveReduced(BigInteger.valueOf(a), BigInteger.valueOf(c), BigInteger.valueOf(n));
     }
     
-    private static List<Integer> bruteForce(int a, int b, int c, int n) {
-        List<Integer> result = new ArrayList<>();
+    /**
+     * Solves the quadratic congruence
+     *  a x^2 + c = 0 (mod n)
+     * given that a > 0 and n > 1.
+     *  
+     * @param a
+     * @param c
+     * @param n
+     * @return all integer solutions 0 <= x < n to a x^2 + c = 0 (mod n)
+     */
+    public static List<BigInteger> solveReduced(BigInteger a, BigInteger c, BigInteger n) {
+        if (a.signum() <= 0) {
+            throw new IllegalArgumentException("a too small");
+        }
+        if (n.signum() <= 0) {
+            throw new IllegalArgumentException("n too small");
+        }
         
-        BigInteger N = BigInteger.valueOf(n);
-        BigInteger A = BigInteger.valueOf(a).remainder(N);
-        BigInteger B = BigInteger.valueOf(b).remainder(N);
-        BigInteger C = BigInteger.valueOf(c).remainder(N);
+        if (n.equals(BigInteger.ONE)) {
+            return Collections.singletonList(BigInteger.ZERO);
+        }
         
-        for (int x = 0; x < n; x++) {
-            BigInteger X = BigInteger.valueOf(x);
-            BigInteger calc = A.multiply(X).multiply(X).add(B.multiply(X)).add(C).mod(N);
+        return bruteForce(a, BigInteger.ZERO, c, n);
+    }
+    
+    private static List<BigInteger> bruteForce(BigInteger a, BigInteger b, BigInteger c, BigInteger n) {
+        List<BigInteger> result = new ArrayList<>();
+        
+        for (BigInteger x = BigInteger.ZERO; x.compareTo(n) < 0; x = x.add(BigInteger.ONE)) {
+            BigInteger calc = a.multiply(x).multiply(x).add(b.multiply(x)).add(c).mod(n);
 
-            if (calc == BigInteger.ZERO) {
+            if (calc.signum() == 0) {
                 result.add(x);
             }
         }
