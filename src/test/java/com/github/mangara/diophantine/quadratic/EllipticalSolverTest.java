@@ -36,8 +36,7 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -82,8 +81,8 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        System.out.println("Skipping until the UnaryCongruenceSolver is faster - see https://github.com/Mangara/diophantine/issues/1");
+//        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -137,8 +136,7 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -154,8 +152,7 @@ public class EllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { EllipticalSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, EllipticalSolver.solve(a, b, c, d, e, f));
     }
     
     @Test

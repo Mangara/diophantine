@@ -55,8 +55,7 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -366,8 +365,8 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
-        //assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+        System.out.println("Skipping until the UnaryCongruenceSolver is faster - see https://github.com/Mangara/diophantine/issues/1");
+        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -924,8 +923,7 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -961,8 +959,7 @@ public class QuadraticSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
-        //assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
     }
 
     @Test

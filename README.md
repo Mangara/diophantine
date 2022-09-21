@@ -33,7 +33,7 @@ Work in progress.
 | Quadratic, D = 0    | Completed     |
 | Quadratic, D square | Completed     |
 | Quadratic, D > 0    | None          |
-| Quadratic, D < 0    | Partial       |
+| Quadratic, D < 0    | Completed     |
 
 ## Principles
 

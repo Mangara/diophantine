@@ -16,8 +16,12 @@
 
 package com.github.mangara.diophantine.quadratic;
 
+import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
+import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Solves elliptical quadratic Diophantine equations in two variables.
@@ -39,15 +43,44 @@ public class EllipticalSolver {
      * @param f
      * @return an iterator over all integer solutions (x, y)
      */
-    public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        if (d == 0 && e == 0) {
+    public static Iterator<XYPair> solve(long a, long b, long c, long d, long e, long f) {
+        return solve(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(d), BigInteger.valueOf(e), BigInteger.valueOf(f));
+    }
+    
+    /**
+     * Solves the quadratic Diophantine equation 
+     * a x^2 + b xy + c y^2 + d x + e y + f = 0,
+     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @param f
+     * @return an iterator over all integer solutions (x, y)
+     */
+    public static Iterator<XYPair> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
+        if (d.signum() == 0 && e.signum() == 0) {
             return RestrictedEllipticalSolver.solve(a, b, c, f);
         }
         
         // Use Legendre's transform to a X^2 + b XY + c Y^2 = k
-        // Solve restricted
+        BigInteger D = Utils.discriminant(a, b, c);
+        BigInteger alpha = Utils.legendreAlpha(b, c, d, e);
+        BigInteger beta = Utils.legendreBeta(a, b, d, e);
+        BigInteger k = Utils.legendreConstant(a, b, c, d, e, f, D);
+        
+        List<XYPair> transformedSolutions = RestrictedEllipticalSolver.getAllSolutions(a, b, c, k.negate());
+        
         // For each solution (X, Y), if D|(X + alpha) and D|(Y + beta)
         // then ((X + alpha)/D, (Y + beta)/D) is a solution
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<XYPair> solutions = transformedSolutions.stream()
+                .filter(sol -> sol.x.add(alpha).mod(D.abs()).signum() == 0 &&
+                               sol.y.add(beta).mod(D.abs()).signum() == 0)
+                .map(sol -> new XYPair(sol.x.add(alpha).divide(D), sol.y.add(beta).divide(D)))
+                .collect(Collectors.toList());
+        
+        return solutions.iterator();
     }
 }
