@@ -90,7 +90,7 @@ public class RestrictedEllipticalSolver {
         }
         
         Reduction reduction = Reduction.forEquation(eq);
-        List<XYPair> reducedSolutions = solveReduced(eq);
+        List<XYPair> reducedSolutions = solveReduced(reduction.reduce(eq));
         return reduction.unreduce(reducedSolutions).iterator();
     }
 

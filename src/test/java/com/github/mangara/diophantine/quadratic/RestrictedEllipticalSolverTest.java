@@ -47,8 +47,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, 0, 0, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, 0, 0, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -66,8 +65,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, 0, 0, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
+        TestUtils.assertAllSolutions(a, b, c, 0, 0, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
 
     @Test
@@ -107,8 +105,7 @@ public class RestrictedEllipticalSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, 0, 0, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedEllipticalSolver.solve(a, b, c, f); });
-        //TestUtils.assertAllSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertAllSolutions(a, b, c, 0, 0, f, expectedSolutions, RestrictedEllipticalSolver.solve(a, b, c, f));
     }
     
     @Test
