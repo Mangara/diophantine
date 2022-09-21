@@ -21,6 +21,8 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
+The solutions are not guaranteed to be in any particular order, although later solutions tend to have larger absolute value.
+
 ## Current status
 
 Work in progress.
