@@ -116,40 +116,42 @@ public class Utils {
     }
     
     public static long legendreConstant(long a, long b, long c, long d, long e, long f, long D) {
-        BigInteger Ba = BigInteger.valueOf(a);
-        BigInteger Bb = BigInteger.valueOf(b);
-        BigInteger Bc = BigInteger.valueOf(c);
-        BigInteger Bd = BigInteger.valueOf(d);
-        BigInteger Be = BigInteger.valueOf(e);
-        BigInteger Bf = BigInteger.valueOf(f);
-        BigInteger BD = BigInteger.valueOf(D);
-        
-        // -D(ae^2 - bed + cd^2 + fD)
-        return BD.negate().multiply(
-                Ba.multiply(Be).multiply(Be)
-                    .subtract(Bb.multiply(Be).multiply(Bd))
-                    .add(Bc.multiply(Bd).multiply(Bd))
-                    .add(Bf.multiply(BD))
+        return legendreConstant(
+                BigInteger.valueOf(a), 
+                BigInteger.valueOf(b), 
+                BigInteger.valueOf(c), 
+                BigInteger.valueOf(d), 
+                BigInteger.valueOf(e), 
+                BigInteger.valueOf(f), 
+                BigInteger.valueOf(D)
         ).longValueExact();
     }
     
+    public static BigInteger legendreConstant(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f, BigInteger D) {
+        // -D(ae^2 - bed + cd^2 + fD)
+        return D.negate().multiply(
+                a.multiply(e).multiply(e)
+                    .subtract(b.multiply(e).multiply(d))
+                    .add(c.multiply(d).multiply(d))
+                    .add(f.multiply(D))
+        );
+    }
+    
     public static long legendreAlpha(long b, long c, long d, long e) {
-        BigInteger Bb = BigInteger.valueOf(b);
-        BigInteger Bc = BigInteger.valueOf(c);
-        BigInteger Bd = BigInteger.valueOf(d);
-        BigInteger Be = BigInteger.valueOf(e);
-        
+        return legendreAlpha(BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(d), BigInteger.valueOf(e)).longValueExact();
+    }
+    
+    public static BigInteger legendreAlpha(BigInteger b, BigInteger c, BigInteger d, BigInteger e) {
         // 2cd - be
-        return BigInteger.TWO.multiply(Bc).multiply(Bd).subtract(Bb.multiply(Be)).longValueExact();
+        return BigInteger.TWO.multiply(c).multiply(d).subtract(b.multiply(e));
     }
     
     public static long legendreBeta(long a, long b, long d, long e) {
-        BigInteger Ba = BigInteger.valueOf(a);
-        BigInteger Bb = BigInteger.valueOf(b);
-        BigInteger Bd = BigInteger.valueOf(d);
-        BigInteger Be = BigInteger.valueOf(e);
-        
+        return legendreBeta(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(d), BigInteger.valueOf(e)).longValueExact();
+    }
+    
+    public static BigInteger legendreBeta(BigInteger a, BigInteger b, BigInteger d, BigInteger e) {
         // 2ae - bd
-        return BigInteger.TWO.multiply(Ba).multiply(Be).subtract(Bb.multiply(Bd)).longValueExact();
+        return BigInteger.TWO.multiply(a).multiply(e).subtract(b.multiply(d));
     }
 }
