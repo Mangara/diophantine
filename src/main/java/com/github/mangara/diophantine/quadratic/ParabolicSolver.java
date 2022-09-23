@@ -41,8 +41,25 @@ public class ParabolicSolver {
      * @param f
      * @return an iterator over all integer solutions (x, y)
      */
-    public static Iterator<XYPair> solve(int a, int b, int c, int d, int e, int f) {
-        if (a == 0) {
+    public static Iterator<XYPair> solve(long a, long b, long c, long d, long e, long f) {
+       return solve(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(d), BigInteger.valueOf(e), BigInteger.valueOf(f));
+    }
+    
+    /**
+     * Solves the quadratic Diophantine equation 
+     * a x^2 + b xy + c y^2 + d x + e y + f = 0,
+     * given that D = b^2 - 4ac = 0 and not all of a, b, and c are zero.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @param f
+     * @return an iterator over all integer solutions (x, y)
+     */
+    public static Iterator<XYPair> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
+        if (a.signum() == 0) {
             // b^2 = 4ac = 0 implies both a and b are 0.
             // Since not all of a, b, and c are zero, c is non-zero, so we swap x and y
             Iterator<XYPair> yxSolutions = solveNonZeroA(c, b, a, e, d, f);
@@ -53,7 +70,7 @@ public class ParabolicSolver {
     }
     
     // Pre: D = 0, a != 0
-    private static Iterator<XYPair> solveNonZeroA(int a, int b, int c, int d, int e, int f) {
+    private static Iterator<XYPair> solveNonZeroA(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
         // Multiply by 4a to get
         //  (2ax + by)^2 + 4adx + 4aey + 4af = 0
         // Substitute t = 2ax + by, u = 2(bd - 2ae), and v = d^2 - 4af to get
@@ -69,7 +86,7 @@ public class ParabolicSolver {
     }
 
     // Pre: D = 0, a != 0, u = 2(bd - 2ae) = 0
-    private static Iterator<XYPair> solveSimple(int a, int b, int c, int d, int e, int f) {
+    private static Iterator<XYPair> solveSimple(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
         // With u = 0, we're now solving
         //  (t + d)^2 = v
         
@@ -77,7 +94,7 @@ public class ParabolicSolver {
         
         if (v.signum() == 0) {
             // (t + d)^2 = 0  =>  t + d = 0  =>  2ax + by + d = 0
-            return LinearSolver.solve(Math.multiplyExact(2, a), b, d);
+            return LinearSolver.solve(BigInteger.TWO.multiply(a), b, d);
         }
         
         if (v.signum() < 0) {
@@ -91,17 +108,17 @@ public class ParabolicSolver {
             return new EmptyIterator<>();
         }
         
-        int g = Math.toIntExact(sqrtV[0].longValueExact());
+        BigInteger g = sqrtV[0];
         
         // (t + d)^2 = g^2  =>  t + d = +/- g  =>  2ax + by + d +/- g = 0
-        Iterator<XYPair> negativeG = LinearSolver.solve(Math.multiplyExact(2, a), b, Math.subtractExact(d, g));
-        Iterator<XYPair> positiveG = LinearSolver.solve(Math.multiplyExact(2, a), b, Math.addExact(d, g));
+        Iterator<XYPair> negativeG = LinearSolver.solve(BigInteger.TWO.multiply(a), b, d.subtract(g));
+        Iterator<XYPair> positiveG = LinearSolver.solve(BigInteger.TWO.multiply(a), b, d.add(g));
         
         return MergedIterator.merge(negativeG, positiveG);
     }
 
     // Pre: D = 0, a != 0, u = 2(bd - 2ae) != 0
-    private static Iterator<XYPair> solveGeneral(int a, int b, int c, int d, int e, int f) {
+    private static Iterator<XYPair> solveGeneral(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
         // With u != 0, we're still solving
         //  (t + d)^2 = uy + v
         // To do that, we first solve
@@ -132,13 +149,13 @@ public class ParabolicSolver {
             //    x = (Ti - d - br) / 2a + ((u - bs) / 2a)k - (bu / 2a)k^2
             // If all three coefficients are integers, this yields an x and y for each k
             
-            BigInteger c1 = Ti.subtract(BigInteger.valueOf(d)).subtract(BigInteger.valueOf(b).multiply(r));
-            BigInteger c2 = u.subtract(BigInteger.valueOf(b).multiply(s));
-            BigInteger c3 = BigInteger.valueOf(b).multiply(u).negate();
+            BigInteger c1 = Ti.subtract(d).subtract(b.multiply(r));
+            BigInteger c2 = u.subtract(b.multiply(s));
+            BigInteger c3 = b.multiply(u).negate();
             
-            BigInteger doubleA = BigInteger.TWO.multiply(BigInteger.valueOf(a));
+            BigInteger doubleA = BigInteger.TWO.multiply(a);
             
-            if (c1.mod(doubleA.abs()) == BigInteger.ZERO && c2.mod(doubleA.abs()) == BigInteger.ZERO && c3.mod(doubleA.abs()) == BigInteger.ZERO) {
+            if (c1.mod(doubleA.abs()).signum() == 0 && c2.mod(doubleA.abs()).signum() == 0 && c3.mod(doubleA.abs()).signum() == 0) {
                 BigInteger c1by2a = c1.divide(doubleA);
                 BigInteger c2by2a = c2.divide(doubleA);
                 BigInteger c3by2a = c3.divide(doubleA);
@@ -155,22 +172,13 @@ public class ParabolicSolver {
         return MergedIterator.merge(familyIterators);
     }
     
-    private static BigInteger computeU(int a, int b, int d, int e) {
-        BigInteger A = BigInteger.valueOf(a);
-        BigInteger B = BigInteger.valueOf(b);
-        BigInteger D = BigInteger.valueOf(d);
-        BigInteger E = BigInteger.valueOf(e);
-        
+    private static BigInteger computeU(BigInteger a, BigInteger b, BigInteger d, BigInteger e) {
         // u = 2(bd - 2ae)
-        return BigInteger.TWO.multiply(B.multiply(D).subtract(BigInteger.TWO.multiply(A).multiply(E)));
+        return BigInteger.TWO.multiply(b.multiply(d).subtract(BigInteger.TWO.multiply(a).multiply(e)));
     }
     
-    private static BigInteger computeV(int a, int d, int f) {
-        BigInteger A = BigInteger.valueOf(a);
-        BigInteger D = BigInteger.valueOf(d);
-        BigInteger F = BigInteger.valueOf(f);
-        
+    private static BigInteger computeV(BigInteger a, BigInteger d, BigInteger f) {
         // v = d^2 - 4af
-        return D.multiply(D).subtract(BigInteger.valueOf(4).multiply(A).multiply(F));
+        return d.multiply(d).subtract(BigInteger.valueOf(4).multiply(a).multiply(f));
     }
 }
