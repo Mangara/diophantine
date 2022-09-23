@@ -39,19 +39,31 @@ public class LinearSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(long d, long e, long f) {
-        if (d == 0 && e == 0) {
+        return solve(BigInteger.valueOf(d), BigInteger.valueOf(e), BigInteger.valueOf(f));
+    }
+    
+    /**
+     * Solves the linear Diophantine equation d x + e y + f = 0.
+     *
+     * @param d
+     * @param e
+     * @param f
+     * @return an iterator over all integer solutions (x, y)
+     */
+    public static Iterator<XYPair> solve(BigInteger d, BigInteger e, BigInteger f) {
+        if (d.signum() == 0 && e.signum() == 0) {
             return solveTrivial(f);
-        } else if (d == 0) {
+        } else if (d.signum() == 0) {
             return solveSingle(e, f, true);
-        } else if (e == 0) {
+        } else if (e.signum() == 0) {
             return solveSingle(d, f, false);
         } else {
             return solveGeneral(d, e, f);
         }
     }
 
-    private static Iterator<XYPair> solveTrivial(long f) {
-        if (f != 0) {
+    private static Iterator<XYPair> solveTrivial(BigInteger f) {
+        if (f.signum() != 0) {
             return new EmptyIterator<>();
         }
         
@@ -70,12 +82,12 @@ public class LinearSolver {
      * @param arbitraryX
      * @return an iterator over all integer solutions (x, y)
      */
-    private static Iterator<XYPair> solveSingle(long g, long f, boolean arbitraryX) {
-        if (f % g != 0) {
+    private static Iterator<XYPair> solveSingle(BigInteger g, BigInteger f, boolean arbitraryX) {
+        if (f.mod(g.abs()).signum() != 0) {
             return new EmptyIterator<>();
         }
         
-        BigInteger val = BigInteger.valueOf(Math.negateExact(f) / g);
+        BigInteger val = f.negate().divide(g);
         
         Function<BigInteger, XYPair> map;
         if (arbitraryX) {
@@ -88,7 +100,7 @@ public class LinearSolver {
     }
 
     // Pre: d != 0 && e != 0
-    private static Iterator<XYPair> solveGeneral(long d, long e, long f) {
+    private static Iterator<XYPair> solveGeneral(BigInteger d, BigInteger e, BigInteger f) {
         Eq reduced = reduce(d, e, f);
 
         if (reduced == null) {
@@ -98,23 +110,23 @@ public class LinearSolver {
         }
     }
 
-    private static Eq reduce(long d, long e, long f) {
-        long gcd = Utils.gcd(d, e);
+    private static Eq reduce(BigInteger d, BigInteger e, BigInteger f) {
+        BigInteger gcd = d.gcd(e).abs();
 
-        if (f % gcd != 0) {
+        if (f.mod(gcd).signum() != 0) {
             // No solutions, as d x + e y will always be a multiple of gcd for integer x and y
             return null;
         }
 
-        return new Eq(d / gcd, e / gcd, f / gcd);
+        return new Eq(d.divide(gcd), e.divide(gcd), f.divide(gcd));
     }
 
     // Pre: d != 0 && e != 0 && d and e are co-prime
     private static Iterator<XYPair> solveReduced(Eq eq) {
         XYPair solution = findAnySolution(eq);
 
-        final BigInteger dx = BigInteger.valueOf(eq.e);
-        final BigInteger dy = BigInteger.valueOf(-eq.d);
+        final BigInteger dx = eq.e;
+        final BigInteger dy = eq.d.negate();
 
         return new MappingIterator<>(new IntegerIterator(),
                 (k) -> new XYPair(
@@ -126,22 +138,22 @@ public class LinearSolver {
 
     private static XYPair findAnySolution(Eq eq) {
         // Run the extended Euclidean algorithm ( https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm )
-        long prevR = eq.d;
-        long r = eq.e;
-        long prevS = 1;
-        long s = 0;
-        long prevT = 0;
-        long t = 1;
+        BigInteger prevR = eq.d;
+        BigInteger r = eq.e;
+        BigInteger prevS = BigInteger.ONE;
+        BigInteger s = BigInteger.ZERO;
+        BigInteger prevT = BigInteger.ZERO;
+        BigInteger t = BigInteger.ONE;
 
-        while (r != 0) {
-            long quotient = prevR / r;
-            long tempR = r;
-            long tempS = s;
-            long tempT = t;
+        while (r.signum() != 0) {
+            BigInteger quotient = prevR.divide(r);
+            BigInteger tempR = r;
+            BigInteger tempS = s;
+            BigInteger tempT = t;
 
-            r = prevR - quotient * r;
-            s = prevS - quotient * s;
-            t = prevT - quotient * t;
+            r = prevR.subtract(quotient.multiply(r));
+            s = prevS.subtract(quotient.multiply(s));
+            t = prevT.subtract(quotient.multiply(t));
 
             prevR = tempR;
             prevS = tempS;
@@ -151,18 +163,18 @@ public class LinearSolver {
         // Results are in prevR (which is the gcd = +/- 1), prevS, and prevT
         // Thus, d * prevS + e * prevT = +/- 1
         // We want d * x + e * y = -f, so we need to multiply by f or -f, depending on the sign of prevR
-        long factor = Math.multiplyExact(Math.negateExact(eq.f), prevR);
-        long x = Math.multiplyExact(factor, prevS); // -/+ f * prevS
-        long y = Math.multiplyExact(factor, prevT); // -/+ f * prevT
+        BigInteger factor = eq.f.negate().multiply(prevR);
+        BigInteger x = factor.multiply(prevS); // -/+ f * prevS
+        BigInteger y = factor.multiply(prevT); // -/+ f * prevT
 
         return new XYPair(x, y);
     }
 
     private static class Eq {
 
-        long d, e, f;
+        BigInteger d, e, f;
 
-        Eq(long d, long e, long f) {
+        Eq(BigInteger d, BigInteger e, BigInteger f) {
             this.d = d;
             this.e = e;
             this.f = f;
