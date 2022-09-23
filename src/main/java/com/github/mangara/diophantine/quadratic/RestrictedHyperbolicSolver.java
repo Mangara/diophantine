@@ -17,6 +17,7 @@
 package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.XYPair;
+import java.math.BigInteger;
 import java.util.Iterator;
 
 /**
@@ -37,7 +38,22 @@ public class RestrictedHyperbolicSolver {
      * @param f
      * @return an iterator over all integer solutions (x, y)
      */
-    public static Iterator<XYPair> solve(int a, int b, int c, int f) {
+    public static Iterator<XYPair> solve(long a, long b, long c, long f) {
+        return solve(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f));
+    }
+    
+    /**
+     * Solves the quadratic Diophantine equation 
+     * a x^2 + b xy + c y^2 + f = 0,
+     * given that D = b^2 - 4ac > 0 and not a perfect square.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param f
+     * @return an iterator over all integer solutions (x, y)
+     */
+    public static Iterator<XYPair> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
