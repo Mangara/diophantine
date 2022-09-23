@@ -81,12 +81,21 @@ public class Utils {
      * @return true iff there is an integer x such that n = x^2
      */
     public static boolean isSquare(long n) {
-        if (n < 0) {
+        return isSquare(BigInteger.valueOf(n));
+    }
+    
+    /**
+     * Tests whether the given number is a perfect square.
+     * 
+     * @param n
+     * @return true iff there is an integer x such that n = x^2
+     */
+    public static boolean isSquare(BigInteger n) {
+        if (n.signum() < 0) {
             return false;
         }
         
-        long root = Math.round(Math.sqrt(n));
-        return n == root * root;
+        return n.sqrtAndRemainder()[1].signum() == 0;
     }
 
     /**
