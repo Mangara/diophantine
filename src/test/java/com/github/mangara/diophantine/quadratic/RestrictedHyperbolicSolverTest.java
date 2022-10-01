@@ -16,6 +16,11 @@
 package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.TestUtils;
+import com.github.mangara.diophantine.XYPair;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
 public class RestrictedHyperbolicSolverTest {
@@ -29,112 +34,120 @@ public class RestrictedHyperbolicSolverTest {
         int a = 1, b = 0, c = -15, d = 0, e = 0, f = -61;
 
         long[][] expectedSolutions = new long[][]{
-            new long[]{74, 19},
-            new long[]{-74, 19},
-            new long[]{74, -19},
+            new long[]{-6251, -1614},
+            new long[]{6251, -1614},
+            new long[]{-4574, -1181},
+            new long[]{4574, -1181},
+            new long[]{-794, -205},
+            new long[]{794, -205},
+            new long[]{-581, -150},
+            new long[]{581, -150},
+            new long[]{-101, -26},
+            new long[]{101, -26},
             new long[]{-74, -19},
+            new long[]{74, -19},
+            new long[]{-14, -3},
+            new long[]{14, -3},
+            new long[]{-11, -2},
+            new long[]{11, -2},
+            new long[]{-11, 2},
+            new long[]{11, 2},
+            new long[]{-14, 3},
+            new long[]{14, 3},
+            new long[]{-74, 19},
+            new long[]{74, 19},
+            new long[]{-101, 26},
+            new long[]{101, 26},
             new long[]{-581, 150},
+            new long[]{581, 150},
+            new long[]{-794, 205},
+            new long[]{794, 205},
             new long[]{-4574, 1181},
-            new long[]{-36011, 9298},
+            new long[]{4574, 1181},
+            new long[]{-6251, 1614},
+            new long[]{6251, 1614},
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
     }
 
     @Test
-    public void test11() {
-        System.out.println("11: 3x^2 - 22xy + 25y^2 - 81 = 0 (D > 0)");
-        int a = 3, b = -22, c = 25, d = 0, e = 0, f = -81;
+    public void testRepresentative01() {
+        System.out.println("Representative 1: x^2 - 15y^2 - 61 = 0 (D > 0)");
+        int a = 1, b = 0, c = -15, d = 0, e = 0, f = -61;
 
         long[][] expectedSolutions = new long[][]{
-            new long[]{-54, -9},
-            new long[]{-12, -9},
-            new long[]{-2, 1},
-            new long[]{2, -1},
-            new long[]{12, 9},
-            new long[]{54, 9},
+            new long[]{-11, 2},
+            new long[]{11, 2},
         };
 
-        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
+        validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
+//        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
 
-    @Test
-    public void test22() {
-        System.out.println("22: 2x^2 + 5xy + y^2 + 1 = 0 (D > 0)");
-        int a = 2, b = 5, c = 1, d = 0, e = 0, f = 1;
-
-        long[][] expectedSolutions = new long[][]{
-            new long[]{-2, 1},
-            new long[]{2, -1},
-            new long[]{-2, 9},
-            new long[]{2, -9},
-            new long[]{-130, 57},
-            new long[]{-130, 593},
-            new long[]{130, -593},
-            new long[]{130, -57},
-        };
-
+    private void validateRepresentativeSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions) {
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
+        
+        for (long[] sol : expectedSolutions) {
+            for (long[] sol2 : expectedSolutions) {
+                if (sol[0] == sol2[0] && sol[1] == sol2[1]) {
+                    continue; // No need to check against itself
+                }
+                
+                if (sameClass(a, b, c, f, sol[0], sol[1], sol2[0], sol2[1])) {
+                    fail(String.format("(%d, %d) and (%d, %d) belong to the same class.", sol[0], sol[1], sol2[0], sol2[1]));
+                }
+            }
+        }
+    }
+    
+    private void assertRepresentativeSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions, List<XYPair> representativeSolutions) {
+        if (representativeSolutions.size() != expectedSolutions.length) {
+            if (representativeSolutions.size() > expectedSolutions.length) {
+                fail(String.format("Too many solutions returned; expected %s but got %s.", Arrays.deepToString(expectedSolutions), representativeSolutions.toString()));
+            } else {
+                fail(String.format("Too few solutions returned; expected %s but got %s.", Arrays.deepToString(expectedSolutions), representativeSolutions.toString()));
+            }
+        }
+        
+        boolean[] seen = new boolean[expectedSolutions.length];
+        int numSeen = 0;
+        
+        for (XYPair sol : representativeSolutions) {
+            TestUtils.assertIsSolution(a, b, c, 0, 0, f, sol);
+
+            long x = sol.x.longValueExact();
+            long y = sol.y.longValueExact();
+
+            boolean found = false;
+
+            for (int i = 0; i < expectedSolutions.length; i++) {
+                if (seen[i]) {
+                    continue;
+                }
+                if (sameClass(a, b, c, f, x, y, expectedSolutions[i][0], expectedSolutions[i][1])) {
+                    seen[i] = true;
+                    numSeen++;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                fail(String.format("Unexpected solution (%d, %d) returned; expected %s but got %s.", x, y, Arrays.deepToString(expectedSolutions), representativeSolutions.toString()));
+            }
+        }
+    }
+    
+    private boolean sameClass(long a, long b, long c, long f, long x1, long y1, long x2, long y2) {
+        long cong1 = 2 * a * x1 * x2 + b * (x1 * y2 + x2 * y1) + 2 * c * y1 * y2;
+        long cong2 = x1 * y2 - x2 * y1;
+
+        return cong1 % Math.abs(f) == 0 && cong2 % Math.abs(f) == 0;
     }
 
-    @Test
-    public void test31() {
-        System.out.println("31: 2x^2 - 9y^2 + 601 = 0 (D > 0)");
-        int a = 2, b = 0, c = -9, d = 0, e = 0, f = 601;
-
-        long[][] expectedSolutions = new long[][]{
-            new long[]{-460, -217},
-            new long[]{-460, 217},
-            new long[]{-188, -89},
-            new long[]{-188, 89},
-            new long[]{-8, -9},
-            new long[]{-8, 9},
-            new long[]{8, -9},
-            new long[]{8, 9},
-            new long[]{188, -89},
-            new long[]{188, 89},
-            new long[]{460, -217},
-            new long[]{460, 217},
-        };
-
-        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
-    }
-
-    @Test
-    public void test32() {
-        System.out.println("32: -3x^2 - 8xy + 2y^2 - 87 = 0 (D > 0)");
-        int a = -3, b = -8, c = 2, d = 0, e = 0, f = -87;
-
-        long[][] expectedSolutions = new long[][]{
-            new long[]{-785, 271},
-            new long[]{-391, 135},
-            new long[]{-31, -135},
-            new long[]{-31, 11},
-            new long[]{-25, -109},
-            new long[]{-25, 9},
-            new long[]{-1, -9},
-            new long[]{-1, 5},
-            new long[]{1, -5},
-            new long[]{1, 9},
-            new long[]{25, -9},
-            new long[]{25, 109},
-            new long[]{31, -11},
-            new long[]{31, 135},
-            new long[]{391, -135},
-            new long[]{785, -271},
-        };
-
-        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
-    }
     
 }

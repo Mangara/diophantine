@@ -41,9 +41,11 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-        int a = 3, b = -8, c = 7, d = -4, e = 2, f = -109;
+//        int d = 0, e = 0;
+        int a = 1, b = 0, c = -15, d = 0, e = 0, f = -61;
+        int n = 1;
         
-        String solver = "RestrictedEllipticalSolver.solve(a, b, c, f)";
+        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
         
         long D = Utils.discriminant(a, b, c);
 
@@ -53,17 +55,18 @@ public class ExampleGenerator {
         List<XYPair> solutions = bruteForceSmallSolutions(a, b, c, d, e, f, 10000, true);
 
         if (D < 0) {
-            printTestCase("all", solver, a, b, c, d, e, f, solutions);
+            printTestCase("all", solver, a, b, c, d, e, f, solutions, n);
         } else {
-            printTestCase("", solver, a, b, c, d, e, f, solutions);
+            printTestCase("", solver, a, b, c, d, e, f, solutions, n);
         }
 
         if (d == 0 && e == 0 && D > 0) {
+            String restrictedSolver = "RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f))";
             List<XYPair> representativeSolutions = keepRepresentativeSolutions(solutions, a, b, c, d, e, f);
-            printTestCase("Representative", solver, a, b, c, d, e, f, representativeSolutions);
+            printTestCase("Representative", restrictedSolver, a, b, c, d, e, f, representativeSolutions, n);
 
-            List<XYPair> primitiveSolutions = keepPrimitiveSolutions(representativeSolutions);
-            printTestCase("Primitive", solver, a, b, c, d, e, f, primitiveSolutions);
+//            List<XYPair> primitiveSolutions = keepPrimitiveSolutions(representativeSolutions);
+//            printTestCase("Primitive", solver, a, b, c, d, e, f, primitiveSolutions, n);
         }
 
         if (a == 1 && b == 0 && c < 0 && d == 0 && e == 0) {
@@ -153,59 +156,63 @@ public class ExampleGenerator {
         return cong1 % Math.abs(f) == 0 && cong2 % Math.abs(f) == 0;
     }
 
-    private static void printTestCase(String type, String solver, int a, int b, int c, int d, int e, int f, List<XYPair> solutions) {
+    private static void printTestCase(String type, String solver, int a, int b, int c, int d, int e, int f, List<XYPair> solutions, int n) {
         System.out.println();
         String testName = type == "all" ? "" : type;
         if (solutions.isEmpty()) {
             System.out.printf(
                       "    @Test\n"
-                    + "    public void test%sN() {\n"
-                    + "        System.out.println(\"N: %s\");\n"
+                    + "    public void test%s%02d() {\n"
+                    + "        System.out.println(\"%s %d: %s\");\n"
                     + "        int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;\n"
                     + "\n"
                     + "        TestUtils.assertNotSupportedYet(() -> { %s; });\n"
                     + "        //TestUtils.assertNoSolutions(a, b, c, d, e, f, %s);\n"
-                    + "    }\n", testName, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, solver, solver);
+                    + "    }\n", testName, n, testName + (testName.isEmpty() ? "" : " "), n, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, solver, solver);
         } else {
             String solutionList = solutions.stream()
                     .map((sol) -> String.format("            new long[]{%d, %d},\n", sol.x, sol.y))
                     .collect(Collectors.joining());
 
-            String unsupportedMethod, testMethod;
+            String unsupportedMethod, testMethod, validateMethod;
 
             switch (type) {
                 case "Primitive" -> {
                     unsupportedMethod = "assertPrimitiveNotSupportedYet";
                     testMethod = "assertPrimitiveSolutions";
+                    validateMethod = "validatePrimitiveSolutions";
                 }
                 case "Representative" -> {
-                    unsupportedMethod = "assertRepresentativeNotSupportedYet";
+                    unsupportedMethod = "TestUtils.assertNotSupportedYet";
                     testMethod = "assertRepresentativeSolutions";
+                    validateMethod = "validateRepresentativeSolutions";
                 }
                 case "all" -> {
                     unsupportedMethod = "TestUtils.assertNotSupportedYet";
                     testMethod = "TestUtils.assertAllSolutions";
+                    validateMethod = "TestUtils.validateExpectedSolutions";
                 }
                 default -> {
                     unsupportedMethod = "TestUtils.assertNotSupportedYet";
                     testMethod = "TestUtils.assertSolutionsInclude";
+                    validateMethod = "TestUtils.validateExpectedSolutions";
                 }
             }
 
             System.out.printf(
                       "    @Test\n"
-                    + "    public void test%sN() {\n"
-                    + "        System.out.println(\"N: %s\");\n"
+                    + "    public void test%s%02d() {\n"
+                    + "        System.out.println(\"%s%d: %s\");\n"
                     + "        int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;\n"
                     + "\n"
                     + "        long[][] expectedSolutions = new long[][]{\n"
                     + solutionList
                     + "        };\n"
                     + "\n"
-                    + "        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);\n"
+                    + "        %s(a, b, c, d, e, f, expectedSolutions);\n"
                     + "        %s(() -> { %s; });\n"
                     + "        //%s(a, b, c, d, e, f, expectedSolutions, %s);\n"
-                    + "    }\n", testName, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, unsupportedMethod, solver, testMethod, solver);
+                    + "    }\n", testName, n, testName + (testName.isEmpty() ? "" : " "), n, TestUtils.prettyPrintEquation(a, b, c, d, e, f), a, b, c, d, e, f, validateMethod, unsupportedMethod, solver, testMethod, solver);
         }
     }
 
