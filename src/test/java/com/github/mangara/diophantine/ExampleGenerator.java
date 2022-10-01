@@ -30,6 +30,7 @@ public class ExampleGenerator {
 //        findParabolicExamples();
 //        findSquareDiscriminantExamples();
 //        findRestrictedEllipticalExamples();
+//        findRestrictedHyperbolicExamples();
         generate();
     }
         
@@ -42,12 +43,12 @@ public class ExampleGenerator {
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
         int d = 0, e = 0;
-        int a = 6, b = 8, c = 4, f = -1;
-        int n = 80;
-        
-        String solver = "RestrictedEllipticalSolver.solve(a, b, c, f)";
+        int a = 4, b = 4, c = -4, f = -2;
+        int n = 81;
         
         long D = Utils.discriminant(a, b, c);
+        
+        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("D = " + D + " GCD(a, b, c) = " + Utils.gcd(a, b, c) + " GCD(a, f) = " + Utils.gcd(a, f) + " GCD(d, e) = " + Utils.gcd(d, e));
@@ -381,6 +382,46 @@ public class ExampleGenerator {
                                 System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size());
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    
+    private static void findRestrictedHyperbolicExamples() {
+        int bound = 9;
+        for (int a = 1; a <= bound; a++) {
+            for (int b = -bound; b < bound; b++) {
+                for (int c = -bound; c < bound; c++) {
+                    int D = b * b - 4 * a * c;
+                    
+                    if (D <= 0 || Utils.isSquare(D)) {
+                        continue;
+                    }
+                    
+                    long g = Utils.gcd(a, b, c);
+                    
+                    if (g == 1) {
+                        continue;
+                    }
+
+                    for (int f = -bound; f < 0; f++) {
+                        if (f % g == 0) {
+                            continue;
+                        }
+                        
+                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+
+//                        if (numSmallSolutions == 0) {
+                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+//                        }
+//                        try {
+//                            RestrictedEllipticalSolver.solve(a, b, c, f);
+//                        } catch (RuntimeException ex) {
+//                            if (ex.getMessage().equals("Boom")) {
+//                                System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size());
+//                            }
+//                        }
                     }
                 }
             }

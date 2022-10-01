@@ -2536,4 +2536,13 @@ public class QuadraticSolverTest {
 
         TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test81() {
+        System.out.println("81: 4x^2 + 4xy - 4y^2 - 2 = 0 (D > 0)");
+        int a = 4, b = 4, c = -4, d = 0, e = 0, f = -2;
+
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
 }

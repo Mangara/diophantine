@@ -20,6 +20,7 @@ import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
@@ -897,6 +898,23 @@ public class RestrictedHyperbolicSolverTest {
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
         //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+    }
+    
+    @Test
+    public void test81() {
+        System.out.println("81: 4x^2 + 4xy - 4y^2 - 2 = 0 (D > 0)");
+        int a = 4, b = 4, c = -4, d = 0, e = 0, f = -2;
+
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
+        //TestUtils.assertNoSolutions(a, b, c, d, e, f, RestrictedHyperbolicSolver.solve(a, b, c, f));
+    }
+
+    @Test
+    public void testRepresentative81() {
+        System.out.println("Representative 81: 4x^2 + 4xy - 4y^2 - 2 = 0 (D > 0)");
+        int a = 4, b = 4, c = -4, d = 0, e = 0, f = -2;
+
+        assertTrue(RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)).isEmpty());
     }
 
     private void validateRepresentativeSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions) {

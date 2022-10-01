@@ -18,6 +18,7 @@ package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -71,6 +72,12 @@ public class RestrictedHyperbolicSolver {
      * solution with least positive y.
      */
     public static List<XYPair> getRepresentativeSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
+        RestrictedEquation eq = new RestrictedEquation(a, b, c, f).withoutCommonDivisor();
+        
+        if (eq == RestrictedEquation.NO_SOLUTIONS) {
+            return Collections.emptyList();
+        }
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
