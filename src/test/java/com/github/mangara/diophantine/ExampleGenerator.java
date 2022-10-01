@@ -41,9 +41,9 @@ public class ExampleGenerator {
 //        int d = smallRandomNumber();
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
-//        int d = 0, e = 0;
-        int a = 1, b = 0, c = -15, d = 0, e = 0, f = -61;
-        int n = 1;
+        int d = 0, e = 0;
+        int a = 7, b = -1, c = -4, f = -580594;
+        int n = 79;
         
         String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
         

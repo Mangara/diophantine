@@ -2089,4 +2089,443 @@ public class QuadraticSolverTest {
 
         TestUtils.assertNoSolutions(a, b, c, d, e, f, QuadraticSolver.solve(a, b, c, d, e, f));
     }
+    
+    @Test
+    public void test69() {
+        System.out.println("69: 42x^2 + 62xy + 21y^2 - 585 = 0 (D > 0)");
+        int a = 42, b = 62, c = 21, d = 0, e = 0, f = -585;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{1587, -1671},
+            new long[]{786, -1493},
+            new long[]{1266, -1333},
+            new long[]{627, -1191},
+            new long[]{93, -177},
+            new long[]{74, -141},
+            new long[]{83, -87},
+            new long[]{66, -69},
+            new long[]{6, -3},
+            new long[]{-3, -1},
+            new long[]{3, 1},
+            new long[]{-6, 3},
+            new long[]{-66, 69},
+            new long[]{-83, 87},
+            new long[]{-74, 141},
+            new long[]{-93, 177},
+            new long[]{-627, 1191},
+            new long[]{-1266, 1333},
+            new long[]{-786, 1493},
+            new long[]{-1587, 1671},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test70() {
+        System.out.println("70: 2x^2 + 18xy + y^2 - 585 = 0 (D > 0)");
+        int a = 2, b = 18, c = 1, d = 0, e = 0, f = -585;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{84, -1503},
+            new long[]{67, -1199},
+            new long[]{4, -79},
+            new long[]{707, -79},
+            new long[]{3, -63},
+            new long[]{564, -63},
+            new long[]{-3, -9},
+            new long[]{84, -9},
+            new long[]{-4, -7},
+            new long[]{67, -7},
+            new long[]{-67, 7},
+            new long[]{4, 7},
+            new long[]{-84, 9},
+            new long[]{3, 9},
+            new long[]{-564, 63},
+            new long[]{-3, 63},
+            new long[]{-707, 79},
+            new long[]{-4, 79},
+            new long[]{-67, 1199},
+            new long[]{-84, 1503},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test71() {
+        System.out.println("71: 3x^2 - 3xy - 2y^2 - 202 = 0 (D > 0)");
+        int a = 3, b = -3, c = -2, d = 0, e = 0, f = -202;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-7583, -5203},
+            new long[]{2380, -5203},
+            new long[]{-2380, -1633},
+            new long[]{747, -1633},
+            new long[]{-1593, -1093},
+            new long[]{500, -1093},
+            new long[]{-500, -343},
+            new long[]{157, -343},
+            new long[]{-165, -113},
+            new long[]{52, -113},
+            new long[]{-52, -35},
+            new long[]{17, -35},
+            new long[]{-35, -23},
+            new long[]{12, -23},
+            new long[]{-12, -5},
+            new long[]{7, -5},
+            new long[]{-7, 5},
+            new long[]{12, 5},
+            new long[]{-12, 23},
+            new long[]{35, 23},
+            new long[]{-17, 35},
+            new long[]{52, 35},
+            new long[]{-52, 113},
+            new long[]{165, 113},
+            new long[]{-157, 343},
+            new long[]{500, 343},
+            new long[]{-500, 1093},
+            new long[]{1593, 1093},
+            new long[]{-747, 1633},
+            new long[]{2380, 1633},
+            new long[]{-2380, 5203},
+            new long[]{7583, 5203},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test72() {
+        System.out.println("72: 19x^2 - 85xy + 95y^2 + 671 = 0 (D > 0)");
+        int a = 19, b = -85, c = 95, d = 0, e = 0, f = 671;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-9886, -4539},
+            new long[]{-8699, -3994},
+            new long[]{-8471, -3690},
+            new long[]{-7454, -3247},
+            new long[]{-6274, -2733},
+            new long[]{-5521, -2405},
+            new long[]{-5101, -2342},
+            new long[]{-4489, -2061},
+            new long[]{-3779, -1735},
+            new long[]{-3326, -1527},
+            new long[]{-3239, -1411},
+            new long[]{-2851, -1242},
+            new long[]{-2401, -1046},
+            new long[]{-2114, -921},
+            new long[]{-1954, -897},
+            new long[]{-1721, -790},
+            new long[]{-1451, -666},
+            new long[]{-1279, -587},
+            new long[]{-1246, -543},
+            new long[]{-1099, -479},
+            new long[]{-929, -405},
+            new long[]{-821, -358},
+            new long[]{-761, -349},
+            new long[]{-674, -309},
+            new long[]{-574, -263},
+            new long[]{-511, -234},
+            new long[]{-499, -218},
+            new long[]{-446, -195},
+            new long[]{-386, -169},
+            new long[]{-349, -153},
+            new long[]{-329, -150},
+            new long[]{-301, -137},
+            new long[]{-271, -123},
+            new long[]{-254, -115},
+            new long[]{-251, -111},
+            new long[]{-239, -106},
+            new long[]{-229, -102},
+            new long[]{-226, -101},
+            new long[]{226, 101},
+            new long[]{229, 102},
+            new long[]{239, 106},
+            new long[]{251, 111},
+            new long[]{254, 115},
+            new long[]{271, 123},
+            new long[]{301, 137},
+            new long[]{329, 150},
+            new long[]{349, 153},
+            new long[]{386, 169},
+            new long[]{446, 195},
+            new long[]{499, 218},
+            new long[]{511, 234},
+            new long[]{574, 263},
+            new long[]{674, 309},
+            new long[]{761, 349},
+            new long[]{821, 358},
+            new long[]{929, 405},
+            new long[]{1099, 479},
+            new long[]{1246, 543},
+            new long[]{1279, 587},
+            new long[]{1451, 666},
+            new long[]{1721, 790},
+            new long[]{1954, 897},
+            new long[]{2114, 921},
+            new long[]{2401, 1046},
+            new long[]{2851, 1242},
+            new long[]{3239, 1411},
+            new long[]{3326, 1527},
+            new long[]{3779, 1735},
+            new long[]{4489, 2061},
+            new long[]{5101, 2342},
+            new long[]{5521, 2405},
+            new long[]{6274, 2733},
+            new long[]{7454, 3247},
+            new long[]{8471, 3690},
+            new long[]{8699, 3994},
+            new long[]{9886, 4539},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test73() {
+        System.out.println("73: -3x^2 + 5xy + 5y^2 - 513 = 0 (D > 0)");
+        int a = -3, b = 5, c = 5, d = 0, e = 0, f = -513;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{4363, -6204},
+            new long[]{3953, -5621},
+            new long[]{-8572, -3617},
+            new long[]{2012, -2861},
+            new long[]{-4363, -1841},
+            new long[]{-3953, -1668},
+            new long[]{1173, -1668},
+            new long[]{-2012, -849},
+            new long[]{597, -849},
+            new long[]{-1173, -495},
+            new long[]{348, -495},
+            new long[]{-597, -252},
+            new long[]{177, -252},
+            new long[]{-348, -147},
+            new long[]{103, -147},
+            new long[]{-177, -75},
+            new long[]{52, -75},
+            new long[]{47, -68},
+            new long[]{-103, -44},
+            new long[]{23, -35},
+            new long[]{-52, -23},
+            new long[]{-47, -21},
+            new long[]{12, -21},
+            new long[]{-23, -12},
+            new long[]{3, -12},
+            new long[]{-12, -9},
+            new long[]{-3, -9},
+            new long[]{3, 9},
+            new long[]{12, 9},
+            new long[]{-3, 12},
+            new long[]{23, 12},
+            new long[]{-12, 21},
+            new long[]{47, 21},
+            new long[]{52, 23},
+            new long[]{-23, 35},
+            new long[]{103, 44},
+            new long[]{-47, 68},
+            new long[]{-52, 75},
+            new long[]{177, 75},
+            new long[]{-103, 147},
+            new long[]{348, 147},
+            new long[]{-177, 252},
+            new long[]{597, 252},
+            new long[]{-348, 495},
+            new long[]{1173, 495},
+            new long[]{-597, 849},
+            new long[]{2012, 849},
+            new long[]{-1173, 1668},
+            new long[]{3953, 1668},
+            new long[]{4363, 1841},
+            new long[]{-2012, 2861},
+            new long[]{8572, 3617},
+            new long[]{-3953, 5621},
+            new long[]{-4363, 6204},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test74() {
+        System.out.println("74: 6x^2 + 2xy - 3y^2 - 25 = 0 (D > 0)");
+        int a = 6, b = 2, c = -3, d = 0, e = 0, f = -25;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{8827, -9883},
+            new long[]{-4394, -7849},
+            new long[]{1630, -1825},
+            new long[]{-379, -677},
+            new long[]{301, -337},
+            new long[]{-70, -125},
+            new long[]{26, -29},
+            new long[]{-13, -23},
+            new long[]{5, -5},
+            new long[]{-2, -1},
+            new long[]{2, 1},
+            new long[]{-5, 5},
+            new long[]{13, 23},
+            new long[]{-26, 29},
+            new long[]{70, 125},
+            new long[]{-301, 337},
+            new long[]{379, 677},
+            new long[]{-1630, 1825},
+            new long[]{4394, 7849},
+            new long[]{-8827, 9883},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test75() {
+        System.out.println("75: 6x^2 - 8xy - 5y^2 + 56 = 0 (D > 0)");
+        int a = 6, b = -8, c = -5, d = 0, e = 0, f = 56;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-726, -404},
+            new long[]{102, -220},
+            new long[]{-6, -4},
+            new long[]{6, 4},
+            new long[]{-102, 220},
+            new long[]{726, 404},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test76() {
+        System.out.println("76: 2x^2 - 8xy + 7y^2 - 369 = 0 (D > 0)");
+        int a = 2, b = -8, c = 7, d = 0, e = 0, f = -369;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-9111, -7047},
+            new long[]{-8097, -2991},
+            new long[]{-3867, -2991},
+            new long[]{-3273, -1209},
+            new long[]{-1563, -1209},
+            new long[]{-1389, -513},
+            new long[]{-663, -513},
+            new long[]{-561, -207},
+            new long[]{-267, -207},
+            new long[]{-237, -87},
+            new long[]{-111, -87},
+            new long[]{-93, -33},
+            new long[]{-39, -33},
+            new long[]{-33, -9},
+            new long[]{-3, -9},
+            new long[]{3, 9},
+            new long[]{33, 9},
+            new long[]{39, 33},
+            new long[]{93, 33},
+            new long[]{111, 87},
+            new long[]{237, 87},
+            new long[]{267, 207},
+            new long[]{561, 207},
+            new long[]{663, 513},
+            new long[]{1389, 513},
+            new long[]{1563, 1209},
+            new long[]{3273, 1209},
+            new long[]{3867, 2991},
+            new long[]{8097, 2991},
+            new long[]{9111, 7047},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test77() {
+        System.out.println("77: 9x^2 - 12xy - 27y^2 + 471 = 0 (D > 0)");
+        int a = 9, b = -12, c = -27, d = 0, e = 0, f = 471;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{8854, -7445},
+            new long[]{-1009, -400},
+            new long[]{34, -29},
+            new long[]{-1, -4},
+            new long[]{1, 4},
+            new long[]{-34, 29},
+            new long[]{1009, 400},
+            new long[]{-8854, 7445},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+    
+    @Test
+    public void test78() {
+        System.out.println("78: 3x^2 + 28xy + 24y^2 - 2007963 = 0 (D > 0)");
+        int a = 3, b = 28, c = 24, d = 0, e = 0, f = -2007963;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{80101, -83892},
+            new long[]{37761, -39550},
+            new long[]{7809, -8190},
+            new long[]{68631, -8190},
+            new long[]{4281, -490},
+            new long[]{-189, -192},
+            new long[]{1981, -192},
+            new long[]{-1981, 192},
+            new long[]{189, 192},
+            new long[]{-4281, 490},
+            new long[]{-68631, 8190},
+            new long[]{-7809, 8190},
+            new long[]{-37761, 39550},
+            new long[]{-80101, 83892},
+            new long[]{-702891, 83892},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
+
+    @Test
+    public void test79() {
+        System.out.println("79: 7x^2 - xy - 4y^2 - 580594 = 0 (D > 0)");
+        int a = 7, b = -1, c = -4, d = 0, e = 0, f = -580594;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-39694, -47781},
+            new long[]{-21326, -25669},
+            new long[]{17659, -25669},
+            new long[]{3986, -5781},
+            new long[]{-709, -773},
+            new long[]{-421, -357},
+            new long[]{370, -357},
+            new long[]{-370, 357},
+            new long[]{421, 357},
+            new long[]{709, 773},
+            new long[]{-3986, 5781},
+            new long[]{-17659, 25669},
+            new long[]{21326, 25669},
+            new long[]{39694, 47781},
+            new long[]{212635, 255963},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { QuadraticSolver.solve(a, b, c, d, e, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, QuadraticSolver.solve(a, b, c, d, e, f));
+    }
 }
