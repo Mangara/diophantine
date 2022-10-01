@@ -17,10 +17,14 @@
 package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This implementation is based on Keith Matthews' paper
@@ -77,6 +81,43 @@ public class RestrictedHyperbolicSolver {
         if (eq == RestrictedEquation.NO_SOLUTIONS) {
             return Collections.emptyList();
         }
+        
+        if (eq.a.gcd(eq.f).equals(BigInteger.ONE)) {
+            return getRepresentativeSolutionsReduced(eq);
+        }
+        
+        Reduction reduction = Reduction.forEquation(eq);
+        List<XYPair> reducedSolutions = getRepresentativeSolutionsReduced(reduction.reduce(eq));
+        return reduction.unreduce(reducedSolutions);
+    }
+
+    // Pre: D = b^2 - 4ac > 0, D not a perfect square, gcd(a, b, c) = 1, gcd(a, f) = 1
+    private static List<XYPair> getRepresentativeSolutionsReduced(RestrictedEquation eq) {
+        // If x and y share a factor d, then -f = a x^2 + b xy + c y^2 is divisible by d^2
+        // So we find all square factors of f (including 1) and solve a(x/d)^2 + b(x/d)(y/d) + c(y/d)^2 = -(f/d^2) in relatively prime x/d and y/d
+        List<XYPair> solutions = new ArrayList<>();
+        List<Long> squareDivisors = Divisors.getSquareDivisors(eq.absF.longValueExact());
+        
+        for (Long div : squareDivisors) {
+            BigInteger divisor = BigInteger.valueOf(div);
+            BigInteger factor = divisor.sqrt();
+            
+            List<XYPair> primitiveSolutions = getPrimitiveSolutions(eq.a, eq.b, eq.c, eq.f.divide(divisor), eq.D);
+            
+            for (XYPair sol : primitiveSolutions) {
+                solutions.add(new XYPair(sol.x.multiply(factor), sol.y.multiply(factor)));
+            }
+        }
+        
+        return solutions;
+    }
+
+    // Pre: D = b^2 - 4ac > 0, D not a perfect square, gcd(a, b, c) = 1, gcd(a, f) = 1
+    private static List<XYPair> getPrimitiveSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D) {
+        int signN = f.negate().signum();
+        BigInteger absF = f.abs();
+        List<BigInteger> thetas = UnaryCongruenceSolver.solve(a, b, c, absF);
+        Set<XYPair> primitiveSolutions = new HashSet<>();
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
