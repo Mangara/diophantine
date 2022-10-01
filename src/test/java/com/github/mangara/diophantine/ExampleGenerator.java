@@ -252,7 +252,7 @@ public class ExampleGenerator {
                                 continue;
                             }
 
-                            List<BigInteger> Ti = UnaryCongruenceSolver.solveReduced(1, -v, Math.abs(u));
+                            List<BigInteger> Ti = UnaryCongruenceSolver.solve(1, 0, -v, Math.abs(u));
                             
                             if (Ti.isEmpty()) {
                                 System.out.printf("int a = %d, b = %d, c = %d, d = %d, e = %d, f = %d;%n", a, b, c, d, e, f);

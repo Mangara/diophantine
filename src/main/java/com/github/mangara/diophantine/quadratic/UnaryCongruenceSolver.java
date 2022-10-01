@@ -26,7 +26,7 @@ public class UnaryCongruenceSolver {
     /**
      * Solves the quadratic congruence
      *  a x^2 + b x + c = 0 (mod n)
-     * given that a > 0 and n > 1.
+     * given that n > 1.
      * 
      * @param a
      * @param b
@@ -41,7 +41,7 @@ public class UnaryCongruenceSolver {
     /**
      * Solves the quadratic congruence
      *  a x^2 + b x + c = 0 (mod n)
-     * given that a > 0 and n > 1.
+     * given that n > 1.
      * 
      * @param a
      * @param b
@@ -50,60 +50,55 @@ public class UnaryCongruenceSolver {
      * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
      */
     public static List<BigInteger> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger n) {
-        if (a.signum() <= 0) {
-            throw new IllegalArgumentException("a too small");
-        }
         if (n.signum() <= 0) {
             throw new IllegalArgumentException("n too small");
         }
-        
         if (n.equals(BigInteger.ONE)) {
             return Collections.singletonList(BigInteger.ZERO);
+        }
+        
+        if (a.signum() == 0) {
+            return solveLinear(b, c, n);
+        }
+        if (a.signum() < 0) {
+            a = a.negate();
+            b = b.negate();
+            c = c.negate();
         }
         
         if (b.signum() == 0) {
             return solveReduced(a, c, n);
         } else {
+            // TODO: speed up
             return bruteForce(a, b, c, n);
         }
     }
     
-    /**
-     * Solves the quadratic congruence
-     *  a x^2 + c = 0 (mod n)
-     * given that a > 0 and n > 1.
-     *  
-     * @param a
-     * @param c
-     * @param n
-     * @return all integer solutions 0 <= x < n to a x^2 + c = 0 (mod n)
-     */
-    public static List<BigInteger> solveReduced(long a, long c, long n) {
-        return solveReduced(BigInteger.valueOf(a), BigInteger.valueOf(c), BigInteger.valueOf(n));
+    // Solves b x + c = 0 (mod n)
+    // Pre: n > 1
+    private static List<BigInteger> solveLinear(BigInteger b, BigInteger c, BigInteger n) {
+        if (b.signum() == 0) {
+            if (c.signum() == 0) {
+                List<BigInteger> solutions = new ArrayList<>();
+                
+                for (BigInteger i = BigInteger.ZERO; i.compareTo(n) < 0; i = i.add(BigInteger.ONE)) {
+                    solutions.add(i);
+                }
+                
+                return solutions;
+            } else {
+                return Collections.emptyList();
+            }
+        }
+        
+        // TODO: speed up
+        return bruteForce(BigInteger.ZERO, b, c, n);
     }
     
-    /**
-     * Solves the quadratic congruence
-     *  a x^2 + c = 0 (mod n)
-     * given that a > 0 and n > 1.
-     *  
-     * @param a
-     * @param c
-     * @param n
-     * @return all integer solutions 0 <= x < n to a x^2 + c = 0 (mod n)
-     */
-    public static List<BigInteger> solveReduced(BigInteger a, BigInteger c, BigInteger n) {
-        if (a.signum() <= 0) {
-            throw new IllegalArgumentException("a too small");
-        }
-        if (n.signum() <= 0) {
-            throw new IllegalArgumentException("n too small");
-        }
-        
-        if (n.equals(BigInteger.ONE)) {
-            return Collections.singletonList(BigInteger.ZERO);
-        }
-        
+    // Solves a x^2 + c = 0 (mod n)
+    // Pre: a > 0, n > 1
+    private static List<BigInteger> solveReduced(BigInteger a, BigInteger c, BigInteger n) {
+        // TODO: speed up
         return bruteForce(a, BigInteger.ZERO, c, n);
     }
     

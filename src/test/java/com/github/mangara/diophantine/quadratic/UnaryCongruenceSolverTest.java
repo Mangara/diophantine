@@ -64,21 +64,27 @@ public class UnaryCongruenceSolverTest {
     }
     
     @Test
-    public void testSolveReduced3() {
-        List<BigInteger> expectedSolutions = integers(17, 61, 82, 126);
-        assertEquals(expectedSolutions, UnaryCongruenceSolver.solveReduced(1, -3, 143));
-    }
-    
-    @Test
-    public void testSolveReduced4() {
-        List<BigInteger> expectedSolutions = integers(19, 82);
-        assertEquals(expectedSolutions, UnaryCongruenceSolver.solveReduced(1, -58, 101));
-    }
-    
-    @Test
-    public void testSolveReduced5() {
+    public void testSolve6() {
         List<BigInteger> expectedSolutions = integers(26, 87);
-        assertEquals(expectedSolutions, UnaryCongruenceSolver.solveReduced(1, -111, 113));
+        assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(-1, 0, 111, 113));
+    }
+    
+    @Test
+    public void testSolve7() {
+        List<BigInteger> expectedSolutions = integers();
+        assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(0, 0, 111, 113));
+    }
+    
+    @Test
+    public void testSolve8() {
+        List<BigInteger> expectedSolutions = integers(81);
+        assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(0, 7, 111, 113));
+    }
+    
+    @Test
+    public void testSolve9() {
+        List<BigInteger> expectedSolutions = integers(0, 1, 2, 3);
+        assertEquals(expectedSolutions, UnaryCongruenceSolver.solve(0, 0, 0, 4));
     }
     
     private List<BigInteger> integers(long... numbers) {

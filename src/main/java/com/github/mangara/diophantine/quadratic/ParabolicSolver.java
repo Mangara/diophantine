@@ -127,7 +127,7 @@ public class ParabolicSolver {
         BigInteger u = computeU(a, b, d, e);
         BigInteger v = computeV(a, d, f);
         
-        List<BigInteger> SqrtVModU = UnaryCongruenceSolver.solveReduced(BigInteger.ONE, v.negate(), u.abs());
+        List<BigInteger> SqrtVModU = UnaryCongruenceSolver.solve(BigInteger.ONE, BigInteger.ZERO, v.negate(), u.abs());
         
         if (SqrtVModU.isEmpty()) {
             return new EmptyIterator<>();
