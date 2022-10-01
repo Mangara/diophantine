@@ -42,10 +42,10 @@ public class ExampleGenerator {
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
         int d = 0, e = 0;
-        int a = 7, b = -1, c = -4, f = -580594;
-        int n = 79;
+        int a = 6, b = 8, c = 4, f = -1;
+        int n = 80;
         
-        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
+        String solver = "RestrictedEllipticalSolver.solve(a, b, c, f)";
         
         long D = Utils.discriminant(a, b, c);
 
@@ -354,18 +354,25 @@ public class ExampleGenerator {
                         continue;
                     }
                     
-                    if (D != -4) {
+//                    if (D != -4) {
+//                        continue;
+//                    }
+                    
+                    long g = Utils.gcd(a, b, c);
+                    
+                    if (g == 1) {
                         continue;
                     }
-                    
+
                     for (int f = -bound; f < 0; f++) {
-                        if (Utils.gcd(a, f) != 1) {
+                        if (f % g == 0) {
                             continue;
                         }
-//                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
-//
+                        
+                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+
 //                        if (numSmallSolutions == 0) {
-//                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
 //                        }
                         try {
                             RestrictedEllipticalSolver.solve(a, b, c, f);

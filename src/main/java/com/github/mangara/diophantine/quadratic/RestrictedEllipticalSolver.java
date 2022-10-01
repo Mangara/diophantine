@@ -114,6 +114,10 @@ public class RestrictedEllipticalSolver {
     private static List<XYPair> solveSignCorrected(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
         RestrictedEquation eq = new RestrictedEquation(a, b, c, f).withoutCommonDivisor();
         
+        if (eq == RestrictedEquation.NO_SOLUTIONS) {
+            return Collections.emptyList();
+        }
+        
         if (eq.a.gcd(eq.f).equals(BigInteger.ONE)) {
             return solveReduced(eq);
         }

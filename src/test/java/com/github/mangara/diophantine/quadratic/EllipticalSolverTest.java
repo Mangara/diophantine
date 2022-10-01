@@ -331,4 +331,12 @@ public class EllipticalSolverTest {
         TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
     }
     
+    @Test
+    public void test80() {
+        System.out.println("80: 6x^2 + 8xy + 4y^2 - 1 = 0 (D < 0)");
+        int a = 6, b = 8, c = 4, d = 0, e = 0, f = -1;
+
+        TestUtils.assertNoSolutions(a, b, c, d, e, f, EllipticalSolver.solve(a, b, c, d, e, f));
+    }
+    
 }
