@@ -146,6 +146,30 @@ public class ContinuedFractionTest {
     }
     
     @Test
+    public void testConvergent() {
+        ContinuedFraction cf = new ContinuedFraction(Arrays.asList(3L, 2L, 5L, 1L, 2L));
+        assertEquals(new XYPair(BigInteger.valueOf(3), BigInteger.valueOf(1)), cf.convergent(0));
+        assertEquals(new XYPair(BigInteger.valueOf(7), BigInteger.valueOf(2)), cf.convergent(1));
+        assertEquals(new XYPair(BigInteger.valueOf(38), BigInteger.valueOf(11)), cf.convergent(2));
+        assertEquals(new XYPair(BigInteger.valueOf(45), BigInteger.valueOf(13)), cf.convergent(3));
+        assertEquals(new XYPair(BigInteger.valueOf(128), BigInteger.valueOf(37)), cf.convergent(4));
+        
+        cf = new ContinuedFraction(Arrays.asList(2L, 4L), 1);
+        assertEquals(new XYPair(BigInteger.valueOf(2), BigInteger.valueOf(1)), cf.convergent(0));
+        assertEquals(new XYPair(BigInteger.valueOf(9), BigInteger.valueOf(4)), cf.convergent(1));
+        assertEquals(new XYPair(BigInteger.valueOf(38), BigInteger.valueOf(17)), cf.convergent(2));
+        assertEquals(new XYPair(BigInteger.valueOf(161), BigInteger.valueOf(72)), cf.convergent(3));
+        assertEquals(new XYPair(BigInteger.valueOf(682), BigInteger.valueOf(305)), cf.convergent(4));
+        
+        cf = new ContinuedFraction(Arrays.asList(4L, 1L, 2L, 3L), 2);
+        assertEquals(new XYPair(BigInteger.valueOf(4), BigInteger.valueOf(1)), cf.convergent(0));
+        assertEquals(new XYPair(BigInteger.valueOf(5), BigInteger.valueOf(1)), cf.convergent(1));
+        assertEquals(new XYPair(BigInteger.valueOf(14), BigInteger.valueOf(3)), cf.convergent(2));
+        assertEquals(new XYPair(BigInteger.valueOf(47), BigInteger.valueOf(10)), cf.convergent(3));
+        assertEquals(new XYPair(BigInteger.valueOf(108), BigInteger.valueOf(23)), cf.convergent(4));   
+    }
+    
+    @Test
     public void testGetCompleteQuotientDenominators() {
         long a = -157, b = 79, c = 1170;
         List<BigInteger> expected = Arrays.asList(1170L, -877L, 21L, -1L, 2L, 15L, 1L, 15L, 2L, 15L, 1L, 15L, 2L)

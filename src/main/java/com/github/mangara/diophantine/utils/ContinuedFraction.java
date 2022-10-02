@@ -285,6 +285,30 @@ public class ContinuedFraction {
     }
     
     /**
+     * Returns the i-th convergent of this continued fraction. The 0-th
+     * convergent is the first coefficient.
+     *
+     * @param i
+     * @return
+     */
+    public XYPair convergent(int i) {
+        List<Long> cfs = getCoefficients(i + 1);
+        BigInteger numerator = BigInteger.valueOf(cfs.get(i));
+        BigInteger denominator = BigInteger.ONE;
+
+        for (int j = i - 1; j >= 0; j--) {
+            BigInteger n = BigInteger.valueOf(cfs.get(j));
+
+            // Compute n + 1 / fraction = n + denominator / numerator = (n * numerator + denominator) / numerator
+            BigInteger oldNumerator = numerator;
+            numerator = n.multiply(numerator).add(denominator);
+            denominator = oldNumerator;
+        }
+
+        return new XYPair(numerator, denominator);
+    }
+    
+    /**
      * If this is the continued fraction of (a + sqrt(b))/c, this method returns
      * the first length denominators of the complete quotients.
      *
