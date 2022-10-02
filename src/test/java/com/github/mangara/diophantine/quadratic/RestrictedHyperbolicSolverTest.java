@@ -85,8 +85,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-//        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -132,8 +131,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -169,8 +167,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -213,8 +210,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -265,8 +261,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-//        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -315,8 +310,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -365,8 +359,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -427,8 +420,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -533,8 +525,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -621,8 +612,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -670,8 +660,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -704,8 +693,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -762,8 +750,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -798,8 +785,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -847,8 +833,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test
@@ -896,8 +881,7 @@ public class RestrictedHyperbolicSolverTest {
         };
 
         validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
-        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+        assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
     }
     
     @Test

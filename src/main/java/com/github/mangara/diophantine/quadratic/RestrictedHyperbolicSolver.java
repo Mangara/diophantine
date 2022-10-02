@@ -17,13 +17,16 @@
 package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.utils.ContinuedFraction;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -102,7 +105,7 @@ public class RestrictedHyperbolicSolver {
             BigInteger divisor = BigInteger.valueOf(div);
             BigInteger factor = divisor.sqrt();
             
-            List<XYPair> primitiveSolutions = getPrimitiveSolutions(eq.a, eq.b, eq.c, eq.f.divide(divisor), eq.D);
+            Set<XYPair> primitiveSolutions = getPrimitiveSolutions(eq.a, eq.b, eq.c, eq.f.divide(divisor), eq.D);
             
             for (XYPair sol : primitiveSolutions) {
                 solutions.add(new XYPair(sol.x.multiply(factor), sol.y.multiply(factor)));
@@ -113,13 +116,130 @@ public class RestrictedHyperbolicSolver {
     }
 
     // Pre: D = b^2 - 4ac > 0, D not a perfect square, gcd(a, b, c) = 1, gcd(a, f) = 1
-    private static List<XYPair> getPrimitiveSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D) {
-        int signN = f.negate().signum();
+    private static Set<XYPair> getPrimitiveSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D) {
         BigInteger absF = f.abs();
         List<BigInteger> thetas = UnaryCongruenceSolver.solve(a, b, c, absF);
         Set<XYPair> primitiveSolutions = new HashSet<>();
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (BigInteger theta : thetas) {
+            getPrimitiveSolution(a, b, c, f, D, theta).ifPresent(sol -> primitiveSolutions.add(sol));
+        }
+        
+        return primitiveSolutions;
     }
 
+    private static Optional<XYPair> getPrimitiveSolution(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D, BigInteger theta) {
+        Set<XYPair> solutions;
+        
+        if (b.mod(BigInteger.TWO).signum() == 0) {
+            solutions = getPrimitiveSolutionEven(a, b, c, f, D, theta);
+        } else {
+            solutions = getPrimitiveSolutionOdd(a, b, c, f, D, theta);
+        }
+        
+        return solutions.stream().min((sol1, sol2) -> sol1.y.compareTo(sol2.y));
+    }
+
+    private static Set<XYPair> getPrimitiveSolutionEven(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D, BigInteger theta) {
+        Set<XYPair> solutions = new HashSet<>();
+        
+        int signN = f.negate().signum();
+        BigInteger P = a.multiply(theta).add(b.divide(BigInteger.TWO)); // a * theta + b / 2
+        BigInteger Q = a.multiply(f.abs()); // a * |F|
+        BigInteger Delta = D.divide(BigInteger.valueOf(4));
+
+        // Find continued fraction of w = (-P + √Delta)/Q
+        ContinuedFraction w = ContinuedFraction.ofExpression(P.negate(), Delta, Q);
+        int i = findSignMatchedCompleteQuotientIndex(w, P.negate(), Delta, Q, 1, signN);
+
+        if (i >= 0) {
+            solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
+        }
+
+        // Repeat for w* = (-P - √Delta)/Q = (P + √Delta)/(-Q)
+        ContinuedFraction wStar = ContinuedFraction.ofExpression(P, Delta, Q.negate());
+        int j = findSignMatchedCompleteQuotientIndex(wStar, P, Delta, Q.negate(), 1, -signN);
+
+        if (j >= 0) {
+            solutions.add(solutionFromConvergent(wStar.convergent(j - 1), theta, f.abs()));
+        }
+        
+        return solutions;
+    }
+
+    private static Set<XYPair> getPrimitiveSolutionOdd(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D, BigInteger theta) {
+        Set<XYPair> solutions = new HashSet<>();
+        
+        int signN = f.negate().signum();
+        BigInteger P = BigInteger.TWO.multiply(a).multiply(theta).add(b); // 2 * a * theta + b
+        BigInteger Q = BigInteger.TWO.multiply(a).multiply(f.abs()); // 2 * a * |F|
+
+        // Find continued fraction of w = (-(2P + 1) + √D)/2Q
+        ContinuedFraction w = ContinuedFraction.ofExpression(P.negate(), D, Q);
+        int i = findSignMatchedCompleteQuotientIndex(w, P.negate(), D, Q, 2, signN);
+
+        if (i >= 0) {
+            solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
+        }
+
+        // Repeat for w* = (-(2P + 1) - √D)/2Q = (2P + 1 + √D)/(-2Q)
+        ContinuedFraction wStar = ContinuedFraction.ofExpression(P, D, Q.negate());
+        int j = findSignMatchedCompleteQuotientIndex(wStar, P, D, Q.negate(), 2, -signN);
+
+        if (j >= 0) {
+            solutions.add(solutionFromConvergent(wStar.convergent(j - 1), theta, f.abs()));
+        }
+
+        // Add exceptional solution for D == 5
+        if (D.equals(BigInteger.valueOf(5)) && a.signum() != signN) {
+            int r = w.getRepetitionStart() - 1;
+            XYPair convR = w.convergent(r);
+            XYPair convRs1 = w.convergent(r - 1);
+
+            BigInteger X = convR.x.subtract(convRs1.x);
+            BigInteger y = convR.y.subtract(convRs1.y);
+            BigInteger x = y.multiply(theta).add(f.abs().multiply(X));
+            
+            solutions.add(new XYPair(x, y));
+        }
+        
+        return solutions;
+    }
+
+    private static int findSignMatchedCompleteQuotientIndex(ContinuedFraction cf, BigInteger a, BigInteger b, BigInteger c, long target, int signN) {
+        // Check first period or two for Q_i = (-1)^i N/|N| = (-1)^i signN
+        int checkLength = cf.getPeriod() % 2 == 0 ? cf.getRepetitionStart() + cf.getPeriod() : cf.getRepetitionStart() + 2 * cf.getPeriod();
+        List<BigInteger> completeQuotientDenominators = cf.getCompleteQuotientDenominators(checkLength, a, b, c);
+
+        for (int i = 0; i < completeQuotientDenominators.size(); i++) {
+            try {
+                long Qi = completeQuotientDenominators.get(i).longValueExact();
+                if (Math.abs(Qi) == target) {
+                    if (i % 2 == 0) {
+                        if (Qi == signN * target) {
+                            return i;
+                        }
+                    } else {
+                        if (Qi == -signN * target) {
+                            return i;
+                        }
+                    }
+                }
+            } catch (ArithmeticException ex) {
+                // Qi is too large for a long, so it can't be equal to target
+            }
+        }
+
+        return -1;
+    }
+
+    private static XYPair solutionFromConvergent(XYPair convergent, BigInteger theta, BigInteger absF) {
+        BigInteger X = convergent.x;
+        BigInteger y = convergent.y;
+
+        // x = y * theta + |f| * X
+        BigInteger x = y.multiply(theta).add(absF.multiply(X));
+
+        return new XYPair(x, y);
+    }
 }
