@@ -60,22 +60,33 @@ public class ContinuedFraction {
      * @return
      */
     public static ContinuedFraction ofExpression(long a, long b, long c) {
-        BigInteger A = BigInteger.valueOf(a), B = BigInteger.valueOf(b), C = BigInteger.valueOf(c);
-        if (B.subtract(A.multiply(A)).remainder(C) != BigInteger.ZERO) { // b - a^2 is not divisible by c, multiply by c first so that all divisions are exact
-            A = A.multiply(C);
-            B = B.multiply(C).multiply(C);
-            C = C.multiply(C);
+        return ofExpression(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c));
+    }
+    
+    /**
+     * Returns the continued fraction of (a + sqrt(b))/c.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @return
+     */
+    public static ContinuedFraction ofExpression(BigInteger a, BigInteger b, BigInteger c) {
+        if (b.subtract(a.multiply(a)).remainder(c) != BigInteger.ZERO) { // b - a^2 is not divisible by c, multiply by c first so that all divisions are exact
+            a = a.multiply(c);
+            b = b.multiply(c).multiply(c);
+            c = c.multiply(c);
         }
 
         List<Long> coefficients = new ArrayList<>();
         Map<XYPair, Integer> pairs = new HashMap<>();
         
-        BigInteger[] sqrtBAndRemainder = B.sqrtAndRemainder();
+        BigInteger[] sqrtBAndRemainder = b.sqrtAndRemainder();
         BigInteger sqrtB = sqrtBAndRemainder[0];
         boolean bIsPerfectSquare = sqrtBAndRemainder[1].signum() == 0;
 
-        long coefficient = coefficient(A, sqrtB, C, bIsPerfectSquare);
-        XYPair pair = new XYPair(A, C);
+        long coefficient = coefficient(a, sqrtB, c, bIsPerfectSquare);
+        XYPair pair = new XYPair(a, c);
         int i = 0;
 
         do {
@@ -83,16 +94,16 @@ public class ContinuedFraction {
             pairs.put(pair, i);
             i++;
 
-            A = BigInteger.valueOf(coefficient).multiply(C).subtract(A); // coefficient * C - A;
-            C = B.subtract(A.multiply(A)).divide(C); // (B - A * A) / C;
+            a = BigInteger.valueOf(coefficient).multiply(c).subtract(a); // coefficient * C - A;
+            c = b.subtract(a.multiply(a)).divide(c); // (B - A * A) / C;
 
-            if (C.signum() == 0) {
+            if (c.signum() == 0) {
                 return new ContinuedFraction(coefficients, NO_REPETITION);
             }
 
-            coefficient = coefficient(A, sqrtB, C, bIsPerfectSquare);
+            coefficient = coefficient(a, sqrtB, c, bIsPerfectSquare);
             
-            pair = new XYPair(A, C);
+            pair = new XYPair(a, c);
         } while (!pairs.containsKey(pair));
 
         return new ContinuedFraction(coefficients, pairs.get(pair));
@@ -271,6 +282,35 @@ public class ContinuedFraction {
         }
 
         return result;
+    }
+    
+    /**
+     * If this is the continued fraction of (a + sqrt(b))/c, this method returns
+     * the first length denominators of the complete quotients.
+     *
+     * @param length
+     * @param a
+     * @param b
+     * @param c
+     * @return
+     */
+    public List<BigInteger> getCompleteQuotientDenominators(int length, BigInteger a, BigInteger b, BigInteger c) {
+        List<Long> cfs = getCoefficients(length);
+        List<BigInteger> denominators = new ArrayList<>(length);
+        
+        if (b.subtract(a.multiply(a)).remainder(c) != BigInteger.ZERO) { // b - a^2 is not divisible by c, multiply by c first so that all divisions are exact
+            a = a.multiply(c);
+            b = b.multiply(c).multiply(c);
+            c = c.multiply(c);
+        }
+        
+        for (Long coefficient : cfs) {
+            denominators.add(c);
+            a = BigInteger.valueOf(coefficient).multiply(c).subtract(a);
+            c = b.subtract(a.multiply(a)).divide(c);
+        }
+        
+        return denominators;
     }
     
     @Override

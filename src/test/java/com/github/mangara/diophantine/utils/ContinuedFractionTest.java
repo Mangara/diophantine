@@ -16,9 +16,11 @@
 package com.github.mangara.diophantine.utils;
 
 import com.github.mangara.diophantine.XYPair;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -141,6 +143,39 @@ public class ContinuedFractionTest {
             new XYPair(47, 10),
             new XYPair(108, 23));
         assertEquals(expected, cf.getConvergents(5));
+    }
+    
+    @Test
+    public void testGetCompleteQuotientDenominators() {
+        long a = -157, b = 79, c = 1170;
+        List<BigInteger> expected = Arrays.asList(1170L, -877L, 21L, -1L, 2L, 15L, 1L, 15L, 2L, 15L, 1L, 15L, 2L)
+                .stream().map(x -> BigInteger.valueOf(x)).collect(Collectors.toList());
+        ContinuedFraction cf = ContinuedFraction.ofExpression(a, b, c);
+        assertEquals(expected, cf.getCompleteQuotientDenominators(expected.size(), BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c)));
+                
+        a = 6; b = 7; c = 3;
+        expected = Arrays.asList(9L, 7L, 2L, 7L)
+                .stream().map(x -> BigInteger.valueOf(x)).collect(Collectors.toList());
+        cf = ContinuedFraction.ofExpression(a, b, c);
+        assertEquals(expected, cf.getCompleteQuotientDenominators(expected.size(), BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c)));
+
+        a = 1; b = 35; c = 2;
+        expected = Arrays.asList(2L, 5L, 2L, 5L, 2L)
+                .stream().map(x -> BigInteger.valueOf(x)).collect(Collectors.toList());
+        cf = ContinuedFraction.ofExpression(a, b, c);
+        assertEquals(expected, cf.getCompleteQuotientDenominators(expected.size(), BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c)));
+        
+        a = -237537497102073097L; b = 124; c = 1066139978779423449L;
+        expected = Arrays.asList(1066139978779423449L, -643988675321885220L, 52923690746607965L, -12619053908566113L, 28969918307469L, -21969291193273L, 483344781480L, -266009330257L, 32209156781L, -24593368497L, 512857960L, -438673113L, 2896269L, -272913L, 18120L, -14061L, 257L, -40L, 9L, 11L, 8L, 3L, 1L, 3L, 8L, 11L, 9L, 12L, 5L, 15L, 4L, 15L, 5L, 12L, 9L, 11L)
+                .stream().map(x -> BigInteger.valueOf(x)).collect(Collectors.toList());
+        cf = ContinuedFraction.ofExpression(a, b, c);
+        assertEquals(expected, cf.getCompleteQuotientDenominators(expected.size(), BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c)));
+        
+        a = 29257053322382397L; b = 113; c = -1142318710686488692L;
+        expected = Arrays.asList(-1142318710686488692L, 1084553935345764536L, -749331304040638L, 1464986472124L, -556305457994L, 215767108544L, -79158660952L, 33546080998L, -9642375356L, 7218251756L, -175173226L, 30785648L, -4572494L, 1617484L, -750884L, 164242L, -3136L, 176L, -8L, 14L, 8L, 4L, 16L, 2L, 16L, 4L, 8L, 8L, 4L)
+                .stream().map(x -> BigInteger.valueOf(x)).collect(Collectors.toList());
+        cf = ContinuedFraction.ofExpression(a, b, c);
+        assertEquals(expected, cf.getCompleteQuotientDenominators(expected.size(), BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c)));
     }
     
 }
