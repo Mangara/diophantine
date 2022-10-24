@@ -15,9 +15,48 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
+import com.github.mangara.diophantine.XYPair;
+import java.math.BigInteger;
+import java.util.Iterator;
+
 /**
- *
+ * Solves variations on the Pell's equation: x^2 - D y ^2 = 1.
+ * 
+ * Based on "Solving the generalized Pell equation x^2 - Dy^2 = N" by John P. Robertson.
+ * https://web.archive.org/web/20180831180333/http://www.jpr2718.org/pell.pdf
  */
 public class PellsSolver {
+
+    /**
+     * Returns an iterator over all solutions to the Diophantine
+     * equation x^2 - D y^2 = 4. D must not be a perfect square.
+     *
+     * @param D
+     * @return
+     */
+    public static Iterator<XYPair> solvePellsFour(BigInteger D) {
+        XYPair minimalPositiveSolution = leastPositivePellsFourSolution(D);
+        return new PellsFourIterator(D, minimalPositiveSolution);
+    }
+
+    private static XYPair leastPositivePellsFourSolution(BigInteger D) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static class PellsFourIterator implements Iterator<XYPair> {
+
+        public PellsFourIterator(BigInteger D, XYPair minimalPositiveSolution) {
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public XYPair next() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
     
 }
