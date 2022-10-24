@@ -16,6 +16,7 @@
 package com.github.mangara.diophantine;
 
 import com.github.mangara.diophantine.quadratic.RestrictedEllipticalSolver;
+import com.github.mangara.diophantine.quadratic.RestrictedHyperbolicSolver;
 import com.github.mangara.diophantine.quadratic.UnaryCongruenceSolver;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
@@ -43,11 +44,12 @@ public class ExampleGenerator {
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
         int d = 0, e = 0;
-        int a = 4, b = 4, c = -4, f = -2;
-        int n = 81;
+        int a = 7, b = 8, c = 2, f = 0;
+        int n = 84;
         
         long D = Utils.discriminant(a, b, c);
         
+//        String solver = "PellsSolver.solvePellsFour(BigInteger.valueOf(-c))";
         String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
@@ -390,7 +392,7 @@ public class ExampleGenerator {
     
     private static void findRestrictedHyperbolicExamples() {
         int bound = 9;
-        for (int a = 1; a <= bound; a++) {
+        for (int a = -bound; a < bound; a++) {
             for (int b = -bound; b < bound; b++) {
                 for (int c = -bound; c < bound; c++) {
                     int D = b * b - 4 * a * c;
@@ -401,28 +403,39 @@ public class ExampleGenerator {
                     
                     long g = Utils.gcd(a, b, c);
                     
-                    if (g == 1) {
+                    if (g != 1) {
                         continue;
                     }
-
-                    for (int f = -bound; f < 0; f++) {
-                        if (f % g == 0) {
-                            continue;
-                        }
-                        
-                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
-
-//                        if (numSmallSolutions == 0) {
-                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
-//                        }
-//                        try {
-//                            RestrictedEllipticalSolver.solve(a, b, c, f);
-//                        } catch (RuntimeException ex) {
-//                            if (ex.getMessage().equals("Boom")) {
-//                                System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size());
-//                            }
-//                        }
+                    
+                    int f = 0;
+                    int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+                    
+                    if (numSmallSolutions > 1) {
+                        System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d small solutions)%n", a, b, c, f, D, numSmallSolutions);
                     }
+
+//                    for (int f = -bound; f < bound; f++) {
+//                        if (f % g != 0) {
+//                            continue;
+//                        }
+//                        
+//                        if (Utils.gcd(a, f) != 1) {
+//                            continue;
+//                        }
+//                        
+////                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+//
+////                        if (numSmallSolutions == 0) {
+////                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+////                        }
+//                        try {
+//                            RestrictedHyperbolicSolver.solve(a, b, c, f);
+//                        } catch (UnsupportedOperationException ex) {
+//                            // Ignore
+//                        } catch (IndexOutOfBoundsException ex) {
+//                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size());
+//                        }
+//                    }
                 }
             }
         }

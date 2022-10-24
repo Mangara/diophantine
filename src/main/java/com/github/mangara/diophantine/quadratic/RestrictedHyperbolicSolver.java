@@ -16,12 +16,13 @@
 
 package com.github.mangara.diophantine.quadratic;
 
+import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
 import com.github.mangara.diophantine.utils.ContinuedFraction;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -79,6 +80,10 @@ public class RestrictedHyperbolicSolver {
      * solution with least positive y.
      */
     public static List<XYPair> getRepresentativeSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
+        if (Utils.legendreConstant(a, b, c, BigInteger.ZERO, BigInteger.ZERO, f, Utils.discriminant(a, b, c)).signum() == 0) {
+            throw new IllegalArgumentException("k must be non-zero");
+        }
+        
         RestrictedEquation eq = new RestrictedEquation(a, b, c, f).withoutCommonDivisor();
         
         if (eq == RestrictedEquation.NO_SOLUTIONS) {
@@ -117,8 +122,7 @@ public class RestrictedHyperbolicSolver {
 
     // Pre: D = b^2 - 4ac > 0, D not a perfect square, gcd(a, b, c) = 1, gcd(a, f) = 1
     private static Set<XYPair> getPrimitiveSolutions(BigInteger a, BigInteger b, BigInteger c, BigInteger f, BigInteger D) {
-        BigInteger absF = f.abs();
-        List<BigInteger> thetas = UnaryCongruenceSolver.solve(a, b, c, absF);
+        List<BigInteger> thetas = UnaryCongruenceSolver.solve(a, b, c, f.abs());
         Set<XYPair> primitiveSolutions = new HashSet<>();
         
         for (BigInteger theta : thetas) {
@@ -152,8 +156,15 @@ public class RestrictedHyperbolicSolver {
         ContinuedFraction w = ContinuedFraction.ofExpression(P.negate(), Delta, Q);
         int i = findSignMatchedCompleteQuotientIndex(w, P.negate(), Delta, Q, 1, signN);
 
-        if (i >= 0) {
+        if (i > 0) {
             solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
+        }
+        
+        if (i == 0) {
+            throw new UnsupportedOperationException("Unhandled case");
+//            System.out.println("i = 0 when solving " + new RestrictedEquation(a, b, c, f).toString());
+//            System.out.printf("theta = %d P = %d Q = %d Delta = %d%n", theta, P, Q, Delta);
+//            System.out.printf("w = %s with convergents %s%n", w.toString(), w.getConvergents(10).toString());
         }
 
         // Repeat for w* = (-P - √Delta)/Q = (P + √Delta)/(-Q)
@@ -193,6 +204,11 @@ public class RestrictedHyperbolicSolver {
         // Add exceptional solution for D == 5
         if (D.equals(BigInteger.valueOf(5)) && a.signum() != signN) {
             int r = w.getRepetitionStart() - 1;
+            
+            if (r == 0) {
+                throw new UnsupportedOperationException("Unhandled case");
+            }
+            
             XYPair convR = w.convergent(r);
             XYPair convRs1 = w.convergent(r - 1);
 

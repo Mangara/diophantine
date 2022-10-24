@@ -900,6 +900,170 @@ public class RestrictedHyperbolicSolverTest {
 
         assertTrue(RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)).isEmpty());
     }
+    
+    @Test
+    public void test82() {
+        System.out.println("82: x^2 - 60y^2 - 4 = 0 (D > 0)");
+        int a = 1, b = 0, c = -60, d = 0, e = 0, f = -4;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-3842, -496},
+            new long[]{3842, -496},
+            new long[]{-488, -63},
+            new long[]{488, -63},
+            new long[]{-62, -8},
+            new long[]{62, -8},
+            new long[]{-8, -1},
+            new long[]{8, -1},
+            new long[]{-2, 0},
+            new long[]{2, 0},
+            new long[]{-8, 1},
+            new long[]{8, 1},
+            new long[]{-62, 8},
+            new long[]{62, 8},
+            new long[]{-488, 63},
+            new long[]{488, 63},
+            new long[]{-3842, 496},
+            new long[]{3842, 496},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
+    }
+    
+    @Test
+    public void testRepresentative82() {
+        System.out.println("Representative 82: x^2 - 60y^2 - 4 = 0 (D > 0)");
+        int a = 1, b = 0, c = -60, d = 0, e = 0, f = -4;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-2, 0},
+            new long[]{-8, 1},
+        };
+
+        validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
+        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+    }
+    
+    @Test
+    public void test83() {
+        System.out.println("83: x^2 + xy - y^2 + 1 = 0 (D > 0)");
+        int a = 1, b = 1, c = -1, d = 0, e = 0, f = 1;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-2584, -4181},
+            new long[]{6765, -4181},
+            new long[]{-987, -1597},
+            new long[]{2584, -1597},
+            new long[]{-377, -610},
+            new long[]{987, -610},
+            new long[]{-144, -233},
+            new long[]{377, -233},
+            new long[]{-55, -89},
+            new long[]{144, -89},
+            new long[]{-21, -34},
+            new long[]{55, -34},
+            new long[]{-8, -13},
+            new long[]{21, -13},
+            new long[]{-3, -5},
+            new long[]{8, -5},
+            new long[]{-1, -2},
+            new long[]{3, -2},
+            new long[]{0, -1},
+            new long[]{1, -1},
+            new long[]{-1, 1},
+            new long[]{0, 1},
+            new long[]{-3, 2},
+            new long[]{1, 2},
+            new long[]{-8, 5},
+            new long[]{3, 5},
+            new long[]{-21, 13},
+            new long[]{8, 13},
+            new long[]{-55, 34},
+            new long[]{21, 34},
+            new long[]{-144, 89},
+            new long[]{55, 89},
+            new long[]{-377, 233},
+            new long[]{144, 233},
+            new long[]{-987, 610},
+            new long[]{377, 610},
+            new long[]{-2584, 1597},
+            new long[]{987, 1597},
+            new long[]{-6765, 4181},
+            new long[]{2584, 4181},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
+//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
+    }
+
+    @Test
+    public void testRepresentative83() {
+        System.out.println("Representative 83: x^2 + xy - y^2 + 1 = 0 (D > 0)");
+        int a = 1, b = 1, c = -1, d = 0, e = 0, f = 1;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-1, 1},
+        };
+
+        validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
+        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+    }
+
+    @Test
+    public void test84() {
+        System.out.println("84: x^2 + 4xy - 4y^2 - 1 = 0 (D > 0)");
+        int a = 1, b = 4, c = -4, d = 0, e = 0, f = -1;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-5741, -6930},
+            new long[]{-985, -1189},
+            new long[]{5741, -1189},
+            new long[]{-169, -204},
+            new long[]{985, -204},
+            new long[]{-29, -35},
+            new long[]{169, -35},
+            new long[]{-5, -6},
+            new long[]{29, -6},
+            new long[]{-1, -1},
+            new long[]{5, -1},
+            new long[]{-1, 0},
+            new long[]{1, 0},
+            new long[]{-5, 1},
+            new long[]{1, 1},
+            new long[]{-29, 6},
+            new long[]{5, 6},
+            new long[]{-169, 35},
+            new long[]{29, 35},
+            new long[]{-985, 204},
+            new long[]{169, 204},
+            new long[]{-5741, 1189},
+            new long[]{985, 1189},
+            new long[]{5741, 6930},
+        };
+
+        TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.solve(a, b, c, f); });
+        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.solve(a, b, c, f));
+    }
+
+    @Test
+    public void testRepresentative84() {
+        System.out.println("Representative 84: x^2 + 4xy - 4y^2 - 1 = 0 (D > 0)");
+        int a = 1, b = 4, c = -4, d = 0, e = 0, f = -1;
+
+        long[][] expectedSolutions = new long[][]{
+            new long[]{-1, 0},
+        };
+
+        validateRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions);
+        TestUtils.assertNotSupportedYet(() -> { RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)); });
+        //assertRepresentativeSolutions(a, b, c, d, e, f, expectedSolutions, RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f)));
+    }
 
     private void validateRepresentativeSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions) {
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
