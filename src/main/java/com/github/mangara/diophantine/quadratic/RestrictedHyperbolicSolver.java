@@ -64,7 +64,8 @@ public class RestrictedHyperbolicSolver {
      * @return an iterator over all integer solutions (x, y)
      */
     public static Iterator<XYPair> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<XYPair> representativeSolutions = getRepresentativeSolutions(a, b, c, f);
+        return new RestrictedHyperbolicIterator(a, b, c, representativeSolutions);
     }
     
     /**
@@ -257,5 +258,73 @@ public class RestrictedHyperbolicSolver {
         BigInteger x = y.multiply(theta).add(absF.multiply(X));
 
         return new XYPair(x, y);
+    }
+    
+    private static class RestrictedHyperbolicIterator implements Iterator<XYPair> {
+    
+        private final BigInteger a, b, c;
+        private final List<XYPair> representativeSolutions;
+        private final Iterator<XYPair> pellsFour;
+
+        private int familyIndex = -1;
+        private XYPair pellsFourSolution;
+
+        public RestrictedHyperbolicIterator(BigInteger a, BigInteger b, BigInteger c, List<XYPair> representativeSolutions) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.representativeSolutions = representativeSolutions;
+            pellsFour = PellsSolver.solvePellsFour(Utils.discriminant(a, b, c));
+            pellsFourSolution = pellsFour.next();
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public XYPair next() {
+            nextFamily();
+            return new XYPair(nextX(), nextY());
+        }
+
+        private void nextFamily() {
+            familyIndex++;
+            if (familyIndex == representativeSolutions.size()) {
+                familyIndex = 0;
+                pellsFourSolution = pellsFour.next();
+            }
+        }
+
+        private BigInteger nextX() {
+            // x = (u - bv)/2 x' - cv y'
+            BigInteger xFactor = getU().subtract(b.multiply(getV())).divide(BigInteger.TWO);
+            BigInteger yFactor = c.multiply(getV());
+            return xFactor.multiply(getX()).subtract(yFactor.multiply(getY()));
+        }
+
+        private BigInteger nextY() {
+            // y = av x' + (u + bv)/2 y'
+            BigInteger xFactor = a.multiply(getV());
+            BigInteger yFactor = getU().add(b.multiply(getV())).divide(BigInteger.TWO);
+            return xFactor.multiply(getX()).add(yFactor.multiply(getY()));
+        }
+
+        private BigInteger getU() {
+            return pellsFourSolution.x;
+        }
+
+        private BigInteger getV() {
+            return pellsFourSolution.y;
+        }
+
+        private BigInteger getX() {
+            return representativeSolutions.get(familyIndex).x;
+        }
+
+        private BigInteger getY() {
+            return representativeSolutions.get(familyIndex).y;
+        }
     }
 }
