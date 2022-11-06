@@ -18,6 +18,7 @@ package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
+import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.utils.ContinuedFraction;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
@@ -64,7 +65,12 @@ public class RestrictedHyperbolicSolver {
      */
     public static Iterator<XYPair> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
         List<XYPair> representativeSolutions = getRepresentativeSolutions(a, b, c, f);
-        return new RestrictedHyperbolicIterator(a, b, c, representativeSolutions);
+        
+        if (representativeSolutions.isEmpty()) {
+            return Collections.emptyIterator();
+        } else {
+            return new RestrictedHyperbolicIterator(a, b, c, representativeSolutions);
+        }
     }
     
     /**

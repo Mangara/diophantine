@@ -38,7 +38,18 @@ public class ContinuedFraction {
      * @return
      */
     public static ContinuedFraction ofFraction(long a, long c) {
-        return ofExpression(a, 0, c);
+        return ofFraction(BigInteger.valueOf(a), BigInteger.valueOf(c));
+    }
+    
+    /**
+     * Returns the continued fraction of a/c.
+     *
+     * @param a
+     * @param c
+     * @return
+     */
+    public static ContinuedFraction ofFraction(BigInteger a, BigInteger c) {
+        return ofExpression(a, BigInteger.ZERO, c);
     }
     
     /**
@@ -48,7 +59,17 @@ public class ContinuedFraction {
      * @return
      */
     public static ContinuedFraction ofRoot(long b) {
-        return ofExpression(0, b, 1);
+        return ofRoot(BigInteger.valueOf(b));
+    }
+    
+    /**
+     * Returns the continued fraction of sqrt(b).
+     *
+     * @param b
+     * @return
+     */
+    public static ContinuedFraction ofRoot(BigInteger b) {
+        return ofExpression(BigInteger.ZERO, b, BigInteger.ONE);
     }
     
     /**

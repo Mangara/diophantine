@@ -54,8 +54,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
     
     @Test
@@ -73,8 +72,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -100,8 +98,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -123,8 +120,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -142,8 +138,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -163,8 +158,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -184,8 +178,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -203,8 +196,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -224,8 +216,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -245,8 +236,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -266,8 +256,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -287,8 +276,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -308,8 +296,7 @@ public class PellsSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-        //TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
 
     @Test
@@ -329,8 +316,7 @@ public class PellsSolverTest {
         );
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { PellsSolver.solvePellsFour(BigInteger.valueOf(-c)); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
     
 }
