@@ -15,10 +15,10 @@
  */
 package com.github.mangara.diophantine.iterators;
 
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +39,7 @@ public class MergedIterator<T> implements Iterator<T> {
                 .collect(Collectors.toList());
 
         return switch (nonEmptyIterators.size()) {
-            case 0 -> new EmptyIterator<>();
+            case 0 -> Collections.emptyIterator();
             case 1 -> nonEmptyIterators.get(0);
             default -> new MergedIterator<>(nonEmptyIterators);
         };

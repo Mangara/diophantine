@@ -18,11 +18,11 @@ package com.github.mangara.diophantine.quadratic;
 import com.github.mangara.diophantine.LinearSolver;
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.iterators.MergedIterator;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -161,7 +161,7 @@ public class SquareDiscriminantSolver {
                     b.add(g).multiply(beta)
             );
 
-            Iterator<XYPair> eq1 = new EmptyIterator<>();
+            Iterator<XYPair> eq1 = Collections.emptyIterator();
             if (right1.mod(Dg1.abs()).signum() == 0) {
                 eq1 = LinearSolver.solve(BigInteger.TWO.multiply(a).divide(g1), b.add(g).divide(g1), right1.negate().divide(Dg1));
             }
@@ -171,7 +171,7 @@ public class SquareDiscriminantSolver {
                     b.subtract(g).multiply(beta)
             );
 
-            Iterator<XYPair> eq2 = new EmptyIterator<>();
+            Iterator<XYPair> eq2 = Collections.emptyIterator();
             if (right2.mod(Dg2.abs()).signum() == 0) {
                 eq2 = LinearSolver.solve(BigInteger.TWO.multiply(a).divide(g2), b.subtract(g).divide(g2), right2.negate().divide(Dg2));
             }

@@ -15,11 +15,11 @@
  */
 package com.github.mangara.diophantine;
 
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.iterators.IntegerIterator;
 import com.github.mangara.diophantine.iterators.MappingIterator;
 import com.github.mangara.diophantine.iterators.XYIterator;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.function.Function;
 
@@ -64,7 +64,7 @@ public class LinearSolver {
 
     private static Iterator<XYPair> solveTrivial(BigInteger f) {
         if (f.signum() != 0) {
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         }
         
         return new XYIterator();
@@ -84,7 +84,7 @@ public class LinearSolver {
      */
     private static Iterator<XYPair> solveSingle(BigInteger g, BigInteger f, boolean arbitraryX) {
         if (f.mod(g.abs()).signum() != 0) {
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         }
         
         BigInteger val = f.negate().divide(g);
@@ -104,7 +104,7 @@ public class LinearSolver {
         Eq reduced = reduce(d, e, f);
 
         if (reduced == null) {
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         } else {
             return solveReduced(reduced);
         }

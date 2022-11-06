@@ -15,7 +15,6 @@
  */
 package com.github.mangara.diophantine.quadratic;
 
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.LinearSolver;
 import com.github.mangara.diophantine.iterators.MergedIterator;
 import com.github.mangara.diophantine.XYPair;
@@ -23,6 +22,7 @@ import com.github.mangara.diophantine.iterators.IntegerIterator;
 import com.github.mangara.diophantine.iterators.MappingIterator;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,13 +99,13 @@ public class ParabolicSolver {
         
         if (v.signum() < 0) {
             // (t + d)^2 = v has no solutions for v < 0
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         }
         
         BigInteger[] sqrtV = v.sqrtAndRemainder();
         if (sqrtV[1].signum() != 0) {
             // (t + d)^2 = v has no solutions for v not a perfect square
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         }
         
         BigInteger g = sqrtV[0];
@@ -130,7 +130,7 @@ public class ParabolicSolver {
         List<BigInteger> SqrtVModU = UnaryCongruenceSolver.solve(BigInteger.ONE, BigInteger.ZERO, v.negate(), u.abs());
         
         if (SqrtVModU.isEmpty()) {
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         }
         
         List<Iterator<XYPair>> familyIterators = new ArrayList<>();

@@ -18,7 +18,6 @@ package com.github.mangara.diophantine.quadratic;
 
 import com.github.mangara.diophantine.Utils;
 import com.github.mangara.diophantine.XYPair;
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.utils.ContinuedFraction;
 import com.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;

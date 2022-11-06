@@ -15,7 +15,6 @@
  */
 package com.github.mangara.diophantine;
 
-import com.github.mangara.diophantine.iterators.EmptyIterator;
 import com.github.mangara.diophantine.quadratic.*;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -85,7 +84,7 @@ public class QuadraticSolver {
         if (alpha.mod(D).signum() == 0 && beta.mod(D).signum() == 0) {
             return Collections.singletonList(new XYPair(alpha.divide(D), beta.divide(D))).iterator();
         } else {
-            return new EmptyIterator<>();
+            return Collections.emptyIterator();
         }
     }
 }
