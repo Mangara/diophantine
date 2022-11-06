@@ -194,6 +194,10 @@ public class RestrictedHyperbolicSolver {
         ContinuedFraction w = ContinuedFraction.ofExpression(P.negate(), D, Q);
         int i = findSignMatchedCompleteQuotientIndex(w, P.negate(), D, Q, 2, signN);
 
+        if (i == 0) {
+            throw new UnsupportedOperationException("Unhandled case");
+        }
+        
         if (i >= 0) {
             solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
         }
