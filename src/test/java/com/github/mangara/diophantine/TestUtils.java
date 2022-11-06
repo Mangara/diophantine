@@ -16,7 +16,9 @@
 package com.github.mangara.diophantine;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -50,60 +52,66 @@ public class TestUtils {
             assertIsSolution(a, b, c, d, e, f, expectedSolution[0], expectedSolution[1]);
         }
     }
+    
+    public static void validateExpectedSolutions(int a, int b, int c, int d, int e, int f, List<XYPair> expectedSolutions) {
+        for (XYPair expectedSolution : expectedSolutions) {
+            assertIsSolution(a, b, c, d, e, f, expectedSolution);
+        }
+    }
 
     public static void assertSolutionsInclude(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions, Iterator<XYPair> solutions) {
-        boolean[] seen = new boolean[expectedSolutions.length];
+        List<XYPair> expected = new ArrayList<>(expectedSolutions.length);
+        
+        for (long[] expectedSolution : expectedSolutions) {
+            expected.add(new XYPair(expectedSolution[0], expectedSolution[1]));
+        }
+        
+        assertSolutionsInclude(a, b, c, d, e, f, expected, solutions);
+    }
+    
+    public static void assertSolutionsInclude(int a, int b, int c, int d, int e, int f, List<XYPair> expectedSolutions, Iterator<XYPair> solutions) {
+        boolean[] seen = new boolean[expectedSolutions.size()];
         int numSeen = 0;
 
-        for (int n = 0; n < 1000 && solutions.hasNext() && numSeen < expectedSolutions.length; n++) {
+        for (int n = 0; n < 1000 && solutions.hasNext() && numSeen < expectedSolutions.size(); n++) {
             XYPair sol = solutions.next();
             assertIsSolution(a, b, c, d, e, f, sol);
 
-            try {
-                long x = sol.x.longValueExact();
-                long y = sol.y.longValueExact();
-
-                for (int i = 0; i < expectedSolutions.length; i++) {
-                    if (!seen[i] && x == expectedSolutions[i][0] && y == expectedSolutions[i][1]) {
-                        seen[i] = true;
-                        numSeen++;
-                        break;
-                    }
+            for (int i = 0; i < expectedSolutions.size(); i++) {
+                if (!seen[i] && sol.equals(expectedSolutions.get(i))) {
+                    seen[i] = true;
+                    numSeen++;
+                    break;
                 }
-            } catch (ArithmeticException ex) {
-                // BigInteger out of long range - skip this solution
             }
         }
 
-        if (numSeen < expectedSolutions.length) {
+        if (numSeen < expectedSolutions.size()) {
             fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
         }
     }
 
     public static void assertAllSolutions(int a, int b, int c, int d, int e, int f, long[][] expectedSolutions, Iterator<XYPair> solutions) {
-        boolean[] seen = new boolean[expectedSolutions.length];
+        
+    }
+    
+    public static void assertAllSolutions(int a, int b, int c, int d, int e, int f, List<XYPair> expectedSolutions, Iterator<XYPair> solutions) {
+        boolean[] seen = new boolean[expectedSolutions.size()];
         int numSeen = 0;
 
-        for (int n = 0; n < 1000 && solutions.hasNext() && numSeen < expectedSolutions.length; n++) {
+        for (int n = 0; n < 1000 && solutions.hasNext() && numSeen < expectedSolutions.size(); n++) {
             XYPair sol = solutions.next();
             assertIsSolution(a, b, c, d, e, f, sol);
 
             boolean found = false;
-
-            try {
-                long x = sol.x.longValueExact();
-                long y = sol.y.longValueExact();
-
-                for (int i = 0; i < expectedSolutions.length; i++) {
-                    if (!seen[i] && x == expectedSolutions[i][0] && y == expectedSolutions[i][1]) {
-                        seen[i] = true;
-                        numSeen++;
-                        found = true;
-                        break;
-                    }
+            
+            for (int i = 0; i < expectedSolutions.size(); i++) {
+                if (!seen[i] && sol.equals(expectedSolutions.get(i))) {
+                    seen[i] = true;
+                    numSeen++;
+                    found = true;
+                    break;
                 }
-            } catch (ArithmeticException ex) {
-                // BigInteger out of long range - incorrect
             }
 
             if (!found) {
@@ -111,7 +119,7 @@ public class TestUtils {
             }
         }
 
-        if (numSeen < expectedSolutions.length) {
+        if (numSeen < expectedSolutions.size()) {
             fail("Not all solutions found. Seen: " + seenString(expectedSolutions, seen, true) + " Not seen: " + seenString(expectedSolutions, seen, false));
         }
     }
@@ -128,12 +136,12 @@ public class TestUtils {
         assertThrows(UnsupportedOperationException.class, code);
     }
 
-    private static String seenString(long[][] expectedSolutions, boolean[] seen, boolean found) {
+    private static String seenString(List<XYPair> expectedSolutions, boolean[] seen, boolean found) {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < expectedSolutions.length; i++) {
+        for (int i = 0; i < expectedSolutions.size(); i++) {
             if (seen[i] == found) {
-                sb.append(String.format("(%d, %d), ", expectedSolutions[i][0], expectedSolutions[i][1]));
+                sb.append(String.format("(%d, %d), ", expectedSolutions.get(i).x, expectedSolutions.get(i).y));
             }
         }
 

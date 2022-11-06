@@ -44,13 +44,13 @@ public class ExampleGenerator {
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
         int d = 0, e = 0;
-        int a = 7, b = 8, c = 2, f = 0;
-        int n = 84;
+        int a = 1, b = 0, c = -36236, f = -4;
+        int n = 14;
         
         long D = Utils.discriminant(a, b, c);
         
-//        String solver = "PellsSolver.solvePellsFour(BigInteger.valueOf(-c))";
-        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
+        String solver = "PellsSolver.solvePellsFour(BigInteger.valueOf(-c))";
+//        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("D = " + D + " GCD(a, b, c) = " + Utils.gcd(a, b, c) + " GCD(a, f) = " + Utils.gcd(a, f) + " GCD(d, e) = " + Utils.gcd(d, e));
@@ -64,9 +64,9 @@ public class ExampleGenerator {
         }
 
         if (d == 0 && e == 0 && D > 0) {
-            String restrictedSolver = "RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f))";
-            List<XYPair> representativeSolutions = keepRepresentativeSolutions(solutions, a, b, c, d, e, f);
-            printTestCase("Representative", restrictedSolver, a, b, c, d, e, f, representativeSolutions, n);
+//            String restrictedSolver = "RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f))";
+//            List<XYPair> representativeSolutions = keepRepresentativeSolutions(solutions, a, b, c, d, e, f);
+//            printTestCase("Representative", restrictedSolver, a, b, c, d, e, f, representativeSolutions, n);
 
 //            List<XYPair> primitiveSolutions = keepPrimitiveSolutions(representativeSolutions);
 //            printTestCase("Primitive", solver, a, b, c, d, e, f, primitiveSolutions, n);
@@ -74,7 +74,7 @@ public class ExampleGenerator {
 
         if (a == 1 && b == 0 && c < 0 && d == 0 && e == 0) {
             System.out.println();
-            System.out.println("Least positive solution: " + leastPositiveSolution(solutions));
+//            System.out.println("Least positive solution: " + leastPositiveSolution(solutions));
         }
     }
 
