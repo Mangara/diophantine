@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.mangara</groupId>
+    <groupId>io.github.mangara</groupId>
     <artifactId>diophantine</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -42,4 +42,8 @@
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
+    <name>Diophantine</name>
+    <description>A solver for linear and quadratic diophantine equations.
+
+In particular, it finds integer solutions $(x, y)$ to the general quadratic equation $ax^2 + bxy + cy^2 + dx + ey + f = 0$ with integer coefficients $a$, $b$, $c$, $d$, $e$, and $f$.</description>
 </project>
