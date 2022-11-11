@@ -33,7 +33,8 @@ public class ChineseRemainder {
      * 
      * where (r_i, n_i) are the pairs in remainders.
      * 
-     * The pre-conditions are that all the n_i are relatively prime, and 0 <= r_i < n_i.
+     * The pre-conditions are that all the n_i are relatively prime,
+     * and {@literal 0 <= r_i < n_i}.
      * 
      * @param remainders
      * @return 

@@ -25,14 +25,16 @@ import java.util.stream.Collectors;
 /**
  * Solves elliptical quadratic Diophantine equations in two variables.
  * <p>
- * The method is based on K. R. Matthews, "Solving the Diophantine equation \(ax^2 + bxy + cy^2 + dx + ey + f = 0\)", http://www.numbertheory.org/PDFS/general_quadratic_solution.pdf
+ * The method is based on K. R. Matthews, "Solving the Diophantine equation 
+ * \(ax^2 + bxy + cy^2 + dx + ey + f = 0\)", 
+ * http://www.numbertheory.org/PDFS/general_quadratic_solution.pdf
  */
 public class EllipticalSolver {
 
     /**
      * Solves the quadratic Diophantine equation 
      * a x^2 + b xy + c y^2 + d x + e y + f = 0,
-     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     * given that {@literal D = b^2 - 4ac < 0} and not a perfect square.
      *
      * @param a
      * @param b
@@ -49,7 +51,7 @@ public class EllipticalSolver {
     /**
      * Solves the quadratic Diophantine equation 
      * a x^2 + b xy + c y^2 + d x + e y + f = 0,
-     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     * given that {@literal D = b^2 - 4ac < 0} and not a perfect square.
      *
      * @param a
      * @param b

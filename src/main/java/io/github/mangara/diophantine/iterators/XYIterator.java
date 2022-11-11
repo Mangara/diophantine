@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * A forward iterator over all pairs of integers.
- * <p>
- * The sequence starts with
- *  (0, 0), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (2, 0), ...
- * It spirals out from (0, 0), hitting all pairs at L_{\infty} distance k before those at distance k + 1.
- */
 package io.github.mangara.diophantine.iterators;
 
 import io.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Iterator;
 
+/**
+ * A forward iterator over all pairs of integers.
+ * <p>
+ * The sequence starts with
+ * (0, 0), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1),
+ * (2, 0), ...
+ * It spirals out from (0, 0), hitting all pairs at L_{\infty} distance k before
+ * those at distance k + 1.
+ */
 public class XYIterator implements Iterator<XYPair> {
 
     private XYPair next = new XYPair(0, 0);
-    
+
     @Override
     public boolean hasNext() {
         return true;
@@ -47,12 +48,12 @@ public class XYIterator implements Iterator<XYPair> {
         int sigX = xy.x.signum();
         int sigY = xy.y.signum();
         int XcompY = xy.x.abs().compareTo(xy.y.abs());
-        
+
         // Step down and right at the end
         if (sigX > 0 && xy.y.equals(BigInteger.ONE)) {
             return new XYPair(xy.x.add(BigInteger.ONE), BigInteger.ZERO);
         }
-        
+
         // Right side: walk down
         if (XcompY > 0 && sigX > 0) {
             return down(xy);
@@ -69,7 +70,7 @@ public class XYIterator implements Iterator<XYPair> {
         if (XcompY < 0 && sigY < 0) {
             return left(xy);
         }
-        
+
         // Top right: walk down
         if (XcompY == 0 && sigX == sigY && sigX > 0) {
             return down(xy);
@@ -86,23 +87,23 @@ public class XYIterator implements Iterator<XYPair> {
         if (XcompY == 0 && sigX != sigY && sigX < 0) {
             return right(xy);
         }
-        
+
         // (0, 0)
         return right(xy);
     }
-    
+
     private XYPair up(XYPair xy) {
         return new XYPair(xy.x, xy.y.add(BigInteger.ONE));
     }
-    
+
     private XYPair down(XYPair xy) {
         return new XYPair(xy.x, xy.y.subtract(BigInteger.ONE));
     }
-    
+
     private XYPair right(XYPair xy) {
         return new XYPair(xy.x.add(BigInteger.ONE), xy.y);
     }
-    
+
     private XYPair left(XYPair xy) {
         return new XYPair(xy.x.subtract(BigInteger.ONE), xy.y);
     }

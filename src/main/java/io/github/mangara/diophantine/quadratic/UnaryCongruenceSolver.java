@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A solver for unary quadratic congruences
+ *  a x^2 + b x + c = 0 (mod n)
+ * , where n > 1.
+ */
 public class UnaryCongruenceSolver {
     
     /**
@@ -32,7 +37,7 @@ public class UnaryCongruenceSolver {
      * @param b
      * @param c
      * @param n
-     * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
+     * @return all integer solutions {@literal 0 <= x < n} to a x^2 + b x + c = 0 (mod n)
      */
     public static List<BigInteger> solve(long a, long b, long c, long n) {
         return solve(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(n));
@@ -47,7 +52,7 @@ public class UnaryCongruenceSolver {
      * @param b
      * @param c
      * @param n
-     * @return all integer solutions 0 <= x < n to a x^2 + b x + c = 0 (mod n)
+     * @return all integer solutions {@literal 0 <= x < n} to a x^2 + b x + c = 0 (mod n)
      */
     public static List<BigInteger> solve(BigInteger a, BigInteger b, BigInteger c, BigInteger n) {
         if (n.signum() <= 0) {

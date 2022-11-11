@@ -20,6 +20,11 @@ import io.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Iterator;
 
+/**
+ * A solver for quadratic Diophantine equations
+ * a x^2 + b xy + c y^2 + d x + e y + f = 0,
+ * where D = b^2 - 4ac > 0 and not a perfect square.
+ */
 public class HyperbolicSolver {
 
     /**
@@ -96,7 +101,7 @@ public class HyperbolicSolver {
                         .add(f.multiply(D))
         ).divide(D).divide(G)
                 .negate();
-        
+
         BigInteger D2 = Utils.discriminant(A, B, C);
 
         throw new UnsupportedOperationException("Not supported yet.");

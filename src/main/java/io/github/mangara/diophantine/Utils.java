@@ -124,6 +124,19 @@ public class Utils {
         return b.multiply(b).subtract(BigInteger.valueOf(4).multiply(a).multiply(c));
     }
     
+    /**
+     * Computes the Legendre k = -D(ae^2 - bed + cd^2 + fD).
+     * 
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @param f
+     * @param D
+     * @return -D(ae^2 - bed + cd^2 + fD)
+     * @throws ArithmeticException if the final value does not fit in a long
+     */
     public static long legendreConstant(long a, long b, long c, long d, long e, long f, long D) {
         return legendreConstant(
                 BigInteger.valueOf(a), 
@@ -136,6 +149,18 @@ public class Utils {
         ).longValueExact();
     }
     
+    /**
+     * Computes the Legendre k = -D(ae^2 - bed + cd^2 + fD).
+     * 
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @param f
+     * @param D
+     * @return -D(ae^2 - bed + cd^2 + fD)
+     */
     public static BigInteger legendreConstant(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f, BigInteger D) {
         // -D(ae^2 - bed + cd^2 + fD)
         return D.negate().multiply(
@@ -146,19 +171,57 @@ public class Utils {
         );
     }
     
+    /**
+     * Computes the Legendre alpha = 2cd - be.
+     * 
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @return 2cd - be
+     * @throws ArithmeticException if the final value does not fit in a long
+     */
     public static long legendreAlpha(long b, long c, long d, long e) {
         return legendreAlpha(BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(d), BigInteger.valueOf(e)).longValueExact();
     }
     
+    /**
+     * Computes the Legendre alpha = 2cd - be.
+     * 
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @return 2cd - be
+     */
     public static BigInteger legendreAlpha(BigInteger b, BigInteger c, BigInteger d, BigInteger e) {
         // 2cd - be
         return BigInteger.TWO.multiply(c).multiply(d).subtract(b.multiply(e));
     }
     
+    /**
+     * Computes the Legendre beta = 2ae - bd.
+     * 
+     * @param a
+     * @param b
+     * @param d
+     * @param e
+     * @return 2ae - bd
+     * @throws ArithmeticException if the final value does not fit in a long
+     */
     public static long legendreBeta(long a, long b, long d, long e) {
         return legendreBeta(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(d), BigInteger.valueOf(e)).longValueExact();
     }
     
+    /**
+     * Computes the Legendre beta = 2ae - bd.
+     * 
+     * @param a
+     * @param b
+     * @param d
+     * @param e
+     * @return 2ae - bd
+     */
     public static BigInteger legendreBeta(BigInteger a, BigInteger b, BigInteger d, BigInteger e) {
         // 2ae - bd
         return BigInteger.TWO.multiply(a).multiply(e).subtract(b.multiply(d));

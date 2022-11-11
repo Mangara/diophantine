@@ -26,6 +26,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * A solver for quadratic Diophantine equations
+ * a x^2 + b xy + c y^2 + d x + e y + f = 0,
+ * where D = b^2 - 4ac = 0 and not all of a, b, and c are zero.
+ */
 public class ParabolicSolver {
 
     /**

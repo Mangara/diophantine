@@ -23,14 +23,48 @@ import java.math.BigInteger;
  */
 public class RestrictedEquation {
 
+    /**
+     * Represents an equation with no solutions. This is useful when
+     * transforming one restricted equation into another, to capture cases where
+     * the transformation does not apply because there are no solutions.
+     */
     public static final RestrictedEquation NO_SOLUTIONS = new RestrictedEquation(BigInteger.TWO, BigInteger.TWO, BigInteger.TWO, BigInteger.ONE);
-    
-    public final BigInteger a, b, c, f, absF, D;
-    
+
+    /**
+     * The coefficients of this equation.
+     */
+    public final BigInteger a, b, c, f;
+
+    /**
+     * The absolute value of f.
+     */
+    public final BigInteger absF;
+
+    /**
+     * The determinant D = b^2 - 4ac of this equation.
+     */
+    public final BigInteger D;
+
+    /**
+     * Create a new restricted equation a x^2 + b xy + c y^2 + f = 0.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param f
+     */
     public RestrictedEquation(long a, long b, long c, long f) {
         this(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f));
     }
-    
+
+    /**
+     * Create a new restricted equation a x^2 + b xy + c y^2 + f = 0.
+     *
+     * @param a
+     * @param b
+     * @param c
+     * @param f
+     */
     public RestrictedEquation(BigInteger a, BigInteger b, BigInteger c, BigInteger f) {
         this.a = a;
         this.b = b;
@@ -40,15 +74,17 @@ public class RestrictedEquation {
         this.absF = f.abs();
         this.D = Utils.discriminant(a, b, c);
     }
-    
+
     /**
-     * Returns an equation that represents the same set of solutions as this one,
-     * but with gcd(a, b, c) = 1, or NO_SOLUTIONS if gcd(a, b, c) does not divide f.
-     * @return 
+     * Returns an equation that represents the same set of solutions as this
+     * one, but with gcd(a, b, c) = 1, or NO_SOLUTIONS if gcd(a, b, c) does not
+     * divide f.
+     *
+     * @return
      */
     public RestrictedEquation withoutCommonDivisor() {
         BigInteger gcd = a.gcd(b).gcd(c);
-        
+
         if (gcd.equals(BigInteger.ONE)) {
             return this;
         } else if (f.remainder(gcd).signum() == 0) {
@@ -57,7 +93,7 @@ public class RestrictedEquation {
             return NO_SOLUTIONS;
         }
     }
-    
+
     @Override
     public String toString() {
         return String.format("%d x^2 + %d xy + %d y^2 = %d, with D = %d", a, b, c, f.negate(), D);

@@ -25,7 +25,8 @@ public class ExtendedEuclidean {
      * Returns a pair of numbers (x, y) such that
      *  x a - y b = gcd(a, b).
      * 
-     * This is the "smallest" such pair, with |x| <= |b/gcd(a, b)| and |y| <= |a/gcd(a, b)|.
+     * This is the "smallest" such pair, with {@literal |x| <= |b/gcd(a, b)|}
+     * and {@literal |y| <= |a/gcd(a, b)|}.
      * 
      * @param a
      * @param b

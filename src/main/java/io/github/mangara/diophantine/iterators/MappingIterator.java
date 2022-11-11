@@ -13,22 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.github.mangara.diophantine.iterators;
 
 import java.util.Iterator;
 import java.util.function.Function;
 
+/**
+ * An iterator that implements a map operation, transforming each value of the
+ * underlying iterator in turn.
+ *
+ * @param <E> the "source" type returned by the underlying iterator
+ * @param <T> the "target" type returned by this iterator
+ */
 public class MappingIterator<E, T> implements Iterator<T> {
 
     private final Iterator<E> iterator;
     private final Function<E, T> map;
 
+    /**
+     * Creates a new iterator that returns map(x) for each element x returned by
+     * the given iterator.
+     *
+     * @param iterator
+     * @param map
+     */
     public MappingIterator(Iterator<E> iterator, Function<E, T> map) {
         this.iterator = iterator;
         this.map = map;
     }
-    
+
     @Override
     public boolean hasNext() {
         return iterator.hasNext();

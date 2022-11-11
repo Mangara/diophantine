@@ -23,13 +23,29 @@ import java.util.Objects;
  */
 public class XYPair {
 
+    /**
+     * The first (x) and second (y) values of this pair.
+     */
     public final BigInteger x, y;
 
+    /**
+     * Creates a new (x, y) pair with the given values.
+     * 
+     * @param x
+     * @param y 
+     */
     public XYPair(final long x, final long y) {
         this.x = BigInteger.valueOf(x);
         this.y = BigInteger.valueOf(y);
     }
     
+    /**
+     * Creates a new (x, y) pair with the given values.
+     * 
+     * @param x
+     * @param y 
+     * @throws IllegalArgumentException if x or y are null
+     */
     public XYPair(final BigInteger x, final BigInteger y) {
         if (x == null || y == null) {
             throw new IllegalArgumentException("x and y may not be null.");
@@ -37,14 +53,6 @@ public class XYPair {
 
         this.x = x;
         this.y = y;
-    }
-
-    public BigInteger getX() {
-        return x;
-    }
-
-    public BigInteger getY() {
-        return y;
     }
 
     @Override

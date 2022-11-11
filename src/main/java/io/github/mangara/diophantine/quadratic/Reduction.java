@@ -29,19 +29,26 @@ import java.util.List;
  */
 public class Reduction {
 
+    /**
+     * Computes a transformation for the given restricted quadratic equation
+     * a x^2 + b xy + c y^2 + f = 0 with gcd(a, f) > 1 into one gcd(a, f) = 1.
+     *
+     * @param eq
+     * @return
+     */
     public static Reduction forEquation(RestrictedEquation eq) {
         // Find a unimodular transform into a form with GCD(a, f) = 1
         // 1. Find relatively prime integers alpha and gamma such that a alpha^2 + b alpha gamma + c gamma^2 = A with gcd(A, f) = 1
         XYPair alphaGamma = findAlphaGamma(eq);
         BigInteger alpha = alphaGamma.x, gamma = alphaGamma.y;
-        
+
         // 2. Find integers beta and delta such that alpha delta - beta gamma = 1
         XYPair betaDelta = findBetaDelta(alpha, gamma);
         BigInteger beta = betaDelta.x, delta = betaDelta.y;
-        
+
         return new Reduction(alpha, beta, gamma, delta);
     }
-    
+
     private static XYPair findAlphaGamma(RestrictedEquation eq) {
         List<Long> distinctFactors = Primes.getDistinctPrimeFactors(eq.absF.longValueExact());
         List<XYPair> xEquations = new ArrayList<>();
@@ -49,7 +56,7 @@ public class Reduction {
 
         for (Long p : distinctFactors) {
             BigInteger factor = BigInteger.valueOf(p);
-            
+
             if (eq.a.mod(factor).signum() == 0) {
                 if (eq.c.mod(factor).signum() == 0) {
                     if (eq.b.mod(factor).signum() == 0) {
@@ -79,7 +86,7 @@ public class Reduction {
         XYPair deltaBeta = ExtendedEuclidean.gcdPair(alpha, gamma);
         return new XYPair(deltaBeta.y.negate(), deltaBeta.x);
     }
-    
+
     private final BigInteger alpha, beta, gamma, delta;
 
     public Reduction(BigInteger alpha, BigInteger beta, BigInteger gamma, BigInteger delta) {
@@ -88,7 +95,16 @@ public class Reduction {
         this.gamma = gamma;
         this.delta = delta;
     }
-    
+
+    /**
+     * Returns a restricted quadratic equation a x^2 + b xy + c y^2 + f = 0
+     * with gcd(a, f) = 1 whose solutions are in bijection with solutions to the
+     * original equation. The given equation must be the same as the one used to
+     * create this reduction.
+     *
+     * @param eq
+     * @return
+     */
     public RestrictedEquation reduce(RestrictedEquation eq) {
         // Substitute x = alpha X + beta Y; y = gamma X + delta Y to obtain A X^2 + B XY + C Y^2 + f = 0
 
@@ -110,7 +126,14 @@ public class Reduction {
 
         return new RestrictedEquation(A, B, C, eq.f);
     }
-    
+
+    /**
+     * Transforms the solutions to the reduced equation into solutions of the
+     * original equation.
+     *
+     * @param reducedSolutions
+     * @return
+     */
     public List<XYPair> unreduce(List<XYPair> reducedSolutions) {
         List<XYPair> originalSolutions = new ArrayList<>(reducedSolutions.size());
 

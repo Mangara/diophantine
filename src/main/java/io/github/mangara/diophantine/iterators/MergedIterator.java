@@ -23,25 +23,49 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * An iterator that seamlessly merges the results of several other iterators,
+ * finite or infinite. Results are returned in round-robin fashion from all
+ * iterators that still have data to return.
+ *
+ * @param <T> the type of this iterator, and the source iterators
+ */
 public class MergedIterator<T> implements Iterator<T> {
 
     private final List<Iterator<T>> iterators;
     private int nextIterator = 0;
 
+    /**
+     * Merges the given iterators into one iterator.
+     *
+     * @param <E>
+     * @param iterators
+     * @return
+     */
     @SafeVarargs
     public static <E> Iterator<E> merge(Iterator<E>... iterators) {
         return merge(Arrays.asList(iterators));
     }
-    
+
+    /**
+     * Merges the given iterators into one iterator.
+     * 
+     * @param <E>
+     * @param iterators
+     * @return 
+     */
     public static <E> Iterator<E> merge(Collection<? extends Iterator<E>> iterators) {
         List<Iterator<E>> nonEmptyIterators = iterators.stream()
                 .filter((it) -> it.hasNext())
                 .collect(Collectors.toList());
 
         return switch (nonEmptyIterators.size()) {
-            case 0 -> Collections.emptyIterator();
-            case 1 -> nonEmptyIterators.get(0);
-            default -> new MergedIterator<>(nonEmptyIterators);
+            case 0 ->
+                Collections.emptyIterator();
+            case 1 ->
+                nonEmptyIterators.get(0);
+            default ->
+                new MergedIterator<>(nonEmptyIterators);
         };
     }
 
@@ -69,7 +93,7 @@ public class MergedIterator<T> implements Iterator<T> {
                 return true;
             }
         }
-        
+
         return false;
     }
 }

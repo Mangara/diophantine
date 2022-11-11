@@ -30,14 +30,17 @@ import java.util.stream.Collectors;
 /**
  * Solves some elliptical quadratic Diophantine equations in two variables.
  * <p>
- * The method is based on K. R. Matthews, "Lagrange's algorithm revisited: solving \(at^2 + btu + cu^2 = n\) in the case of negative discriminant", Journal of Integer Sequences, Vol. 17 (2014), Article 14.11.1, https://cs.uwaterloo.ca/journals/JIS/VOL17/Matthews/matt10.html
+ * The method is based on K. R. Matthews, "Lagrange's algorithm revisited: 
+ * solving \(at^2 + btu + cu^2 = n\) in the case of negative discriminant", 
+ * Journal of Integer Sequences, Vol. 17 (2014), Article 14.11.1, 
+ * https://cs.uwaterloo.ca/journals/JIS/VOL17/Matthews/matt10.html
  */
 public class RestrictedEllipticalSolver {
 
     /**
      * Solves the quadratic Diophantine equation
      * a x^2 + b xy + c y^2 + f = 0,
-     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     * given that {@literal D = b^2 - 4ac < 0} and not a perfect square.
      *
      * @param a
      * @param b
@@ -52,7 +55,7 @@ public class RestrictedEllipticalSolver {
     /**
      * Solves the quadratic Diophantine equation
      * a x^2 + b xy + c y^2 + f = 0,
-     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     * given that {@literal D = b^2 - 4ac < 0} and not a perfect square.
      *
      * @param a
      * @param b
@@ -67,7 +70,7 @@ public class RestrictedEllipticalSolver {
     /**
      * Solves the quadratic Diophantine equation
      * a x^2 + b xy + c y^2 + f = 0,
-     * given that D = b^2 - 4ac < 0 and not a perfect square.
+     * given that {@literal D = b^2 - 4ac < 0} and not a perfect square.
      *
      * @param a
      * @param b

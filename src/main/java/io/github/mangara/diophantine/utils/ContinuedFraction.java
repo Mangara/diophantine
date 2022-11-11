@@ -151,7 +151,7 @@ public class ContinuedFraction {
      * the continued fraction is either
      *
      * [a0; a1, ..., an] if k == NO_REPETITION, or
-     * [a0; a1, ..., (ak, ..., an)] if 0 <= k < n
+     * [a0; a1, ..., (ak, ..., an)] if {@literal 0 <= k < n}
      *
      * @param coefficients
      * @param repetitionStart
