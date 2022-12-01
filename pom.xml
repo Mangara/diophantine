@@ -5,6 +5,13 @@
     <artifactId>diophantine</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Mangara/diophantine</url>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>
@@ -60,9 +67,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                  <!-- put your configurations here -->
+                    <!-- put your configurations here -->
                 </configuration>
-              </plugin>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
