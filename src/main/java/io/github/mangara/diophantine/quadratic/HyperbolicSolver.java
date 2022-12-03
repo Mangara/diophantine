@@ -183,7 +183,7 @@ public class HyperbolicSolver {
     private static class FloridaTransform {
 
         public final Equation eq;
-        
+
         /**
          * The coefficients of this transformation.
          */
@@ -192,8 +192,8 @@ public class HyperbolicSolver {
         public final BigInteger phi1, psi1, phi2, psi2;
 
         public FloridaTransform(Equation eq) {
-            this.eq = eq; 
-            
+            this.eq = eq;
+
             BigInteger gcdA = eq.alpha.gcd(eq.D);
             BigInteger gcdB = eq.beta.gcd(eq.D);
 
@@ -201,7 +201,7 @@ public class HyperbolicSolver {
             this.r2 = eq.D.divide(gcdA);
             this.s1 = eq.beta.divide(gcdB);
             this.s2 = eq.D.divide(gcdB);
-            
+
             XYPair phiPsi = PellsSolver.leastPositivePellsFourSolution(eq.D);
             this.phi1 = phiPsi.x;
             this.psi1 = phiPsi.y;
@@ -212,7 +212,7 @@ public class HyperbolicSolver {
                     .divide(BigInteger.TWO);
             this.psi2 = phi1.multiply(psi1); // phi1 * psi1
         }
-        
+
         public RestrictedEquation reduced() {
             BigInteger A = eq.a.multiply(s2).multiply(s2); // a * s2 * s2
             BigInteger B = eq.b.multiply(r2).multiply(s2); // b * r2 * s2;
@@ -228,7 +228,7 @@ public class HyperbolicSolver {
 
             return new RestrictedEquation(A, B, C, M).withoutCommonDivisor();
         }
-        
+
         public Iterator<XYPair> buildIterator(List<XYPair> solutions) {
             // Solutions for (phi, psi)?
             BigInteger K1posD = K1D(phi1, psi1);
@@ -272,7 +272,6 @@ public class HyperbolicSolver {
         private boolean givesSolutions(BigInteger K1D, BigInteger K2D) {
             return K1D.mod(eq.D).signum() == 0 && K2D.mod(eq.D).signum() == 0;
         }
-
     }
 
     private static class FloridaIterator implements Iterator<XYPair> {
