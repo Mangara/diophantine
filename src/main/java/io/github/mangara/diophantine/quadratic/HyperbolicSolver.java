@@ -74,90 +74,61 @@ public class HyperbolicSolver {
 
     // Pre-condition: a > 0 && (d != 0 || e != 0) && D > 0 and non-square && ae^2 - bde + cd^2 + fD != 0 && gcd(a, b, c, d, e) = 1
     private static Iterator<XYPair> solveWithFloridaTransform(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
-        BigInteger D = Utils.discriminant(a, b, c);
-        BigInteger alpha = Utils.legendreAlpha(b, c, d, e);
-        BigInteger beta = Utils.legendreBeta(a, b, d, e);
+        Equation eq = new Equation(a, b, c, d, e, f);
 
-        BigInteger gcdA = alpha.gcd(D);
-        BigInteger gcdB = beta.gcd(D);
+        BigInteger gcdA = eq.alpha.gcd(eq.D);
+        BigInteger gcdB = eq.beta.gcd(eq.D);
 
-        BigInteger r1 = alpha.divide(gcdA);
-        BigInteger r2 = D.divide(gcdA);
-        BigInteger s1 = beta.divide(gcdB);
-        BigInteger s2 = D.divide(gcdB);
+        BigInteger r1 = eq.alpha.divide(gcdA);
+        BigInteger r2 = eq.D.divide(gcdA);
+        BigInteger s1 = eq.beta.divide(gcdB);
+        BigInteger s2 = eq.D.divide(gcdB);
 
         BigInteger A = a.multiply(s2).multiply(s2); // a * s2 * s2
         BigInteger B = b.multiply(r2).multiply(s2); // b * r2 * s2;
         BigInteger C = c.multiply(r2).multiply(r2); // c * r2 * r2;
 
-        // Simplify
-        BigInteger G = A.gcd(B).gcd(C);
-        A = A.divide(G);
-        B = B.divide(G);
-        C = C.divide(G);
-
-        // M = -1 * r2 * r2 * s2 * s2 * (a * e * e - b * d * e + c * d * d + f * D) / (D * G)
+        // M = -1 * r2 * r2 * s2 * s2 * (a * e * e - b * d * e + c * d * d + f * D) / D
         BigInteger M = r2.multiply(r2).multiply(s2).multiply(s2).multiply(
                 a.multiply(e).multiply(e)
                         .subtract(b.multiply(d).multiply(e))
                         .add(c.multiply(d).multiply(d))
-                        .add(f.multiply(D))
-        ).divide(D).divide(G)
-                .negate();
-        
-        List<XYPair> representativeSolutions = RestrictedHyperbolicSolver.getRepresentativeSolutions(A, B, C, M.negate());
-        
-        XYPair phiPsi = PellsSolver.leastPositivePellsFourSolution(D);
+                        .add(f.multiply(eq.D))
+        ).divide(eq.D);
+
+        RestrictedEquation reduced = new RestrictedEquation(A, B, C, M).withoutCommonDivisor();
+
+        List<XYPair> representativeSolutions = RestrictedHyperbolicSolver.getRepresentativeSolutions(reduced.a, reduced.b, reduced.c, reduced.f);
+
+        XYPair phiPsi = PellsSolver.leastPositivePellsFourSolution(eq.D);
         BigInteger phi1 = phiPsi.x;
         BigInteger psi1 = phiPsi.y;
-        
+
         // phi2 = (phi1 * phi1 + D * psi1 * psi1) / 2
         BigInteger phi2 = phi1.multiply(phi1)
-                .add(D.multiply(psi1).multiply(psi1))
+                .add(eq.D.multiply(psi1).multiply(psi1))
                 .divide(BigInteger.TWO);
         BigInteger psi2 = phi1.multiply(psi1); // phi1 * psi1
-        
-        List<XYPair> solutions = findTransformedSolutions(representativeSolutions, D, A, B, C, r1, r2, s1, s2, phi2, psi2);
-        
-        return buildIterator(solutions, a, b, c, D, alpha, beta, phi1, psi1, phi2, psi2);
-    }
-    
-    private static BigInteger K1D(BigInteger phi, BigInteger psi, BigInteger alpha, BigInteger beta, BigInteger b, BigInteger c) {
-        // K1(v) = alpha - (alpha * (phi1 - b * psi1) / 2 + beta * -c * psi1)
-        return alpha.subtract(
-                alpha.multiply(phi.subtract(b.multiply(psi))).divide(BigInteger.TWO)
-                .add(beta.multiply(c.negate()).multiply(psi))
-        );
+
+        List<XYPair> solutions = findTransformedSolutions(representativeSolutions, eq.D, reduced, r1, r2, s1, s2, phi2, psi2);
+
+        return buildIterator(solutions, eq, phi1, psi1, phi2, psi2);
     }
 
-    private static BigInteger K2D(BigInteger phi, BigInteger psi, BigInteger alpha, BigInteger beta, BigInteger a, BigInteger b) {
-        // K2(v) = beta - (alpha * a * psi1 + beta * (phi1 + b * psi1) / 2)
-        return beta.subtract(
-                alpha.multiply(a).multiply(psi)
-                .add(beta.multiply(phi.add(b.multiply(psi))).divide(BigInteger.TWO))
-        );
-    }
-
-    private static boolean givesSolutions(BigInteger K1D, BigInteger K2D, BigInteger D) {
-        return K1D.mod(D).signum() == 0 && K2D.mod(D).signum() == 0;
-    }
-
-    private static List<XYPair> findTransformedSolutions(List<XYPair> representativeSolutions, BigInteger D, BigInteger A, BigInteger B, BigInteger C, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2, BigInteger phi2, BigInteger psi2) {
-        BigInteger D2 = Utils.discriminant(A, B, C);
-        
-        XYPair uv1 = PellsSolver.leastPositivePellsFourSolution(D2);
+    private static List<XYPair> findTransformedSolutions(List<XYPair> representativeSolutions, BigInteger D, RestrictedEquation eq, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2, BigInteger phi2, BigInteger psi2) {
+        XYPair uv1 = PellsSolver.leastPositivePellsFourSolution(eq.D);
         BigInteger minU = uv1.x;
         BigInteger minV = uv1.y;
-        
-        int k = findK(minU, minV, D, D2, phi2, psi2);
-        
-        BigInteger u11 = minU.subtract(B.multiply(minV)).divide(BigInteger.TWO);
-        BigInteger u12 = minV.multiply(C.negate());
-        BigInteger u21 = minV.multiply(A);
-        BigInteger u22 = minU.add(B.multiply(minV)).divide(BigInteger.TWO);
-        
+
+        int k = findK(minU, minV, D, eq.D, phi2, psi2);
+
+        BigInteger u11 = minU.subtract(eq.b.multiply(minV)).divide(BigInteger.TWO);
+        BigInteger u12 = minV.multiply(eq.c.negate());
+        BigInteger u21 = minV.multiply(eq.a);
+        BigInteger u22 = minU.add(eq.b.multiply(minV)).divide(BigInteger.TWO);
+
         List<XYPair> solutions = new ArrayList<>();
-        
+
         // Test T_{mu^j}(X_i, Y_i) and T_{mu^j}(-X_i, -Y_i) for 0 <= j <= k - 1, for each representative solution (X_i, Y_i)
         for (XYPair sol : representativeSolutions) {
             BigInteger x = sol.x, y = sol.y;
@@ -172,33 +143,33 @@ public class HyperbolicSolver {
                 y = nextY;
             }
         }
-        
+
         return solutions;
     }
-    
+
     private static int findK(BigInteger minU, BigInteger minV, BigInteger D, BigInteger D2, BigInteger phi2, BigInteger psi2) {
         // Find k such that v^2 = mu^k
         BigInteger u = minU;
         BigInteger v = minV;
-        
+
         BigInteger h = D.multiply(BigInteger.valueOf(4)).divide(D2).sqrt(); // This is guaranteed to be an integer
         BigInteger uTarget = phi2;
         BigInteger vTarget = psi2.multiply(h).divide(BigInteger.TWO);
-        
+
         int k = 1;
-        
+
         while (u.compareTo(uTarget) != 0 || v.compareTo(vTarget) != 0) {
             BigInteger nextU = minU.multiply(u).add(minV.multiply(D2).multiply(v)).divide(BigInteger.TWO);
             BigInteger nextV = minU.multiply(v).add(minV.multiply(u)).divide(BigInteger.TWO);
-            
+
             u = nextU;
             v = nextV;
             k++;
         }
-        
+
         return k;
     }
-    
+
     private static void testSolution(List<XYPair> solutions, BigInteger x, BigInteger y, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2) {
         if (x.add(r1).mod(r2).signum() == 0 && y.add(s1).mod(s2).signum() == 0) {
             BigInteger transX = x.add(r1).divide(r2);
@@ -207,33 +178,84 @@ public class HyperbolicSolver {
             solutions.add(new XYPair(transX, transY));
         }
     }
-    
-    private static Iterator<XYPair> buildIterator(List<XYPair> solutions, BigInteger a, BigInteger b, BigInteger c, BigInteger D, BigInteger alpha, BigInteger beta, BigInteger phi1, BigInteger psi1, BigInteger phi2, BigInteger psi2) {
+
+    private static Iterator<XYPair> buildIterator(List<XYPair> solutions, Equation eq, BigInteger phi1, BigInteger psi1, BigInteger phi2, BigInteger psi2) {
         // Solutions for (phi, psi)?
-        BigInteger K1posD = K1D(phi1, psi1, alpha, beta, b, c);
-        BigInteger K2posD = K2D(phi1, psi1, alpha, beta, a, b);
-        
-        if (givesSolutions(K1posD, K2posD, D)) {
-            return new FloridaIterator(solutions, phi1, psi1, a, b, c, K1posD.divide(D), K2posD.divide(D));
+        BigInteger K1posD = K1D(eq, phi1, psi1);
+        BigInteger K2posD = K2D(eq, phi1, psi1);
+
+        if (givesSolutions(K1posD, K2posD, eq.D)) {
+            return new FloridaIterator(eq, solutions, phi1, psi1, K1posD.divide(eq.D), K2posD.divide(eq.D));
         }
-        
+
         // Solutions for (-phi, -psi)?
-        BigInteger K1negD = K1D(phi1.negate(), psi1.negate(), alpha, beta, b, c);
-        BigInteger K2negD = K2D(phi1.negate(), psi1.negate(), alpha, beta, a, b);
-        
-        if (givesSolutions(K1negD, K2negD, D)) {
-            return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
+        BigInteger K1negD = K1D(eq, phi1.negate(), psi1.negate());
+        BigInteger K2negD = K2D(eq, phi1.negate(), psi1.negate());
+
+        if (givesSolutions(K1negD, K2negD, eq.D)) {
+            return new FloridaIterator(eq, solutions, phi1.negate(), psi1.negate(), K1negD.divide(eq.D), K2negD.divide(eq.D));
         }
-        
+
         // Solutions for (phi2, -psi2)
-        BigInteger K1squareD = K1D(phi2, psi2, alpha, beta, b, c);
-        BigInteger K2squareD = K2D(phi2, psi2, alpha, beta, a, b);
-            
-        return new FloridaIterator(solutions, phi2, psi2, a, b, c, K1squareD.divide(D), K2squareD.divide(D));
+        BigInteger K1squareD = K1D(eq, phi2, psi2);
+        BigInteger K2squareD = K2D(eq, phi2, psi2);
+
+        return new FloridaIterator(eq, solutions, phi2, psi2, K1squareD.divide(eq.D), K2squareD.divide(eq.D));
     }
     
+    private static BigInteger K1D(Equation eq, BigInteger phi, BigInteger psi) {
+        // K1(v) = alpha - (alpha * (phi1 - b * psi1) / 2 + beta * -c * psi1)
+        return eq.alpha.subtract(
+                eq.alpha.multiply(phi.subtract(eq.b.multiply(psi))).divide(BigInteger.TWO)
+                        .add(eq.beta.multiply(eq.c.negate()).multiply(psi))
+        );
+    }
+
+    private static BigInteger K2D(Equation eq, BigInteger phi, BigInteger psi) {
+        // K2(v) = beta - (alpha * a * psi1 + beta * (phi1 + b * psi1) / 2)
+        return eq.beta.subtract(
+                eq.alpha.multiply(eq.a).multiply(psi)
+                        .add(eq.beta.multiply(phi.add(eq.b.multiply(psi))).divide(BigInteger.TWO))
+        );
+    }
+
+    private static boolean givesSolutions(BigInteger K1D, BigInteger K2D, BigInteger D) {
+        return K1D.mod(D).signum() == 0 && K2D.mod(D).signum() == 0;
+    }
+
+    private static class Equation {
+
+        /**
+         * The coefficients of this equation.
+         */
+        public final BigInteger a, b, c, d, e, f;
+
+        /**
+         * The determinant D = b^2 - 4ac of this equation.
+         */
+        public final BigInteger D;
+
+        /**
+         * The Legendre constants alpha = 2cd - be and beta = 2ae - bd.
+         */
+        public final BigInteger alpha, beta;
+
+        public Equation(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
+            this.e = e;
+            this.f = f;
+
+            this.D = Utils.discriminant(a, b, c);
+            this.alpha = Utils.legendreAlpha(b, c, d, e);
+            this.beta = Utils.legendreBeta(a, b, d, e);
+        }
+    }
+
     private static class FloridaIterator implements Iterator<XYPair> {
-        
+
         private final BigInteger v11;
         private final BigInteger v12;
         private final BigInteger v21;
@@ -248,11 +270,11 @@ public class HyperbolicSolver {
         private final List<XYPair> positiveSolutions;
         private final List<XYPair> negativeSolutions;
 
-        public FloridaIterator(List<XYPair> solutions, BigInteger phi, BigInteger psi, BigInteger a, BigInteger b, BigInteger c, BigInteger K1, BigInteger K2) {
-            v11 = phi.subtract(b.multiply(psi)).divide(BigInteger.TWO); // (phi - b * psi) / 2
-            v12 = c.negate().multiply(psi); // -c * psi
-            v21 = a.multiply(psi); // a * psi
-            v22 = phi.add(b.multiply(psi)).divide(BigInteger.TWO); // (phi + b * psi) / 2
+        public FloridaIterator(Equation eq, List<XYPair> solutions, BigInteger phi, BigInteger psi, BigInteger K1, BigInteger K2) {
+            v11 = phi.subtract(eq.b.multiply(psi)).divide(BigInteger.TWO); // (phi - b * psi) / 2
+            v12 = eq.c.negate().multiply(psi); // -c * psi
+            v21 = eq.a.multiply(psi); // a * psi
+            v22 = phi.add(eq.b.multiply(psi)).divide(BigInteger.TWO); // (phi + b * psi) / 2
             this.K1 = K1;
             this.K2 = K2;
             K1neg = v22.negate().multiply(K1).add(v12.multiply(K2));
@@ -268,7 +290,7 @@ public class HyperbolicSolver {
         public boolean hasNext() {
             return true;
         }
-        
+
         @Override
         public XYPair next() {
             solIndex++;
