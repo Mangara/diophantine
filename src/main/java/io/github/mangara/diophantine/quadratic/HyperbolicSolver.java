@@ -195,7 +195,36 @@ public class HyperbolicSolver {
                 return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
             }
         } else {
-            throw new UnsupportedOperationException("Not supported yet.");
+            // Test T_{mu^j}(X_i, Y_i) and T_{mu^j}(-X_i, -Y_i) for 0 <= j <= k - 1, for each representative solution (X_i, Y_i)
+            List<XYPair> solutions = new ArrayList<>();
+            
+            for (XYPair sol : representativeSolutions) {
+                BigInteger x = sol.x, y = sol.y;
+                
+                for (int j = 0; j <= k - 1; j++) {
+                    // Test (x, y) and (-x, -y)
+                    if (x.add(r1).mod(r2).signum() == 0 && y.add(s1).mod(s2).signum() == 0) {
+                        BigInteger transX = x.add(r1).divide(r2);
+                        BigInteger transY = y.add(s1).divide(s2);
+                        
+                        solutions.add(new XYPair(transX, transY));
+                    }
+                    
+                    if (x.negate().add(r1).mod(r2).signum() == 0 && y.negate().add(s1).mod(s2).signum() == 0) {
+                        BigInteger transX = x.negate().add(r1).divide(r2);
+                        BigInteger transY = y.negate().add(s1).divide(s2);
+                        
+                        solutions.add(new XYPair(transX, transY));
+                    }
+                    
+                    BigInteger nextX = u11.multiply(x).add(u12.multiply(y));
+                    BigInteger nextY = u21.multiply(x).add(u22.multiply(y));
+                    x = nextX;
+                    y = nextY;
+                }
+            }
+            
+            return new FloridaIterator(solutions, phi2, psi2, a, b, c, K1squareD.divide(D), K2squareD.divide(D));
         }
     }
     
