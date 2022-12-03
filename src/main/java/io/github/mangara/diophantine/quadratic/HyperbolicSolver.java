@@ -129,101 +129,14 @@ public class HyperbolicSolver {
         
         BigInteger K1squareD = K1D(phi2, psi2, alpha, beta, b, c);
         BigInteger K2squareD = K2D(phi2, psi2, alpha, beta, a, b);
-        boolean squareSolutions = givesSolutions(K1squareD, K2squareD, D);
         
-        // Find k such that v^2 = mu^k
-        BigInteger h = D.multiply(BigInteger.valueOf(4)).divide(D2).sqrt(); // This is guaranteed to be an integer
+        List<XYPair> solutions = findTransformedSolutions(representativeSolutions, D, A, B, C, D2, r1, r2, s1, s2, phi2, psi2);
         
-        XYPair uv1 = PellsSolver.leastPositivePellsFourSolution(D2);
-        BigInteger minU = uv1.x;
-        BigInteger minV = uv1.y;
-        
-        BigInteger u = minU;
-        BigInteger v = minV;
-        
-        BigInteger uTarget = phi2;
-        BigInteger vTarget = psi2.multiply(h).divide(BigInteger.TWO);
-        
-        int k = 1;
-        
-        while (u.compareTo(uTarget) != 0 || v.compareTo(vTarget) != 0) {
-            BigInteger nextU = minU.multiply(u).add(minV.multiply(D2).multiply(v)).divide(BigInteger.TWO);
-            BigInteger nextV = minU.multiply(v).add(minV.multiply(u)).divide(BigInteger.TWO);            
-            u = nextU;
-            v = nextV;
-            k++;
-        }
-        
-        BigInteger u11 = minU.subtract(B.multiply(minV)).divide(BigInteger.TWO);
-        BigInteger u12 = minV.multiply(C.negate());
-        BigInteger u21 = minV.multiply(A);
-        BigInteger u22 = minU.add(B.multiply(minV)).divide(BigInteger.TWO);
-        
-        if (posSolutions || negSolutions) {
-            List<XYPair> solutions = new ArrayList<>();
-            
-            // Test T_{mu^j}(X_i, Y_i) and T_{mu^j}(-X_i, -Y_i) for 0 <= j <= k/2 - 1, for each representative solution (X_i, Y_i)
-            for (XYPair sol : representativeSolutions) {
-                BigInteger x = sol.x, y = sol.y;
-                
-                for (int j = 0; j <= k/2 - 1; j++) {
-                    // Test (x, y) and (-x, -y)
-                    if (x.add(r1).mod(r2).signum() == 0 && y.add(s1).mod(s2).signum() == 0) {
-                        BigInteger transX = x.add(r1).divide(r2);
-                        BigInteger transY = y.add(s1).divide(s2);
-                        
-                        solutions.add(new XYPair(transX, transY));
-                    }
-                    
-                    if (x.negate().add(r1).mod(r2).signum() == 0 && y.negate().add(s1).mod(s2).signum() == 0) {
-                        BigInteger transX = x.negate().add(r1).divide(r2);
-                        BigInteger transY = y.negate().add(s1).divide(s2);
-                        
-                        solutions.add(new XYPair(transX, transY));
-                    }
-                    
-                    BigInteger nextX = u11.multiply(x).add(u12.multiply(y));
-                    BigInteger nextY = u21.multiply(x).add(u22.multiply(y));
-                    x = nextX;
-                    y = nextY;
-                }
-            }
-            
-            if (posSolutions) {
-                return new FloridaIterator(solutions, phi1, psi1, a, b, c, K1posD.divide(D), K2posD.divide(D));
-            } else {
-                return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
-            }
+        if (posSolutions) {
+            return new FloridaIterator(solutions, phi1, psi1, a, b, c, K1posD.divide(D), K2posD.divide(D));
+        } else if(negSolutions) {
+            return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
         } else {
-            // Test T_{mu^j}(X_i, Y_i) and T_{mu^j}(-X_i, -Y_i) for 0 <= j <= k - 1, for each representative solution (X_i, Y_i)
-            List<XYPair> solutions = new ArrayList<>();
-            
-            for (XYPair sol : representativeSolutions) {
-                BigInteger x = sol.x, y = sol.y;
-                
-                for (int j = 0; j <= k - 1; j++) {
-                    // Test (x, y) and (-x, -y)
-                    if (x.add(r1).mod(r2).signum() == 0 && y.add(s1).mod(s2).signum() == 0) {
-                        BigInteger transX = x.add(r1).divide(r2);
-                        BigInteger transY = y.add(s1).divide(s2);
-                        
-                        solutions.add(new XYPair(transX, transY));
-                    }
-                    
-                    if (x.negate().add(r1).mod(r2).signum() == 0 && y.negate().add(s1).mod(s2).signum() == 0) {
-                        BigInteger transX = x.negate().add(r1).divide(r2);
-                        BigInteger transY = y.negate().add(s1).divide(s2);
-                        
-                        solutions.add(new XYPair(transX, transY));
-                    }
-                    
-                    BigInteger nextX = u11.multiply(x).add(u12.multiply(y));
-                    BigInteger nextY = u21.multiply(x).add(u22.multiply(y));
-                    x = nextX;
-                    y = nextY;
-                }
-            }
-            
             return new FloridaIterator(solutions, phi2, psi2, a, b, c, K1squareD.divide(D), K2squareD.divide(D));
         }
     }
@@ -246,6 +159,70 @@ public class HyperbolicSolver {
 
     private static boolean givesSolutions(BigInteger K1D, BigInteger K2D, BigInteger D) {
         return K1D.mod(D).signum() == 0 && K2D.mod(D).signum() == 0;
+    }
+
+    private static List<XYPair> findTransformedSolutions(List<XYPair> representativeSolutions, BigInteger D, BigInteger A, BigInteger B, BigInteger C, BigInteger D2, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2, BigInteger phi2, BigInteger psi2) {
+        XYPair uv1 = PellsSolver.leastPositivePellsFourSolution(D2);
+        BigInteger minU = uv1.x;
+        BigInteger minV = uv1.y;
+        
+        int k = findK(minU, minV, D, D2, phi2, psi2);
+        
+        BigInteger u11 = minU.subtract(B.multiply(minV)).divide(BigInteger.TWO);
+        BigInteger u12 = minV.multiply(C.negate());
+        BigInteger u21 = minV.multiply(A);
+        BigInteger u22 = minU.add(B.multiply(minV)).divide(BigInteger.TWO);
+        
+        List<XYPair> solutions = new ArrayList<>();
+        
+        // Test T_{mu^j}(X_i, Y_i) and T_{mu^j}(-X_i, -Y_i) for 0 <= j <= k - 1, for each representative solution (X_i, Y_i)
+        for (XYPair sol : representativeSolutions) {
+            BigInteger x = sol.x, y = sol.y;
+
+            for (int j = 0; j <= k - 1; j++) {
+                testSolution(solutions, x, y, r1, r2, s1, s2);
+                testSolution(solutions, x.negate(), y.negate(), r1, r2, s1, s2);
+
+                BigInteger nextX = u11.multiply(x).add(u12.multiply(y));
+                BigInteger nextY = u21.multiply(x).add(u22.multiply(y));
+                x = nextX;
+                y = nextY;
+            }
+        }
+        
+        return solutions;
+    }
+    
+    private static int findK(BigInteger minU, BigInteger minV, BigInteger D, BigInteger D2, BigInteger phi2, BigInteger psi2) {
+        // Find k such that v^2 = mu^k
+        BigInteger u = minU;
+        BigInteger v = minV;
+        
+        BigInteger h = D.multiply(BigInteger.valueOf(4)).divide(D2).sqrt(); // This is guaranteed to be an integer
+        BigInteger uTarget = phi2;
+        BigInteger vTarget = psi2.multiply(h).divide(BigInteger.TWO);
+        
+        int k = 1;
+        
+        while (u.compareTo(uTarget) != 0 || v.compareTo(vTarget) != 0) {
+            BigInteger nextU = minU.multiply(u).add(minV.multiply(D2).multiply(v)).divide(BigInteger.TWO);
+            BigInteger nextV = minU.multiply(v).add(minV.multiply(u)).divide(BigInteger.TWO);
+            
+            u = nextU;
+            v = nextV;
+            k++;
+        }
+        
+        return k;
+    }
+    
+    private static void testSolution(List<XYPair> solutions, BigInteger x, BigInteger y, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2) {
+        if (x.add(r1).mod(r2).signum() == 0 && y.add(s1).mod(s2).signum() == 0) {
+            BigInteger transX = x.add(r1).divide(r2);
+            BigInteger transY = y.add(s1).divide(s2);
+
+            solutions.add(new XYPair(transX, transY));
+        }
     }
     
     private static class FloridaIterator implements Iterator<XYPair> {
