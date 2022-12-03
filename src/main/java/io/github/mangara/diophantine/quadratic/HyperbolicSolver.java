@@ -292,19 +292,19 @@ public class HyperbolicSolver {
         private final List<XYPair> negativeSolutions;
 
         public FloridaIterator(Equation eq, List<XYPair> solutions, BigInteger phi, BigInteger psi, BigInteger K1, BigInteger K2) {
-            v11 = phi.subtract(eq.b.multiply(psi)).divide(BigInteger.TWO); // (phi - b * psi) / 2
-            v12 = eq.c.negate().multiply(psi); // -c * psi
-            v21 = eq.a.multiply(psi); // a * psi
-            v22 = phi.add(eq.b.multiply(psi)).divide(BigInteger.TWO); // (phi + b * psi) / 2
+            this.v11 = phi.subtract(eq.b.multiply(psi)).divide(BigInteger.TWO); // (phi - b * psi) / 2
+            this.v12 = eq.c.negate().multiply(psi); // -c * psi
+            this.v21 = eq.a.multiply(psi); // a * psi
+            this.v22 = phi.add(eq.b.multiply(psi)).divide(BigInteger.TWO); // (phi + b * psi) / 2
             this.K1 = K1;
             this.K2 = K2;
-            K1neg = v22.negate().multiply(K1).add(v12.multiply(K2));
-            K2neg = v21.multiply(K1).subtract(v11.multiply(K2));
+            this.K1neg = v22.negate().multiply(K1).add(v12.multiply(K2));
+            this.K2neg = v21.multiply(K1).subtract(v11.multiply(K2));
 
             this.nSolutions = solutions.size();
             this.positiveSolutions = new ArrayList<>(solutions);
             this.negativeSolutions = new ArrayList<>(solutions);
-            solIndex = -nSolutions - 1;
+            this.solIndex = -nSolutions - 1;
         }
 
         @Override
