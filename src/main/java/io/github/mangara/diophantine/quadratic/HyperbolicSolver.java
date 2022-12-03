@@ -77,20 +77,7 @@ public class HyperbolicSolver {
         Equation eq = new Equation(a, b, c, d, e, f);
 
         FloridaTransform ft = new FloridaTransform(eq);
-
-        BigInteger A = a.multiply(ft.s2).multiply(ft.s2); // a * s2 * s2
-        BigInteger B = b.multiply(ft.r2).multiply(ft.s2); // b * r2 * s2;
-        BigInteger C = c.multiply(ft.r2).multiply(ft.r2); // c * r2 * r2;
-
-        // M = -1 * r2 * r2 * s2 * s2 * (a * e * e - b * d * e + c * d * d + f * D) / D
-        BigInteger M = ft.r2.multiply(ft.r2).multiply(ft.s2).multiply(ft.s2).multiply(
-                a.multiply(e).multiply(e)
-                        .subtract(b.multiply(d).multiply(e))
-                        .add(c.multiply(d).multiply(d))
-                        .add(f.multiply(eq.D))
-        ).divide(eq.D);
-
-        RestrictedEquation reduced = new RestrictedEquation(A, B, C, M).withoutCommonDivisor();
+        RestrictedEquation reduced = ft.reduced();
 
         List<XYPair> representativeSolutions = RestrictedHyperbolicSolver.getRepresentativeSolutions(reduced.a, reduced.b, reduced.c, reduced.f);
 
@@ -240,6 +227,8 @@ public class HyperbolicSolver {
 
     private static class FloridaTransform {
 
+        public final Equation eq;
+        
         /**
          * The coefficients of this transformation.
          */
@@ -248,6 +237,8 @@ public class HyperbolicSolver {
         public final BigInteger phi1, psi1, phi2, psi2;
 
         public FloridaTransform(Equation eq) {
+            this.eq = eq; 
+            
             BigInteger gcdA = eq.alpha.gcd(eq.D);
             BigInteger gcdB = eq.beta.gcd(eq.D);
 
@@ -265,6 +256,22 @@ public class HyperbolicSolver {
                     .add(eq.D.multiply(psi1).multiply(psi1))
                     .divide(BigInteger.TWO);
             this.psi2 = phi1.multiply(psi1); // phi1 * psi1
+        }
+        
+        public RestrictedEquation reduced() {
+            BigInteger A = eq.a.multiply(s2).multiply(s2); // a * s2 * s2
+            BigInteger B = eq.b.multiply(r2).multiply(s2); // b * r2 * s2;
+            BigInteger C = eq.c.multiply(r2).multiply(r2); // c * r2 * r2;
+
+            // M = -1 * r2 * r2 * s2 * s2 * (a * e * e - b * d * e + c * d * d + f * D) / D
+            BigInteger M = r2.multiply(r2).multiply(s2).multiply(s2).multiply(
+                    eq.a.multiply(eq.e).multiply(eq.e)
+                            .subtract(eq.b.multiply(eq.d).multiply(eq.e))
+                            .add(eq.c.multiply(eq.d).multiply(eq.d))
+                            .add(eq.f.multiply(eq.D))
+            ).divide(eq.D);
+
+            return new RestrictedEquation(A, B, C, M).withoutCommonDivisor();
         }
 
     }
