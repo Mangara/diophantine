@@ -18,7 +18,10 @@ package io.github.mangara.diophantine.quadratic;
 import io.github.mangara.diophantine.Utils;
 import io.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A solver for quadratic Diophantine equations
@@ -103,7 +106,191 @@ public class HyperbolicSolver {
                 .negate();
 
         BigInteger D2 = Utils.discriminant(A, B, C);
+        
+        List<XYPair> representativeSolutions = RestrictedHyperbolicSolver.getRepresentativeSolutions(A, B, C, M.negate());
+        
+        XYPair phiPsi = PellsSolver.leastPositivePellsFourSolution(D);
+        BigInteger phi1 = phiPsi.x;
+        BigInteger psi1 = phiPsi.y;
+        
+         // phi2 = (phi1 * phi1 + D * psi1 * psi1) / 2
+        BigInteger phi2 = phi1.multiply(phi1)
+                .add(D.multiply(psi1).multiply(psi1))
+                .divide(BigInteger.TWO);
+        BigInteger psi2 = phi1.multiply(psi1); // phi1 * psi1
+        
+        BigInteger K1posD = K1D(phi1, psi1, alpha, beta, b, c);
+        BigInteger K2posD = K2D(phi1, psi1, alpha, beta, a, b);
+        boolean posSolutions = givesSolutions(K1posD, K2posD, D);
+        
+        BigInteger K1negD = K1D(phi1.negate(), psi1.negate(), alpha, beta, b, c);
+        BigInteger K2negD = K2D(phi1.negate(), psi1.negate(), alpha, beta, a, b);
+        boolean negSolutions = givesSolutions(K1negD, K2negD, D);
+        
+        BigInteger K1squareD = K1D(phi2, psi2, alpha, beta, b, c);
+        BigInteger K2squareD = K2D(phi2, psi2, alpha, beta, a, b);
+        boolean squareSolutions = givesSolutions(K1squareD, K2squareD, D);
+        
+        // Find k such that v^2 = mu^k
+        BigInteger h = D.multiply(BigInteger.valueOf(4)).divide(D2).sqrt(); // This is guaranteed to be an integer
+        
+        XYPair uv1 = PellsSolver.leastPositivePellsFourSolution(D2);
+        BigInteger minU = uv1.x;
+        BigInteger minV = uv1.y;
+        
+        BigInteger u = minU;
+        BigInteger v = minV;
+        
+        BigInteger uTarget = phi2;
+        BigInteger vTarget = psi2.multiply(h).divide(BigInteger.TWO);
+        
+        int k = 1;
+        
+        while (u.compareTo(uTarget) != 0 || v.compareTo(vTarget) != 0) {
+            BigInteger nextU = minU.multiply(u).add(minV.multiply(D2).multiply(v)).divide(BigInteger.TWO);
+            BigInteger nextV = minU.multiply(v).add(minV.multiply(u)).divide(BigInteger.TWO);            
+            u = nextU;
+            v = nextV;
+            k++;
+        }
+        
+        BigInteger u11 = minU.subtract(B.multiply(minV)).divide(BigInteger.TWO);
+        BigInteger u12 = minV.multiply(C.negate());
+        BigInteger u21 = minV.multiply(A);
+        BigInteger u22 = minU.add(B.multiply(minV)).divide(BigInteger.TWO);
+        
+        if (posSolutions || negSolutions) {
+            List<XYPair> solutions = new ArrayList<>();
+            
+            // Test T_{mu^j}(X_i, Y_i) and T_{mu^j}(-X_i, -Y_i) for 0 <= j <= k/2 - 1, for each representative solution (X_i, Y_i)
+            for (XYPair sol : representativeSolutions) {
+                BigInteger x = sol.x, y = sol.y;
+                
+                for (int j = 0; j <= k/2 - 1; j++) {
+                    // Test (x, y) and (-x, -y)
+                    if (x.add(r1).mod(r2).signum() == 0 && y.add(s1).mod(s2).signum() == 0) {
+                        BigInteger transX = x.add(r1).divide(r2);
+                        BigInteger transY = y.add(s1).divide(s2);
+                        
+                        solutions.add(new XYPair(transX, transY));
+                    }
+                    
+                    if (x.negate().add(r1).mod(r2).signum() == 0 && y.negate().add(s1).mod(s2).signum() == 0) {
+                        BigInteger transX = x.negate().add(r1).divide(r2);
+                        BigInteger transY = y.negate().add(s1).divide(s2);
+                        
+                        solutions.add(new XYPair(transX, transY));
+                    }
+                    
+                    BigInteger nextX = u11.multiply(x).add(u12.multiply(y));
+                    BigInteger nextY = u21.multiply(x).add(u22.multiply(y));
+                    x = nextX;
+                    y = nextY;
+                }
+            }
+            
+            if (posSolutions) {
+                return new FloridaIterator(solutions, phi1, psi1, a, b, c, K1posD.divide(D), K2posD.divide(D));
+            } else {
+                return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
+            }
+        } else {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+    
+    private static BigInteger K1D(BigInteger phi, BigInteger psi, BigInteger alpha, BigInteger beta, BigInteger b, BigInteger c) {
+        // K1(v) = alpha - (alpha * (phi1 - b * psi1) / 2 + beta * -c * psi1)
+        return alpha.subtract(
+                alpha.multiply(phi.subtract(b.multiply(psi))).divide(BigInteger.TWO)
+                .add(beta.multiply(c.negate()).multiply(psi))
+        );
+    }
 
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static BigInteger K2D(BigInteger phi, BigInteger psi, BigInteger alpha, BigInteger beta, BigInteger a, BigInteger b) {
+        // K2(v) = beta - (alpha * a * psi1 + beta * (phi1 + b * psi1) / 2)
+        return beta.subtract(
+                alpha.multiply(a).multiply(psi)
+                .add(beta.multiply(phi.add(b.multiply(psi))).divide(BigInteger.TWO))
+        );
+    }
+
+    private static boolean givesSolutions(BigInteger K1D, BigInteger K2D, BigInteger D) {
+        return K1D.mod(D).signum() == 0 && K2D.mod(D).signum() == 0;
+    }
+    
+    private static class FloridaIterator implements Iterator<XYPair> {
+        
+        private final BigInteger v11;
+        private final BigInteger v12;
+        private final BigInteger v21;
+        private final BigInteger v22;
+        private final BigInteger K1;
+        private final BigInteger K2;
+        private final BigInteger K1neg;
+        private final BigInteger K2neg;
+
+        private int solIndex;
+        private final int nSolutions;
+        private final List<XYPair> positiveSolutions;
+        private final List<XYPair> negativeSolutions;
+
+        public FloridaIterator(List<XYPair> solutions, BigInteger phi, BigInteger psi, BigInteger a, BigInteger b, BigInteger c, BigInteger K1, BigInteger K2) {
+            v11 = phi.subtract(b.multiply(psi)).divide(BigInteger.TWO); // (phi - b * psi) / 2
+            v12 = c.negate().multiply(psi); // -c * psi
+            v21 = a.multiply(psi); // a * psi
+            v22 = phi.add(b.multiply(psi)).divide(BigInteger.TWO); // (phi + b * psi) / 2
+            this.K1 = K1;
+            this.K2 = K2;
+            K1neg = v22.negate().multiply(K1).add(v12.multiply(K2));
+            K2neg = v21.multiply(K1).subtract(v11.multiply(K2));
+
+            this.nSolutions = solutions.size();
+            this.positiveSolutions = new ArrayList<>(solutions);
+            this.negativeSolutions = new ArrayList<>(solutions);
+            solIndex = -nSolutions - 1;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+        
+        @Override
+        public XYPair next() {
+            solIndex++;
+
+            if (solIndex == 0) {
+                advanceSolutions();
+            } else if (solIndex >= nSolutions) {
+                solIndex = -nSolutions;
+            }
+
+            return solIndex >= 0 ? positiveSolutions.get(solIndex) : negativeSolutions.get(solIndex + nSolutions);
+        }
+
+        private void advanceSolutions() {
+            for (ListIterator<XYPair> it = positiveSolutions.listIterator(); it.hasNext();) {
+                XYPair sol = it.next();
+                BigInteger x = sol.x;
+                BigInteger y = sol.y;
+
+                BigInteger nextX = v11.multiply(x).add(v12.multiply(y)).add(K1);
+                BigInteger nextY = v21.multiply(x).add(v22.multiply(y)).add(K2);
+
+                it.set(new XYPair(nextX, nextY));
+            }
+
+            for (ListIterator<XYPair> it = negativeSolutions.listIterator(); it.hasNext();) {
+                XYPair sol = it.next();
+                BigInteger x = sol.x;
+                BigInteger y = sol.y;
+
+                BigInteger prevX = v22.multiply(x).subtract(v12.multiply(y)).add(K1neg);
+                BigInteger prevY = v21.negate().multiply(x).add(v11.multiply(y)).add(K2neg);
+
+                it.set(new XYPair(prevX, prevY));
+            }
+        }
     }
 }

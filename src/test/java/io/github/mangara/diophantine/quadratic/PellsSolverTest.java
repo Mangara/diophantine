@@ -20,10 +20,11 @@ import io.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class PellsSolverTest {
-    
+
     public PellsSolverTest() {
     }
 
@@ -32,6 +33,10 @@ public class PellsSolverTest {
         System.out.println("82: x^2 - 60y^2 - 4 = 0 (D > 0)");
         int a = 1, b = 0, c = -60, d = 0, e = 0, f = -4;
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(8, lps.x.longValueExact());
+        assertEquals(1, lps.y.longValueExact());
+        
         long[][] expectedSolutions = new long[][]{
             new long[]{-3842, -496},
             new long[]{3842, -496},
@@ -56,12 +61,16 @@ public class PellsSolverTest {
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
-    
+
     @Test
     public void pellsFourTest02() {
         System.out.println("2: x^2 - 19y^2 - 4 = 0 (D > 0)");
         int a = 1, b = 0, c = -19, d = 0, e = 0, f = -4;
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(340, lps.x.longValueExact());
+        assertEquals(78, lps.y.longValueExact());
+        
         long[][] expectedSolutions = new long[][]{
             new long[]{-340, -78},
             new long[]{340, -78},
@@ -80,6 +89,10 @@ public class PellsSolverTest {
         System.out.println("3: x^2 - 221y^2 - 4 = 0 (D > 0)");
         int a = 1, b = 0, c = -221, d = 0, e = 0, f = -4;
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(15, lps.x.longValueExact());
+        assertEquals(1, lps.y.longValueExact());
+        
         long[][] expectedSolutions = new long[][]{
             new long[]{-3330, -224},
             new long[]{3330, -224},
@@ -106,6 +119,10 @@ public class PellsSolverTest {
         System.out.println("4: x^2 - 17y^2 - 4 = 0 (D > 0)");
         int a = 1, b = 0, c = -17, d = 0, e = 0, f = -4;
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(66, lps.x.longValueExact());
+        assertEquals(16, lps.y.longValueExact());
+        
         long[][] expectedSolutions = new long[][]{
             new long[]{-4354, -1056},
             new long[]{4354, -1056},
@@ -128,6 +145,10 @@ public class PellsSolverTest {
         System.out.println("5: x^2 - 40967y^2 - 4 = 0 (D > 0)");
         int a = 1, b = 0, c = -40967, d = 0, e = 0, f = -4;
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(5180304, lps.x.longValueExact());
+        assertEquals(25594, lps.y.longValueExact());
+        
         long[][] expectedSolutions = new long[][]{
             new long[]{-5180304, -25594},
             new long[]{5180304, -25594},
@@ -148,6 +169,10 @@ public class PellsSolverTest {
 
         BigInteger expectedX = new BigInteger("308132436864934200522212498"), expectedY = new BigInteger("2148947786232470755088550");
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
+        
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
             new XYPair(expectedX, expectedY.negate()),
@@ -168,6 +193,10 @@ public class PellsSolverTest {
 
         BigInteger expectedX = new BigInteger("536013903225608613608618698359084983422812580"), expectedY = new BigInteger("4224512548288545043060461503701143206910498");
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
+        
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
             new XYPair(expectedX, expectedY.negate()),
@@ -186,6 +215,10 @@ public class PellsSolverTest {
         System.out.println("8: x^2 - 2848y^2 - 4 = 0 (D > 0)");
         int a = 1, b = 0, c = -2848, d = 0, e = 0, f = -4;
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(3202, lps.x.longValueExact());
+        assertEquals(60, lps.y.longValueExact());
+        
         long[][] expectedSolutions = new long[][]{
             new long[]{-3202, -60},
             new long[]{3202, -60},
@@ -205,6 +238,10 @@ public class PellsSolverTest {
         int a = 1, b = 0, c = -29512, d = 0, e = 0, f = -4;
 
         BigInteger expectedX = new BigInteger("313346"), expectedY = new BigInteger("1824");
+        
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
 
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
@@ -225,6 +262,10 @@ public class PellsSolverTest {
         int a = 1, b = 0, c = -14335, d = 0, e = 0, f = -4;
 
         BigInteger expectedX = new BigInteger("2179380721066856132942"), expectedY = new BigInteger("18202634809601380296");
+        
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
 
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
@@ -245,6 +286,10 @@ public class PellsSolverTest {
         int a = 1, b = 0, c = -29986, d = 0, e = 0, f = -4;
 
         BigInteger expectedX = new BigInteger("135915148103491619905402044543098"), expectedY = new BigInteger("784889635731418443294120995460");
+        
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
 
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
@@ -265,6 +310,10 @@ public class PellsSolverTest {
         int a = 1, b = 0, c = -12412, d = 0, e = 0, f = -4;
 
         BigInteger expectedX = new BigInteger("1735334650280994091954"), expectedY = new BigInteger("15576230136070851324");
+        
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
 
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
@@ -285,6 +334,10 @@ public class PellsSolverTest {
         int a = 1, b = 0, c = -19781, d = 0, e = 0, f = -4;
 
         long expectedX = 129877126560277L, expectedY = 923439718215L;
+        
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x.longValueExact());
+        assertEquals(expectedY, lps.y.longValueExact());
 
         long[][] expectedSolutions = new long[][]{
             new long[]{-expectedX, -expectedY},
@@ -306,6 +359,10 @@ public class PellsSolverTest {
 
         BigInteger expectedX = new BigInteger("547012614465273295091694381107672500"), expectedY = new BigInteger("2873605962195725402739521607990369");
 
+        XYPair lps = PellsSolver.leastPositivePellsFourSolution(BigInteger.valueOf(-c));
+        assertEquals(expectedX, lps.x);
+        assertEquals(expectedY, lps.y);
+        
         List<XYPair> expectedSolutions = Arrays.asList(
             new XYPair(expectedX.negate(), expectedY.negate()),
             new XYPair(expectedX, expectedY.negate()),
@@ -318,5 +375,4 @@ public class PellsSolverTest {
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
         TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, PellsSolver.solvePellsFour(BigInteger.valueOf(-c)));
     }
-    
 }

@@ -48,7 +48,7 @@ public class PellsSolver {
      * @param D
      * @return
      */
-    private static XYPair leastPositivePellsFourSolution(BigInteger D) {
+    public static XYPair leastPositivePellsFourSolution(BigInteger D) {
         if (Utils.isSquare(D)) {
             throw new IllegalArgumentException("This method only supports non-squares.");
         }

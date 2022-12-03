@@ -59,8 +59,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -80,8 +79,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -113,8 +111,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -290,8 +287,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -330,8 +326,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -352,8 +347,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
@@ -425,8 +419,7 @@ public class HyperbolicSolverTest {
         };
 
         TestUtils.validateExpectedSolutions(a, b, c, d, e, f, expectedSolutions);
-        TestUtils.assertNotSupportedYet(() -> { HyperbolicSolver.solve(a, b, c, d, e, f); });
-//        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
+        TestUtils.assertSolutionsInclude(a, b, c, d, e, f, expectedSolutions, HyperbolicSolver.solve(a, b, c, d, e, f));
     }
 
     @Test
