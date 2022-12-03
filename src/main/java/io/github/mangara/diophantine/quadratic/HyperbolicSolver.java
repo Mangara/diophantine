@@ -104,8 +104,6 @@ public class HyperbolicSolver {
                         .add(f.multiply(D))
         ).divide(D).divide(G)
                 .negate();
-
-        BigInteger D2 = Utils.discriminant(A, B, C);
         
         List<XYPair> representativeSolutions = RestrictedHyperbolicSolver.getRepresentativeSolutions(A, B, C, M.negate());
         
@@ -113,32 +111,15 @@ public class HyperbolicSolver {
         BigInteger phi1 = phiPsi.x;
         BigInteger psi1 = phiPsi.y;
         
-         // phi2 = (phi1 * phi1 + D * psi1 * psi1) / 2
+        // phi2 = (phi1 * phi1 + D * psi1 * psi1) / 2
         BigInteger phi2 = phi1.multiply(phi1)
                 .add(D.multiply(psi1).multiply(psi1))
                 .divide(BigInteger.TWO);
         BigInteger psi2 = phi1.multiply(psi1); // phi1 * psi1
         
-        BigInteger K1posD = K1D(phi1, psi1, alpha, beta, b, c);
-        BigInteger K2posD = K2D(phi1, psi1, alpha, beta, a, b);
-        boolean posSolutions = givesSolutions(K1posD, K2posD, D);
+        List<XYPair> solutions = findTransformedSolutions(representativeSolutions, D, A, B, C, r1, r2, s1, s2, phi2, psi2);
         
-        BigInteger K1negD = K1D(phi1.negate(), psi1.negate(), alpha, beta, b, c);
-        BigInteger K2negD = K2D(phi1.negate(), psi1.negate(), alpha, beta, a, b);
-        boolean negSolutions = givesSolutions(K1negD, K2negD, D);
-        
-        BigInteger K1squareD = K1D(phi2, psi2, alpha, beta, b, c);
-        BigInteger K2squareD = K2D(phi2, psi2, alpha, beta, a, b);
-        
-        List<XYPair> solutions = findTransformedSolutions(representativeSolutions, D, A, B, C, D2, r1, r2, s1, s2, phi2, psi2);
-        
-        if (posSolutions) {
-            return new FloridaIterator(solutions, phi1, psi1, a, b, c, K1posD.divide(D), K2posD.divide(D));
-        } else if(negSolutions) {
-            return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
-        } else {
-            return new FloridaIterator(solutions, phi2, psi2, a, b, c, K1squareD.divide(D), K2squareD.divide(D));
-        }
+        return buildIterator(solutions, a, b, c, D, alpha, beta, phi1, psi1, phi2, psi2);
     }
     
     private static BigInteger K1D(BigInteger phi, BigInteger psi, BigInteger alpha, BigInteger beta, BigInteger b, BigInteger c) {
@@ -161,7 +142,9 @@ public class HyperbolicSolver {
         return K1D.mod(D).signum() == 0 && K2D.mod(D).signum() == 0;
     }
 
-    private static List<XYPair> findTransformedSolutions(List<XYPair> representativeSolutions, BigInteger D, BigInteger A, BigInteger B, BigInteger C, BigInteger D2, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2, BigInteger phi2, BigInteger psi2) {
+    private static List<XYPair> findTransformedSolutions(List<XYPair> representativeSolutions, BigInteger D, BigInteger A, BigInteger B, BigInteger C, BigInteger r1, BigInteger r2, BigInteger s1, BigInteger s2, BigInteger phi2, BigInteger psi2) {
+        BigInteger D2 = Utils.discriminant(A, B, C);
+        
         XYPair uv1 = PellsSolver.leastPositivePellsFourSolution(D2);
         BigInteger minU = uv1.x;
         BigInteger minV = uv1.y;
@@ -223,6 +206,30 @@ public class HyperbolicSolver {
 
             solutions.add(new XYPair(transX, transY));
         }
+    }
+    
+    private static Iterator<XYPair> buildIterator(List<XYPair> solutions, BigInteger a, BigInteger b, BigInteger c, BigInteger D, BigInteger alpha, BigInteger beta, BigInteger phi1, BigInteger psi1, BigInteger phi2, BigInteger psi2) {
+        // Solutions for (phi, psi)?
+        BigInteger K1posD = K1D(phi1, psi1, alpha, beta, b, c);
+        BigInteger K2posD = K2D(phi1, psi1, alpha, beta, a, b);
+        
+        if (givesSolutions(K1posD, K2posD, D)) {
+            return new FloridaIterator(solutions, phi1, psi1, a, b, c, K1posD.divide(D), K2posD.divide(D));
+        }
+        
+        // Solutions for (-phi, -psi)?
+        BigInteger K1negD = K1D(phi1.negate(), psi1.negate(), alpha, beta, b, c);
+        BigInteger K2negD = K2D(phi1.negate(), psi1.negate(), alpha, beta, a, b);
+        
+        if (givesSolutions(K1negD, K2negD, D)) {
+            return new FloridaIterator(solutions, phi1.negate(), psi1.negate(), a, b, c, K1negD.divide(D), K2negD.divide(D));
+        }
+        
+        // Solutions for (phi2, -psi2)
+        BigInteger K1squareD = K1D(phi2, psi2, alpha, beta, b, c);
+        BigInteger K2squareD = K2D(phi2, psi2, alpha, beta, a, b);
+            
+        return new FloridaIterator(solutions, phi2, psi2, a, b, c, K1squareD.divide(D), K2squareD.divide(D));
     }
     
     private static class FloridaIterator implements Iterator<XYPair> {
