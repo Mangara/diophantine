@@ -66,10 +66,14 @@ public class HyperbolicSolver {
             return RestrictedHyperbolicSolver.solve(a, b, c, f);
         }
         
-        if (a.signum() <= 0) {
-            throw new UnsupportedOperationException("Not supported yet.");
+        if (a.signum() > 0) {
+            return solveForPositiveA(a, b, c, d, e, f);
+        } else {
+            return solveForPositiveA(a.negate(), b.negate(), c.negate(), d.negate(), e.negate(), f.negate());
         }
-
+    }
+    
+    private static Iterator<XYPair> solveForPositiveA(BigInteger a, BigInteger b, BigInteger c, BigInteger d, BigInteger e, BigInteger f) {
         BigInteger g = a.gcd(b).gcd(c).gcd(d).gcd(e);
         
         if (g.equals(BigInteger.ONE)) {
