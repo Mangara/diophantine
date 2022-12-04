@@ -19,6 +19,7 @@ import io.github.mangara.diophantine.Utils;
 import io.github.mangara.diophantine.XYPair;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -64,12 +65,22 @@ public class HyperbolicSolver {
         if (d.signum() == 0 && e.signum() == 0) {
             return RestrictedHyperbolicSolver.solve(a, b, c, f);
         }
-
-        if (a.signum() > 0 && a.gcd(b).gcd(c).gcd(d).gcd(e).equals(BigInteger.ONE)) {
-            return solveWithFloridaTransform(a, b, c, d, e, f);
+        
+        if (a.signum() <= 0) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        BigInteger g = a.gcd(b).gcd(c).gcd(d).gcd(e);
+        
+        if (g.equals(BigInteger.ONE)) {
+            return solveWithFloridaTransform(a, b, c, d, e, f);
+        } else {
+            if (f.mod(g).signum() != 0) {
+                return Collections.emptyIterator();
+            } else {
+                return solveWithFloridaTransform(a.divide(g), b.divide(g), c.divide(g), d.divide(g), e.divide(g), f.divide(g));
+            }
+        }
     }
 
     // Pre-condition: a > 0 && (d != 0 || e != 0) && D > 0 and non-square && ae^2 - bde + cd^2 + fD != 0 && gcd(a, b, c, d, e) = 1
