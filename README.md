@@ -23,18 +23,6 @@ for (int i = 0; i < 10; i++) {
 
 The solutions are not guaranteed to be in any particular order, although later solutions tend to have larger absolute value.
 
-## Current status
-
-Work in progress.
-
-| Case                | Status        |
-| -------------       | ------------- |
-| Linear              | Completed     |
-| Quadratic, D = 0    | Completed     |
-| Quadratic, D square | Completed     |
-| Quadratic, D > 0    | Partial       |
-| Quadratic, D < 0    | Completed     |
-
 ## Principles
 
 - If we can solve an equation, return an iterator over *all* solutions.
