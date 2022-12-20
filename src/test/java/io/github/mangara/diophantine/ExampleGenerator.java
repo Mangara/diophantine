@@ -16,6 +16,7 @@
 package io.github.mangara.diophantine;
 
 import io.github.mangara.diophantine.quadratic.RestrictedEllipticalSolver;
+import io.github.mangara.diophantine.quadratic.RestrictedHyperbolicSolver;
 import io.github.mangara.diophantine.quadratic.UnaryCongruenceSolver;
 import io.github.mangara.diophantine.utils.Divisors;
 import java.math.BigInteger;
@@ -43,13 +44,13 @@ public class ExampleGenerator {
 //        int e = smallRandomNumber();
 //        int f = ensureSmallPositiveSolution(a, b, c, d, e);
         int d = 0, e = 0;
-        int a = 1, b = 0, c = -36236, f = -4;
-        int n = 14;
+        int a = 1, b = 3, c = 1, f = 4;
+        int n = 86;
         
         long D = Utils.discriminant(a, b, c);
         
-        String solver = "PellsSolver.solvePellsFour(BigInteger.valueOf(-c))";
-//        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
+//        String solver = "PellsSolver.solvePellsFour(BigInteger.valueOf(-c))";
+        String solver = "RestrictedHyperbolicSolver.solve(a, b, c, f)";
 
         System.out.println("Equation: " + TestUtils.prettyPrintEquation(a, b, c, d, e, f));
         System.out.println("D = " + D + " GCD(a, b, c) = " + Utils.gcd(a, b, c) + " GCD(a, f) = " + Utils.gcd(a, f) + " GCD(d, e) = " + Utils.gcd(d, e));
@@ -63,9 +64,9 @@ public class ExampleGenerator {
         }
 
         if (d == 0 && e == 0 && D > 0) {
-//            String restrictedSolver = "RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f))";
-//            List<XYPair> representativeSolutions = keepRepresentativeSolutions(solutions, a, b, c, d, e, f);
-//            printTestCase("Representative", restrictedSolver, a, b, c, d, e, f, representativeSolutions, n);
+            String restrictedSolver = "RestrictedHyperbolicSolver.getRepresentativeSolutions(BigInteger.valueOf(a), BigInteger.valueOf(b), BigInteger.valueOf(c), BigInteger.valueOf(f))";
+            List<XYPair> representativeSolutions = keepRepresentativeSolutions(solutions, a, b, c, d, e, f);
+            printTestCase("Representative", restrictedSolver, a, b, c, d, e, f, representativeSolutions, n);
 
 //            List<XYPair> primitiveSolutions = keepPrimitiveSolutions(representativeSolutions);
 //            printTestCase("Primitive", solver, a, b, c, d, e, f, primitiveSolutions, n);
@@ -406,35 +407,43 @@ public class ExampleGenerator {
                         continue;
                     }
                     
-                    int f = 0;
-                    int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
-                    
-                    if (numSmallSolutions > 1) {
-                        System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d small solutions)%n", a, b, c, f, D, numSmallSolutions);
-                    }
-
-//                    for (int f = -bound; f < bound; f++) {
-//                        if (f % g != 0) {
-//                            continue;
-//                        }
-//                        
-//                        if (Utils.gcd(a, f) != 1) {
-//                            continue;
-//                        }
-//                        
-////                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
-//
-////                        if (numSmallSolutions == 0) {
-////                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
-////                        }
-//                        try {
-//                            RestrictedHyperbolicSolver.solve(a, b, c, f);
-//                        } catch (UnsupportedOperationException ex) {
-//                            // Ignore
-//                        } catch (IndexOutOfBoundsException ex) {
-//                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size());
-//                        }
+//                    int f = 0;
+//                    int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+//                    
+//                    if (numSmallSolutions > 1) {
+//                        System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d small solutions)%n", a, b, c, f, D, numSmallSolutions);
 //                    }
+
+                    for (int f = -bound; f < bound; f++) {
+                        if (f % g != 0) {
+                            continue;
+                        }
+                        
+                        if (Utils.gcd(a, f) != 1) {
+                            continue;
+                        }
+                        
+                        if (Utils.legendreConstant(a, b, c, 0, 0, f, D) == 0) {
+                            continue;
+                        }
+                        
+//                        int numSmallSolutions = bruteForceSmallSolutions(a, b, c, 0, 0, f, bound, false).size();
+
+//                        if (numSmallSolutions == 0) {
+//                            System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d, %d square divisors, %d small solutions)%n", a, b, c, f, D, Divisors.getSquareDivisors(Math.abs(f)).size(), numSmallSolutions);
+//                        }
+                        try {
+                            RestrictedHyperbolicSolver.solve(a, b, c, f);
+                        } catch (UnsupportedOperationException ex) {
+                            // Ignore
+                        } catch (IllegalArgumentException ex) {
+                            if (ex.getMessage().equals("Boom")) {
+                                System.out.printf("int a = %d, b = %d, c = %d, f = %d;  (D = %d)%n", a, b, c, f, D);
+                            } else {
+                                throw ex;
+                            }
+                        }
+                    }
                 }
             }
         }

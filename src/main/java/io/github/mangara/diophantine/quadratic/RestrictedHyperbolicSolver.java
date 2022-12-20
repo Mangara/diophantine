@@ -160,24 +160,31 @@ public class RestrictedHyperbolicSolver {
         ContinuedFraction w = ContinuedFraction.ofExpression(P.negate(), Delta, Q);
         int i = findSignMatchedCompleteQuotientIndex(w, P.negate(), Delta, Q, 1, signN);
 
-        if (i > 0) {
-            solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
-        }
-        
         if (i == 0) {
             throw new UnsupportedOperationException("Unhandled case");
 //            System.out.println("i = 0 when solving " + new RestrictedEquation(a, b, c, f).toString());
 //            System.out.printf("theta = %d P = %d Q = %d Delta = %d%n", theta, P, Q, Delta);
 //            System.out.printf("w = %s with convergents %s%n", w.toString(), w.getConvergents(10).toString());
         }
+        
+        if (i > 0) {
+            solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
+        }
 
         // Repeat for w* = (-P - √Delta)/Q = (P + √Delta)/(-Q)
         ContinuedFraction wStar = ContinuedFraction.ofExpression(P, Delta, Q.negate());
         int j = findSignMatchedCompleteQuotientIndex(wStar, P, Delta, Q.negate(), 1, -signN);
 
-        if (j >= 0) {
+        if (j == 0) {
+            // I haven't been able to find an example that hits this...
+            throw new UnsupportedOperationException("Unhandled case");
+        }
+        
+        if (j > 0) {
             solutions.add(solutionFromConvergent(wStar.convergent(j - 1), theta, f.abs()));
         }
+        
+        // D cannot be 5 here, as both b^2 and 4ac are multiples of 4, so we don't have an exceptional solution
         
         return solutions;
     }
@@ -189,7 +196,7 @@ public class RestrictedHyperbolicSolver {
         BigInteger P = BigInteger.TWO.multiply(a).multiply(theta).add(b); // 2 * a * theta + b
         BigInteger Q = BigInteger.TWO.multiply(a).multiply(f.abs()); // 2 * a * |F|
 
-        // Find continued fraction of w = (-(2P + 1) + √D)/2Q
+        // Find continued fraction of w = (-(2P + 1) + √D)/2Q -- this doesn't line up with the next line, not sure what's up there
         ContinuedFraction w = ContinuedFraction.ofExpression(P.negate(), D, Q);
         int i = findSignMatchedCompleteQuotientIndex(w, P.negate(), D, Q, 2, signN);
 
@@ -197,7 +204,7 @@ public class RestrictedHyperbolicSolver {
             throw new UnsupportedOperationException("Unhandled case");
         }
         
-        if (i >= 0) {
+        if (i > 0) {
             solutions.add(solutionFromConvergent(w.convergent(i - 1), theta, f.abs()));
         }
 
@@ -205,7 +212,12 @@ public class RestrictedHyperbolicSolver {
         ContinuedFraction wStar = ContinuedFraction.ofExpression(P, D, Q.negate());
         int j = findSignMatchedCompleteQuotientIndex(wStar, P, D, Q.negate(), 2, -signN);
 
-        if (j >= 0) {
+        if (j == 0) {
+            // I haven't been able to find an example that hits this...
+            throw new UnsupportedOperationException("Unhandled case");
+        }
+        
+        if (j > 0) {
             solutions.add(solutionFromConvergent(wStar.convergent(j - 1), theta, f.abs()));
         }
 
@@ -213,7 +225,7 @@ public class RestrictedHyperbolicSolver {
         if (D.equals(BigInteger.valueOf(5)) && a.signum() != signN) {
             int r = w.getRepetitionStart() - 1;
             
-            if (r == 0) {
+            if (r <= 0) {
                 throw new UnsupportedOperationException("Unhandled case");
             }
             
