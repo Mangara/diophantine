@@ -5,19 +5,72 @@ In particular, it finds integer solutions $(x, y)$ to the general quadratic equa
 
 ## Usage
 
+### Add `diophantine` as a dependency
+
+You can download the JAR files directly from [the releases](https://github.com/Mangara/diophantine/releases), or [install from GitHub packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#installing-a-package):
+
+1. Create a GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with `read:packages` permissions.
+
+1. In your `~/.m2/settings.xml`, add
+
+```xml
+  <servers>
+    <server>
+      <id>github</id>
+      <username>USERNAME</username>
+      <password>TOKEN</password>
+    </server>
+  </servers>
+```
+
+where `USERNAME` is your GitHub username and `TOKEN` is the personal access token.
+
+1. In your `pom.xml`, add
+
+```xml
+<repositories>
+  <repository>
+    <id>github</id>
+    <name>Diophantine</name>
+    <url>https://maven.pkg.github.com/mangara/diophantine</url>
+  </repository>
+</repositories>
+```
+
+and
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>io.github.mangara</groupId>
+    <artifactId>diophantine</artifactId>
+    <version>1.0</version>
+  </dependency>
+</dependencies>
+```
+
+1. Run `mvn install`
+
+### Use it in your project
+
 `QuadraticSolver.solve` is the primary entrypoint:
 
 ```java
-import com.github.mangara.diophantine.*;
+import io.github.mangara.diophantine.QuadraticSolver;
+import io.github.mangara.diophantine.XYPair;
 import java.util.Iterator;
 
-// Solve 8x^2 - 24xy + 18y^2 + 5x + 7y + 16 = 0
-Iterator<XYPair> solutions = QuadraticSolver.solve(8, -24, 18, 5, 7, 16);
+public class Main {
+    public static void main(String[] args) {
+        // Solve 8x^2 - 24xy + 18y^2 + 5x + 7y + 16 = 0
+        Iterator<XYPair> solutions = QuadraticSolver.solve(8, -24, 18, 5, 7, 16);
 
-System.out.println("The first 10 solutions are:");
-for (int i = 0; i < 10; i++) {
-    XYPair sol = solutions.next();
-    System.out.println(sol + " with x + y = " + (sol.x.add(sol.y)));
+        System.out.println("The first 10 solutions are:");
+        for (int i = 0; i < 10; i++) {
+            XYPair sol = solutions.next();
+            System.out.println(sol + " with x + y = " + (sol.x.add(sol.y)));
+        }
+    }
 }
 ```
 
